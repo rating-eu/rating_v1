@@ -93,7 +93,8 @@
                                 </div>
                             </div>-->
                             <div class="col-md-2 text-center align-middle">
-                                <h6>Human Vulnerability</h6>
+                                <h6 [ngStyle]="{'border-bottom': currentTabIndex === 0 ? '2px solid #3F51B5' : 'none'}">
+                                    Human Vulnerability</h6>
                                 <mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
                                                       class="pointer"
                                                       [ngClass]="{
@@ -113,7 +114,8 @@
                                 </div>
                             </div>
                             <div class="col-md-2 text-center align-middle">
-                                <h6>IT Vulnerability</h6>
+                                <h6 [ngStyle]="{'border-bottom': currentTabIndex === 1 ? '2px solid #3F51B5' : 'none'}">
+                                    IT Vulnerability</h6>
                                 <mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
                                                       class="pointer"
                                                       [ngClass]="{
@@ -133,7 +135,8 @@
                                 </div>
                             </div>
                             <div class="col-md-2 text-center align-middle">
-                                <h6>Physical Vulnerability</h6>
+                                <h6 [ngStyle]="{'border-bottom': currentTabIndex === 2 ? '2px solid #3F51B5' : 'none'}">
+                                    Physical Vulnerability</h6>
                                 <mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
                                                       class="pointer"
                                                       [ngClass]="{
@@ -153,7 +156,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6 text-center align-middle">
-                                <h6>Overall Vulnerability</h6>
+                                <h6>{{area.name}}&nbsp;Vulnerability</h6>
                                 <mat-progress-spinner [diameter]="150" style="margin: 0 auto;"
                                                       class="pointer"
                                                       [ngClass]="{
