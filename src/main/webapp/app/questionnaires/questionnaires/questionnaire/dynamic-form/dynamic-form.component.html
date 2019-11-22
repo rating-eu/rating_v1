@@ -184,6 +184,7 @@
                                             <mat-radio-group [formControlName]="question.id" class="radio-group">
                                                 <mat-radio-button *ngFor="let answer of sort(question.answers)"
                                                                   class="radio-button"
+                                                                  [disabled]="containerType && areaID"
                                                                   [value]="answer">
                                                     {{answer.name}}
                                                 </mat-radio-button>
@@ -192,6 +193,7 @@
                                         <div class="col-md-2 bg3 text-center">
                                             <mat-form-field>
                                             <textarea matInput [formControlName]="question.id + '.ciso.note'" [rows]="7"
+                                                      [readonly]="containerType && areaID"
                                                       placeholder="Notes"></textarea>
                                             </mat-form-field>
                                         </div>
@@ -243,6 +245,7 @@
                                             <mat-radio-group [formControlName]="question.id" class="radio-group">
                                                 <mat-radio-button *ngFor="let answer of sort(question.answers)"
                                                                   class="radio-button"
+                                                                  [disabled]="containerType && areaID"
                                                                   [value]="answer">
                                                     {{answer.name}}
                                                 </mat-radio-button>
@@ -251,6 +254,7 @@
                                         <div class="col-md-2 bg3 text-center">
                                             <mat-form-field>
                                             <textarea matInput [formControlName]="question.id + '.ciso.note'" [rows]="7"
+                                                      [readonly]="containerType && areaID"
                                                       placeholder="Notes"></textarea>
                                             </mat-form-field>
                                         </div>
@@ -301,6 +305,7 @@
                                             <mat-radio-group [formControlName]="question.id" class="radio-group">
                                                 <mat-radio-button *ngFor="let answer of sort(question.answers)"
                                                                   class="radio-button"
+                                                                  [disabled]="containerType && areaID"
                                                                   [value]="answer">
                                                     {{answer.name}}
                                                 </mat-radio-button>
@@ -309,6 +314,7 @@
                                         <div class="col-md-2 bg3 text-center">
                                             <mat-form-field>
                                             <textarea matInput [formControlName]="question.id + '.ciso.note'" [rows]="7"
+                                                      [readonly]="containerType && areaID"
                                                       placeholder="Notes"></textarea>
                                             </mat-form-field>
                                         </div>
