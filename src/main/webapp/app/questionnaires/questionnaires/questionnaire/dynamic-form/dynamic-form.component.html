@@ -333,7 +333,8 @@
                     </mat-tab>
                 </mat-tab-group>
             </div>
-            <div class="form-row text-right d-block" style="margin-bottom: 40px">
+            <div *ngIf="!containerType && !areaID && !area" class="form-row text-right d-block"
+                 style="margin-bottom: 40px">
                 <button class="btn btn-success waves-light waves-effect w-md" type="submit"
                         [disabled]="!form.valid">
                     <i class="far fa-save"></i>&nbsp;<span>Submit</span>
