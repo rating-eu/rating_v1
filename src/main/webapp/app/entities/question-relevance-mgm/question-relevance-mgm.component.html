@@ -1,0 +1,70 @@
+<div>
+    <h2>
+        <span jhiTranslate="hermeneutApp.questionRelevance.home.title">Question Relevances</span>
+        <button class="btn btn-primary float-right jh-create-entity create-question-relevance-mgm" [routerLink]="['/', { outlets: { popup: ['question-relevance-mgm-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="hermeneutApp.questionRelevance.home.createLabel">
+            Create new Question Relevance
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="questionRelevances">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="hermeneutApp.questionRelevance.relevance">Relevance</span></th>
+            <th><span jhiTranslate="hermeneutApp.questionRelevance.question">Question</span></th>
+            <th><span jhiTranslate="hermeneutApp.questionRelevance.status">Status</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let questionRelevance of questionRelevances ;trackBy: trackId">
+                <td><a [routerLink]="['../question-relevance-mgm', questionRelevance.id ]">{{questionRelevance.id}}</a></td>
+                <td>{{questionRelevance.relevance}}</td>
+                <td>
+                    <div *ngIf="questionRelevance.question">
+                        <a [routerLink]="['../question-mgm', questionRelevance.question?.id ]" >{{questionRelevance.question?.name}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="questionRelevance.status">
+                        <a [routerLink]="['../questionnaire-status-mgm', questionRelevance.status?.id ]" >{{questionRelevance.status?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../question-relevance-mgm', questionRelevance.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'question-relevance-mgm/'+ questionRelevance.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'question-relevance-mgm/'+ questionRelevance.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

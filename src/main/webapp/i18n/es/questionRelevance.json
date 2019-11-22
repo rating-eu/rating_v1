@@ -1,0 +1,24 @@
+
+{
+    "hermeneutApp": {
+        "questionRelevance" : {
+            "home": {
+                "title": "Question Relevances",
+                "createLabel": "Crear nuevo Question Relevance",
+                "createOrEditLabel": "Crear o editar Question Relevance"
+            },
+            "created": "Un nuevo Question Relevance ha sido creado con el identificador {{ param }}",
+            "updated": "Un Question Relevance ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Question Relevance ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Question Relevance {{ id }}?"
+            },
+            "detail": {
+                "title": "Question Relevance"
+            },
+            "relevance": "Relevance",
+            "question": "Question",
+            "status": "Status"
+        }
+    }
+}
