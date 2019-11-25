@@ -87,7 +87,19 @@ public class QuestionRelevanceResource {
     public List<QuestionRelevance> getAllQuestionRelevances() {
         log.debug("REST request to get all QuestionRelevances");
         return questionRelevanceService.findAll();
-        }
+    }
+
+    /**
+     * GET  /question-relevances/questionnaire-status/:id : get all the questionRelevances.
+     * @param id The ID of the QuestionnaireStatus
+     * @return the ResponseEntity with status 200 (OK) and the list of questionRelevances in body
+     */
+    @GetMapping("/question-relevances/questionnaire-status/{id}")
+    @Timed
+    public List<QuestionRelevance> getAllQuestionRelevancesByQuestionnaireStatus(@PathVariable Long id) {
+        log.debug("REST request to get all QuestionRelevances");
+        return questionRelevanceService.findAllByQuestionnaireStatus(id);
+    }
 
     /**
      * GET  /question-relevances/:id : get the "id" questionRelevance.

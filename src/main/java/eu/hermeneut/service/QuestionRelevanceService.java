@@ -1,6 +1,7 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.QuestionRelevance;
+
 import java.util.List;
 
 /**
@@ -37,4 +38,12 @@ public interface QuestionRelevanceService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     * Get all the questionRelevances by QuestionnaireStatus.
+     *
+     * @param id The ID of the QuestionnaireStatus.
+     * @return the list of entities
+     */
+    List<QuestionRelevance> findAllByQuestionnaireStatus(Long id);
 }

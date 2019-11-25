@@ -34,7 +34,7 @@ public class QuestionRelevance implements Serializable {
     @ManyToOne
     private Question question;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private QuestionnaireStatus status;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
