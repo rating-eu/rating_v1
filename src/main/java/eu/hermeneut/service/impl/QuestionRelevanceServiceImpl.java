@@ -1,14 +1,13 @@
 package eu.hermeneut.service.impl;
 
-import eu.hermeneut.domain.Question;
-import eu.hermeneut.domain.Questionnaire;
-import eu.hermeneut.domain.QuestionnaireStatus;
+import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
+import eu.hermeneut.domain.enumeration.Role;
 import eu.hermeneut.service.QuestionRelevanceService;
-import eu.hermeneut.domain.QuestionRelevance;
 import eu.hermeneut.repository.QuestionRelevanceRepository;
 import eu.hermeneut.service.QuestionService;
 import eu.hermeneut.service.QuestionnaireStatusService;
+import eu.hermeneut.utils.comparator.QuestionnaireStatusComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,8 +110,51 @@ public class QuestionRelevanceServiceImpl implements QuestionRelevanceService {
                     relevances = this.questionRelevanceRepository.findAllByQuestionnaireStatus(id);
 
                     if (relevances == null || relevances.isEmpty()) {
-                        // Create the default QuestionRelevances.
-                        relevances = this.createDefaultRelevances(id);
+                        // If there is another QuestionnaireStatus copy the QuestionRelevances from the last created one
+                        CompanyProfile companyProfile = questionnaireStatus.getCompanyProfile();
+
+                        if (companyProfile != null) {
+                            List<QuestionnaireStatus> questionnaireStatuses = this.questionnaireStatusService
+                                .findAllByCompanyProfileQuestionnairePurposeAndRole(
+                                    companyProfile.getId(),
+                                    QuestionnairePurpose.SELFASSESSMENT,
+                                    Role.ROLE_CISO
+                                );
+
+                            // Sort them by creation time
+                            questionnaireStatuses.sort(new QuestionnaireStatusComparator().reversed());
+
+                            // Remove the current QuestionnaireStatus
+                            questionnaireStatuses.removeIf(qStatus -> qStatus.getId().equals(questionnaireStatus.getId()));
+
+                            if (!questionnaireStatuses.isEmpty()) {
+                                QuestionnaireStatus last = questionnaireStatuses.get(questionnaireStatuses.size() - 1);
+
+                                // Copy the QuestionRelevances of the other QuestionnaireStatus
+                                List<QuestionRelevance> lastRelevances = this.findAllByQuestionnaireStatus(last.getId());
+
+                                if (lastRelevances != null && !lastRelevances.isEmpty()) {
+                                    relevances = new ArrayList<>();
+                                    for (QuestionRelevance questionRelevance : lastRelevances) {
+                                        QuestionRelevance newRelevance = new QuestionRelevance();
+                                        newRelevance.setStatus(questionnaireStatus);
+                                        newRelevance.setQuestion(questionRelevance.getQuestion());
+                                        newRelevance.setRelevance(questionRelevance.getRelevance());
+
+                                        relevances.add(newRelevance);
+                                    }
+                                } else {
+                                    // Create the default QuestionRelevances.
+                                    relevances = this.createDefaultRelevances(id);
+                                }
+                            } else {
+                                // Create the default QuestionRelevances.
+                                relevances = this.createDefaultRelevances(id);
+                            }
+                        } else {
+                            // Create the default QuestionRelevances.
+                            relevances = this.createDefaultRelevances(id);
+                        }
 
                         // Save them
                         relevances = this.questionRelevanceRepository.save(relevances);
