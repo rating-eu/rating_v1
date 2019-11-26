@@ -111,13 +111,13 @@ public class QuestionRelevanceServiceImpl implements QuestionRelevanceService {
                         // Save them
                         relevances = this.questionRelevanceRepository.save(relevances);
                     } else {
-                        // TODO Check if all the relevances have been found.
+                        // Check if all the relevances have been found.
                         List<Question> questions = this.questionService.findAllByQuestionnaire(questionnaire);
 
                         boolean isFull = relevances.size() == questions.size();
 
                         if (!isFull) {
-                            // TODO Create the missing ones
+                            // Create the missing ones
 
                             Map<Long, Question> questionsMap = questions.stream().parallel()
                                 .collect(Collectors.toMap(question -> question.getId(), Function.identity()));
@@ -125,8 +125,18 @@ public class QuestionRelevanceServiceImpl implements QuestionRelevanceService {
                             Map<Long/*QuestionID*/, QuestionRelevance> relevancesByQuestionIDMap = relevances.stream().parallel()
                                 .collect(Collectors.toMap(relevance -> relevance.getQuestion().getId(), Function.identity()));
 
+                            List<Question> missingRelevances = new ArrayList<>();
 
-                            // TODO Save them
+                            questions.stream().parallel().forEach((question) -> {
+                                if (!relevancesByQuestionIDMap.containsKey(question.getId())) {
+                                    missingRelevances.add(question);
+                                }
+                            });
+
+                            relevances.addAll(this.createDefaultRelevances(questionnaireStatus, missingRelevances));
+
+                            // Save them
+                            relevances = this.questionRelevanceRepository.save(relevances);
                         }
                     }
                 }
@@ -146,30 +156,40 @@ public class QuestionRelevanceServiceImpl implements QuestionRelevanceService {
             if (QuestionnairePurpose.SELFASSESSMENT.equals(questionnaire.getPurpose())) {
                 List<Question> questions = this.questionService.findAllByQuestionnaire(questionnaire);
 
-                questions.forEach((question) -> {
-                    final QuestionRelevance relevance = new QuestionRelevance();
-                    relevance.setStatus(questionnaireStatus);
-                    relevance.setQuestion(question);
-
-                    switch (question.getQuestionType()) {
-                        case REGULAR: {
-                            relevance.setRelevance(1);
-
-                            relevances.add(relevance);
-                            break;
-                        }
-                        case RELEVANT: {
-                            relevance.setRelevance(3);
-
-                            relevances.add(relevance);
-                            break;
-                        }
-                        default: {
-                            // This should never happen since all the Questions of the SelfAssessment questionnaire are REGULAR or RELEVANT.
-                        }
-                    }
-                });
+                relevances = this.createDefaultRelevances(questionnaireStatus, questions);
             }
+        }
+
+        return relevances;
+    }
+
+    private List<QuestionRelevance> createDefaultRelevances(QuestionnaireStatus questionnaireStatus, List<Question> questions) {
+        List<QuestionRelevance> relevances = new ArrayList<>();
+
+        if (questionnaireStatus != null) {
+            questions.forEach((question) -> {
+                final QuestionRelevance relevance = new QuestionRelevance();
+                relevance.setStatus(questionnaireStatus);
+                relevance.setQuestion(question);
+
+                switch (question.getQuestionType()) {
+                    case REGULAR: {
+                        relevance.setRelevance(1);
+
+                        relevances.add(relevance);
+                        break;
+                    }
+                    case RELEVANT: {
+                        relevance.setRelevance(3);
+
+                        relevances.add(relevance);
+                        break;
+                    }
+                    default: {
+                        // This should never happen since all the Questions of the SelfAssessment questionnaire are REGULAR or RELEVANT.
+                    }
+                }
+            });
         }
 
         return relevances;
