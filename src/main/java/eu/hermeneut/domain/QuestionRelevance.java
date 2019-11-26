@@ -15,7 +15,10 @@ import java.util.Objects;
  */
 @ApiModel(description = "==========QuestionRelevance==========")
 @Entity
-@Table(name = "question_relevance")
+@Table(
+    name = "question_relevance",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"question_id", "status_id"})
+)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class QuestionRelevance implements Serializable {
 
@@ -31,10 +34,14 @@ public class QuestionRelevance implements Serializable {
     @Column(name = "relevance")
     private Integer relevance;
 
-    @ManyToOne
+    @NotNull
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "status_id", nullable = false)
     private QuestionnaireStatus status;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
