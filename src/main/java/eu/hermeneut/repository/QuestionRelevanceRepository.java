@@ -16,6 +16,6 @@ import java.util.List;
 @Repository
 public interface QuestionRelevanceRepository extends JpaRepository<QuestionRelevance, Long> {
 
-    @Query("SELECT questionRelevance from QuestionRelevance questionRelevance WHERE questionRelevance.status.id = :questionnaireStatusIDs")
+    @Query("SELECT questionRelevance from QuestionRelevance questionRelevance WHERE questionRelevance.status.id = :questionnaireStatusID")
     List<QuestionRelevance> findAllByQuestionnaireStatus(@Param("questionnaireStatusID") Long id);
 }

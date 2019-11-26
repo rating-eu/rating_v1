@@ -23,7 +23,8 @@ import {
     OnChanges,
     OnDestroy,
     OnInit,
-    SimpleChanges, ViewRef
+    SimpleChanges,
+    ViewRef
 } from '@angular/core';
 import {QuestionControlService} from './services/question-control.service';
 import {FormGroup} from '@angular/forms';
@@ -57,6 +58,7 @@ import {AnswerLikelihood} from "../../../../entities/enumerations/AnswerLikeliho
 import {AnswerWeightMgm, AnswerWeightMgmService} from "../../../../entities/answer-weight-mgm";
 import {QuestionType} from "../../../../entities/enumerations/QuestionType.enum";
 import {VulnerabilityRadarService} from "../../../../dashboard/vulnerability-radar-widget/vulnerability-radar.service";
+import {QuestionRelevanceMgm, QuestionRelevanceMgmService} from "../../../../entities/question-relevance-mgm";
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -94,6 +96,9 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
     public cisoQuestionnaireStatus: QuestionnaireStatusMgm;
     public externalQuestionnaireStatus: QuestionnaireStatusMgm;
 
+    public questionRelevances: QuestionRelevanceMgm[];
+    public questionRelevancesMap: Map<number/*QuestionID*/, QuestionRelevanceMgm>;
+
     public cisoMyAnswers: MyAnswerMgm[];
     public externalMyAnswers: MyAnswerMgm[];
 
@@ -121,6 +126,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
 
     // Vulnerability formula
     public vulnerabilityFormula: string = "Vulnerability=\\frac{\\sum_{i=1}^nAnswer_i.Vulnerability \\times Answer_i.Weight}{\\sum_{i=1}^nAnswer_i.Weight}";
+
     constructor(private questionControlService: QuestionControlService,
                 private dataSharingSerivce: DataSharingService,
                 private router: Router,
@@ -135,6 +141,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
                 private threatAgentService: ThreatAgentMgmService,
                 private vulnerabilityAreaService: VulnerabilityAreaMgmService,
                 private vulnerabilityRadarService: VulnerabilityRadarService,
+                private questionRelevenceService: QuestionRelevanceMgmService,
                 private modalService: NgbModal,
                 private changeDetector: ChangeDetectorRef) {
     }
@@ -364,6 +371,33 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
                     }
 
                     this.resizeAnswerHeighs();
+                }
+
+                if (this.questionnaire.purpose === QuestionnairePurpose.SELFASSESSMENT && this.cisoQuestionnaireStatus) {
+                    switch (this._questionnaire.purpose) {
+                        case QuestionnairePurpose.SELFASSESSMENT: {
+                            this.questionRelevenceService.findAllByQuestionnaireStatus(this.cisoQuestionnaireStatus.id)
+                                .toPromise()
+                                .then(
+                                    (response: HttpResponse<QuestionRelevanceMgm[]>) => {
+                                        if (response && response.body) {
+                                            this.questionRelevances = response.body;
+
+                                            this.questionRelevancesMap = new Map();
+                                            this.questionRelevances.forEach((relevance: QuestionRelevanceMgm) => {
+                                                this.questionRelevancesMap.set(relevance.question.id, relevance);
+                                            });
+
+                                            if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
+                                                this.changeDetector.detectChanges();
+                                            }
+                                        }
+                                    }
+                                );
+
+                            break;
+                        }
+                    }
                 }
             }
         );

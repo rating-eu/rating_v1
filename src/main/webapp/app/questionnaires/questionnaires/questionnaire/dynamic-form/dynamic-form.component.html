@@ -163,8 +163,14 @@
                                             </label>
                                         </div>
                                         <div class="col-md-2 text-right">
-                                            <rating [max]="5" [titles]="['1','2','3','4','5']" [customTemplate]="bomb"
-                                                    [customTemplate]="bomb"></rating>
+                                            <rating
+                                                *ngIf="questionRelevancesMap && questionRelevancesMap.has(question.id)"
+                                                [max]="5" [titles]="['1','2','3','4','5']"
+                                                [customTemplate]="bomb"
+                                                [(ngModel)]="questionRelevancesMap.get(question.id).relevance"
+                                                [ngModelOptions]="{standalone: true}"
+                                                [readonly]="!(containerType && areaID && area)"
+                                            ></rating>
                                         </div>
                                     </div>
 
@@ -224,8 +230,14 @@
                                             </label>
                                         </div>
                                         <div class="col-md-2 text-right">
-                                            <rating [max]="5" [titles]="['1','2','3','4','5']" [customTemplate]="bomb"
-                                                    [customTemplate]="bomb"></rating>
+                                            <rating
+                                                *ngIf="questionRelevancesMap && questionRelevancesMap.has(question.id)"
+                                                [max]="5" [titles]="['1','2','3','4','5']"
+                                                [customTemplate]="bomb"
+                                                [(ngModel)]="questionRelevancesMap.get(question.id).relevance"
+                                                [ngModelOptions]="{standalone: true}"
+                                                [readonly]="!(containerType && areaID && area)"
+                                            ></rating>
                                         </div>
                                     </div>
 
@@ -284,8 +296,14 @@
                                             </label>
                                         </div>
                                         <div class="col-md-2 text-right">
-                                            <rating [max]="5" [titles]="['1','2','3','4','5']"
-                                                    [customTemplate]="bomb"></rating>
+                                            <rating
+                                                *ngIf="questionRelevancesMap && questionRelevancesMap.has(question.id)"
+                                                [max]="5" [titles]="['1','2','3','4','5']"
+                                                [customTemplate]="bomb"
+                                                [(ngModel)]="questionRelevancesMap.get(question.id).relevance"
+                                                [ngModelOptions]="{standalone: true}"
+                                                [readonly]="!(containerType && areaID && area)"
+                                            ></rating>
                                         </div>
                                     </div>
                                     <div class="row">
