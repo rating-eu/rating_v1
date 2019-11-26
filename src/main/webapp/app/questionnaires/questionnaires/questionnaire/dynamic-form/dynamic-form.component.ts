@@ -1000,4 +1000,16 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
             }
         }
     }*/
+
+    public ratingChange(newRelevance: number, questionID: number) {
+        if (this.questionRelevancesMap.has(questionID)) {
+            const oldRelevance: number = this.questionRelevancesMap.get(questionID).relevance;
+
+            if (oldRelevance === newRelevance) {
+                this.questionRelevancesMap.get(questionID).relevance = oldRelevance - 1;
+            } else {
+                this.questionRelevancesMap.get(questionID).relevance = newRelevance;
+            }
+        }
+    }
 }
