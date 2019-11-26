@@ -1012,4 +1012,15 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
             }
         }
     }
+
+    updateQuestionRelevances() {
+        if (this.questionRelevances && this.questionRelevances.length) {
+            this.questionRelevenceService.updateAll(this.questionRelevances)
+                .toPromise()
+                .then((response: HttpResponse<QuestionRelevanceMgm[]>) => {
+                    // Redirect to dashboard
+                    this.router.navigate(['/dashboard']);
+                });
+        }
+    }
 }

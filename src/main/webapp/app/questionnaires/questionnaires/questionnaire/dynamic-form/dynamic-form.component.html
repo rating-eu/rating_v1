@@ -53,7 +53,8 @@
                     <em>Vulnerability</em> value will be updated accordingly.</p>-->
 
                 <div class="row">
-                    <ng-container *ngIf="containerType && areaID && area && vulnerabilityRadarData && vulnerabilityRadarData.has(area.id)">
+                    <ng-container
+                        *ngIf="containerType && areaID && area && vulnerabilityRadarData && vulnerabilityRadarData.has(area.id)">
                         <div class="col-md-10 mt-auto">
                             <div class="row">
                                 <div class="col-md-6"></div>
@@ -361,11 +362,18 @@
                     </mat-tab>
                 </mat-tab-group>
             </div>
-            <div *ngIf="!containerType && !areaID && !area" class="form-row text-right d-block"
+            <div class="form-row text-right d-block"
                  style="margin-bottom: 40px">
-                <button class="btn btn-success waves-light waves-effect w-md" type="submit"
+                <button *ngIf="!containerType && !areaID && !area"
+                        class="btn btn-success waves-light waves-effect w-md" type="submit"
                         [disabled]="!form.valid">
                     <i class="far fa-save"></i>&nbsp;<span>Submit</span>
+                </button>
+                <button *ngIf="containerType && areaID && area && questionRelevancesMap"
+                        class="btn btn-success waves-light waves-effect w-md" type="submit"
+                        (click)="updateQuestionRelevances()"
+                >
+                    <i class="far fa-save"></i>&nbsp;<span>Save</span>
                 </button>
             </div>
         </div>

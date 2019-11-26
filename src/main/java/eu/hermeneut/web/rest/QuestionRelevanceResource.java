@@ -78,6 +78,23 @@ public class QuestionRelevanceResource {
     }
 
     /**
+     * PUT  /question-relevances/all : Updates existing questionRelevances.
+     *
+     * @param questionRelevances the questionRelevancea to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated questionRelevance,
+     * or with status 400 (Bad Request) if the questionRelevance is not valid,
+     * or with status 500 (Internal Server Error) if the questionRelevance couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping("/question-relevances/all")
+    @Timed
+    public List<QuestionRelevance> updateAllQuestionRelevance(@Valid @RequestBody List<QuestionRelevance> questionRelevances) throws URISyntaxException {
+        log.debug("REST request to update QuestionRelevances: {}");
+
+        return this.questionRelevanceService.save(questionRelevances);
+    }
+
+    /**
      * GET  /question-relevances : get all the questionRelevances.
      *
      * @return the ResponseEntity with status 200 (OK) and the list of questionRelevances in body
@@ -91,6 +108,7 @@ public class QuestionRelevanceResource {
 
     /**
      * GET  /question-relevances/questionnaire-status/:id : get all the questionRelevances.
+     *
      * @param id The ID of the QuestionnaireStatus
      * @return the ResponseEntity with status 200 (OK) and the list of questionRelevances in body
      */

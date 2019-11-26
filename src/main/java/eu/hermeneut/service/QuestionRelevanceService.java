@@ -17,6 +17,8 @@ public interface QuestionRelevanceService {
      */
     QuestionRelevance save(QuestionRelevance questionRelevance);
 
+    List<QuestionRelevance> save(List<QuestionRelevance> questionRelevances);
+
     /**
      * Get all the questionRelevances.
      *

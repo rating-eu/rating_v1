@@ -54,6 +54,12 @@ public class QuestionRelevanceServiceImpl implements QuestionRelevanceService {
         return questionRelevanceRepository.save(questionRelevance);
     }
 
+    @Override
+    public List<QuestionRelevance> save(List<QuestionRelevance> questionRelevances) {
+        log.debug("Request to save QuestionRelevances");
+        return questionRelevanceRepository.save(questionRelevances);
+    }
+
     /**
      * Get all the questionRelevances.
      *

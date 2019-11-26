@@ -14,6 +14,7 @@ const QUESTIONNAIRE_STATUS_ID = '{questionnaireStatusID}';
 export class QuestionRelevanceMgmService {
 
     private resourceUrl = SERVER_API_URL + 'api/question-relevances';
+    private resourceUpdateAllUrl = SERVER_API_URL + 'api/question-relevances/all';
     private resourceByQuestionnaireStatusUrl = SERVER_API_URL + 'api/question-relevances/questionnaire-status/' + QUESTIONNAIRE_STATUS_ID;
 
     constructor(private http: HttpClient) {
@@ -29,6 +30,11 @@ export class QuestionRelevanceMgmService {
         const copy = this.convert(questionRelevance);
         return this.http.put<QuestionRelevanceMgm>(this.resourceUrl, copy, {observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
+    }
+
+    updateAll(questionRelevances: QuestionRelevanceMgm[]): Observable<HttpResponse<QuestionRelevanceMgm[]>> {
+        return this.http.put<QuestionRelevanceMgm[]>(this.resourceUpdateAllUrl, questionRelevances, {observe: 'response'})
+            .map((res: HttpResponse<QuestionRelevanceMgm[]>) => this.convertArrayResponse(res));
     }
 
     find(id: number): Observable<EntityResponseType> {
