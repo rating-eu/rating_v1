@@ -127,7 +127,8 @@
                     </div>
                 </div>
 
-                <mat-tab-group [(selectedIndex)]="currentTabIndex" [ngClass]="{'no-labels': containerType && areaID && area}">
+                <mat-tab-group [(selectedIndex)]="currentTabIndex"
+                               [ngClass]="{'no-labels': containerType && areaID && area}">
                     <mat-tab label="Human">
                         <ol *ngIf="humanQuestionsArray">
                             <li *ngFor="let question of humanQuestionsArray; trackBy: trackByID"
@@ -139,6 +140,17 @@
                                     <div class="row">
                                         <div class="col-md-10">
                                             <label class="form-control-label" [attr.for]="question?.id">
+                                                        <span class="circle little"
+                                                              *ngIf="form.value[question.id]"
+                                                              [matTooltip]="form.value[question.id].likelihood | replace:'_':' ' | titlecase"
+                                                              [matTooltipPosition]="'above'"
+                                                              [ngClass]="{
+                                                          'low': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.2,
+                                                          'low-medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.2 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.4,
+                                                          'medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.4 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.6,
+                                                          'medium-high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.6 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.8,
+                                                          'high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.8 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 1
+                                                          }"></span>&nbsp;
                                                 <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                             </label>
                                         </div>
@@ -157,24 +169,22 @@
                                     </div>
 
                                     <div class="row">
-                                        <div *ngIf="containerType && areaID && area" class="col-md-1 text-center"
+                                        <!--<div *ngIf="containerType && areaID && area" class="col-md-1 text-center"
                                              style="margin: auto 0;">
-                                            <h6>Score</h6>
-                                            <div class="circle"
-                                                 [ngClass]="{
+                                            <span class="circle little"
+                                                  [ngClass]="{
                                               'low': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.2,
                                               'low-medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.2 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.4,
                                               'medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.4 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.6,
                                               'medium-high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.6 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.8,
                                               'high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.8 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 1
-                                              }"></div>
+                                              }"></span>
                                             <div class="spinner-percentage"
                                             >
                                                 {{answerLikelihoodEnum[form.value[question.id].likelihood] / 5 | percent}}
                                             </div>
-                                        </div>
-                                        <div class="bg2"
-                                             [ngClass]="{'col-md-10': !(containerType && areaID), 'col-md-9': (containerType && areaID)}">
+                                        </div>-->
+                                        <div class="col-md-10 bg2">
                                             <mat-radio-group [formControlName]="question.id" class="radio-group">
                                                 <mat-radio-button *ngFor="let answer of sort(question.answers)"
                                                                   class="radio-button"
@@ -208,6 +218,19 @@
                                     <div class="row">
                                         <div class="col-md-10">
                                             <label class="form-control-label" [attr.for]="question?.id">
+                                                <span
+                                                    class="circle little"
+                                                    *ngIf="form.value[question.id]"
+                                                    [matTooltip]="form.value[question.id].likelihood | replace:'_':' ' | titlecase"
+                                                    [matTooltipPosition]="'above'"
+                                                    [ngClass]="{
+                                                    'low': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.2,
+                                                    'low-medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.2 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.4,
+                                                    'medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.4 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.6,
+                                                    'medium-high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.6 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.8,
+                                                    'high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.8 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 1
+                                                    }">
+                                                </span>&nbsp;
                                                 <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                             </label>
                                         </div>
@@ -225,23 +248,21 @@
                                     </div>
 
                                     <div class="row">
-                                        <div *ngIf="containerType && areaID && area" class="col-md-1 text-center"
+                                        <!--<div *ngIf="containerType && areaID && area" class="col-md-1 text-center"
                                              style="margin: auto 0;">
-                                            <h6>Score</h6>
-                                            <div class="circle"
+                                            <span class="circle little"
                                                  [ngClass]="{
                                               'low': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.2,
                                               'low-medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.2 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.4,
                                               'medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.4 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.6,
                                               'medium-high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.6 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.8,
                                               'high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.8 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 1
-                                              }"></div>
+                                              }"></span>
                                             <div class="spinner-percentage">
                                                 {{answerLikelihoodEnum[form.value[question.id].likelihood] / 5 | percent}}
                                             </div>
-                                        </div>
-                                        <div class="bg2"
-                                             [ngClass]="{'col-md-10': !(containerType && areaID), 'col-md-9': (containerType && areaID)}">
+                                        </div>-->
+                                        <div class="col-md-10 bg2">
                                             <mat-radio-group [formControlName]="question.id" class="radio-group">
                                                 <mat-radio-button *ngFor="let answer of sort(question.answers)"
                                                                   class="radio-button"
@@ -275,6 +296,17 @@
                                     <div class="row">
                                         <div class="col-md-10">
                                             <label class="form-control-label" [attr.for]="question?.id">
+                                                <span class="circle little"
+                                                      *ngIf="form.value[question.id]"
+                                                      [matTooltip]="form.value[question.id].likelihood | replace:'_':' ' | titlecase"
+                                                      [matTooltipPosition]="'above'"
+                                                      [ngClass]="{
+                                              'low': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.2,
+                                              'low-medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.2 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.4,
+                                              'medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.4 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.6,
+                                              'medium-high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.6 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.8,
+                                              'high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.8 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 1
+                                              }"></span>&nbsp;
                                                 <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                             </label>
                                         </div>
@@ -291,23 +323,21 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div *ngIf="containerType && areaID && area" class="col-md-1 text-center"
+                                        <!--<div *ngIf="containerType && areaID && area" class="col-md-1 text-center"
                                              style="margin: auto 0;">
-                                            <h6>Score</h6>
-                                            <div class="circle"
+                                            <span class="circle little"
                                                  [ngClass]="{
                                               'low': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.2,
                                               'low-medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.2 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.4,
                                               'medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.4 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.6,
                                               'medium-high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.6 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.8,
                                               'high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.8 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 1
-                                              }"></div>
+                                              }"></span>
                                             <div class="spinner-percentage">
                                                 {{answerLikelihoodEnum[form.value[question.id].likelihood] / 5 | percent}}
                                             </div>
-                                        </div>
-                                        <div class="bg2"
-                                             [ngClass]="{'col-md-10': !(containerType && areaID), 'col-md-9': (containerType && areaID)}">
+                                        </div>-->
+                                        <div class="col-md-10 bg2">
                                             <mat-radio-group [formControlName]="question.id" class="radio-group">
                                                 <mat-radio-button *ngFor="let answer of sort(question.answers)"
                                                                   class="radio-button"
