@@ -17,7 +17,14 @@
 
 <div *ngIf="questionnaireStatus?.questionnaire?.purpose" [ngSwitch]="questionnaireStatus?.questionnaire?.purpose">
     <h4 *ngSwitchCase="purposeEnum.ID_THREAT_AGENT" class="text-center pt-1">Identify Threat Agents</h4>
-    <h4 *ngSwitchCase="purposeEnum.SELFASSESSMENT" class="text-center pt-1">Vulnerability Assessment</h4>
+    <ng-container *ngSwitchCase="purposeEnum.SELFASSESSMENT">
+        <h4 *ngIf="containerType && areaID && area" class="text-center pt-1">
+            Vulnerability: <span class="badge badge-primary" style="font-size: medium; white-space: normal;">{{area.name}}</span>
+        </h4>
+        <h4 *ngIf="!containerType && !areaID && !area" class="text-center pt-1">
+            Vulnerability Assessment
+        </h4>
+    </ng-container>
 </div>
 
 <ng-container *ngIf="questionnaireStatus">

@@ -25,6 +25,8 @@ import {QuestionnaireStatusMgm} from '../../../entities/questionnaire-status-mgm
 import {ContainerType} from '../../../entities/enumerations/ContainerType.enum';
 import {Subscription} from 'rxjs';
 import {DataSharingService} from '../../../data-sharing/data-sharing.service';
+import {VulnerabilityAreaMgm, VulnerabilityAreaMgmService} from "../../../entities/vulnerability-area-mgm";
+import {HttpResponse} from "@angular/common/http";
 
 @Component({
     selector: 'jhi-questionnaire',
@@ -43,11 +45,13 @@ export class QuestionnaireComponent implements OnInit, OnDestroy {
 
     public containerType: ContainerType;
     public areaID: number;
+    public area: VulnerabilityAreaMgm;
 
     constructor(
         private router: Router,
         private route: ActivatedRoute,
         private questionnairesService: QuestionnairesService,
+        private vulnerabilityAreaService: VulnerabilityAreaMgmService,
         private dataSharingService: DataSharingService) {
     }
 
@@ -65,6 +69,15 @@ export class QuestionnaireComponent implements OnInit, OnDestroy {
                     if (params["container-type"] && params["area-id"]) {
                         const cType: string = params['container-type'];
                         this.areaID = Number(params['area-id']);
+
+                        this.vulnerabilityAreaService.find(this.areaID).toPromise()
+                            .then(
+                                (response: HttpResponse<VulnerabilityAreaMgm>) => {
+                                    if (response && response.body) {
+                                        this.area = response.body;
+                                    }
+                                }
+                            );
 
                         switch (cType) {
                             case ContainerType[ContainerType.HUMAN]: {
