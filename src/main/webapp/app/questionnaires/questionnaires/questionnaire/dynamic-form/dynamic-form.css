@@ -69,17 +69,22 @@ ol li::before {
     color: black;
 }
 
-mat-tab-group.no-labels::ng-deep .mat-tab-header/* .mat-tab-header-pagination .mat-tab-label-container*/ {
+mat-tab-group.no-labels::ng-deep .mat-tab-header /* .mat-tab-header-pagination .mat-tab-label-container*/
+{
     display: none !important;
 }
 
-.circle{
+.circle {
     height: 35px;
     width: 35px;
     border-radius: 50%;
     display: inline-block;
 }
 
-/*
-style="top:-55px; z-index:2;position:relative;"
- */
+.pointer {
+    cursor: pointer;
+}
+
+.card.rounded {
+    border-radius: 3rem !important;
+}
