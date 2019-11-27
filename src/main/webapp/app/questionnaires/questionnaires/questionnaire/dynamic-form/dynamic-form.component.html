@@ -127,7 +127,7 @@
                     </div>
                 </div>
 
-                <mat-tab-group [(selectedIndex)]="currentTabIndex" class="no-labels">
+                <mat-tab-group [(selectedIndex)]="currentTabIndex" [ngClass]="{'no-labels': containerType && areaID && area}">
                     <mat-tab label="Human">
                         <ol *ngIf="humanQuestionsArray">
                             <li *ngFor="let question of humanQuestionsArray; trackBy: trackByID"
