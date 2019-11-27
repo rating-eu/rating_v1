@@ -81,6 +81,13 @@ mat-tab-group.no-labels::ng-deep .mat-tab-header /* .mat-tab-header-pagination .
     display: inline-block;
 }
 
+.circle.little {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
 .pointer {
     cursor: pointer;
 }
