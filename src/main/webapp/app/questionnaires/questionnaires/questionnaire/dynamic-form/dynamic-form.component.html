@@ -47,8 +47,8 @@
             <div *ngIf="questionnaire.purpose === purposeEnum.SELFASSESSMENT">
                 <div class="row mb-3"
                      *ngIf="containerType && areaID && area && vulnerabilityRadarData && vulnerabilityRadarData.has(area.id)">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-8 my-auto">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6 my-auto">
                         <div class="card rounded">
                             <div class="row card-body">
                                 <div class="col-md-4 text-center my-auto">
@@ -105,7 +105,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2 card rounded text-center my-auto">
+                    <div class="col-md-3 card rounded text-center my-auto">
                         <div class="card-body">
                             <h6>Vulnerability</h6>
                             <mat-progress-spinner [diameter]="150" style="margin: 0 auto;"
