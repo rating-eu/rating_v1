@@ -31,6 +31,7 @@ export class DataOperationsComponent implements OnInit, OnDestroy {
 
     private subscriptions: Subscription[];
 
+    public securityPillarEnum = SecurityPillar;
     public securityPillars: SecurityPillar[];
 
     public myCompany: MyCompanyMgm;

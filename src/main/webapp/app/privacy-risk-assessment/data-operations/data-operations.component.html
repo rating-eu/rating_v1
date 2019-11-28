@@ -17,43 +17,31 @@
         </button>
     </h2>
     <jhi-alert></jhi-alert>
-    <!--<div class="row">
-        <div class="col-md-3 text-center">
-            <ng-container *ngFor="let riskLevel of dataRiskLevels">
-                              <span
-                                  style="font-size: medium" [ngClass]="{
-                                'low': riskLevel === dataRiskLevelEnum.LOW,
-                                'medium': riskLevel=== dataRiskLevelEnum.MEDIUM,
-                                'high': riskLevel=== dataRiskLevelEnum.HIGH
-                            }"
-                                  class="badge badge-pill badge-secondary pointer">{{riskLevel | replace:'_':' ' | titlecase}}</span>
-            </ng-container>
-        </div>
-    </div>-->
 </div>
 <br/>
 <div class="table-responsive table-hover" *ngIf="dataOperations">
     <table class="table table-striped">
         <thead class="thead-light">
         <tr>
-            <th class="text-center" style="font-size: medium"><span jhiTranslate="hermeneutApp.dataOperation.title">Title</span></th>
-            <th class="text-center" style="font-size: medium" ><span>Impact</span></th>
-            <th class="text-center" style="font-size: medium" ><span>Likelihood</span></th>
-            <th class="text-center" style="font-size: medium" ><span>Overall Risk</span></th>
+            <th class="text-center" style="font-size: medium"><span jhiTranslate="hermeneutApp.dataOperation.title">Title</span>
+            </th>
+            <th class="text-center" style="font-size: medium"><span>Impact</span></th>
+            <th class="text-center" style="font-size: medium"><span>Likelihood</span></th>
+            <th class="text-center" style="font-size: medium"><span>Overall Risk</span></th>
             <!--<th><span jhiTranslate="hermeneutApp.dataOperation.processedData">Processed Data</span></th>
             <th><span jhiTranslate="hermeneutApp.dataOperation.processingPurpose">Processing Purpose</span></th>
             <th><span jhiTranslate="hermeneutApp.dataOperation.dataSubject">Data Subject</span></th>
             <th><span jhiTranslate="hermeneutApp.dataOperation.processingMeans">Processing Means</span></th>
             <th><span jhiTranslate="hermeneutApp.dataOperation.dataProcessor">Data Processor</span></th>
             <th><span jhiTranslate="hermeneutApp.dataOperation.companyProfile">Company Profile</span></th>-->
-            <th style="font-size: medium" ></th>
+            <th style="font-size: medium"></th>
         </tr>
         </thead>
         <tbody>
         <ng-container *ngFor="let dataOperation of dataOperations; trackBy: trackId">
             <tr (click)="dataOperationsToggleMap.set(dataOperation.id, !dataOperationsToggleMap.get(dataOperation.id))">
                 <td class="text-center">{{dataOperation.name}}</td>
-                <td class="text-center" >
+                <td class="text-center">
                     <span
                         *ngIf="overallSecurityImpactsMap && overallSecurityImpactsMap.has(dataOperation.id)">
                         <span style="font-size: medium" [ngClass]="{
@@ -66,7 +54,7 @@
                         </span>
                     </span>
                 </td>
-                <td class="text-center" >
+                <td class="text-center">
                     <span *ngIf="overallDataThreatsMap && overallDataThreatsMap.has(dataOperation.id)">
                         <span style="font-size: medium" [ngClass]="{
                                 'low': overallDataThreatsMap.get(dataOperation.id).likelihood === dataThreatLikelihoodEnum.LOW,
@@ -77,7 +65,7 @@
                         </span>
                     </span>
                 </td>
-                <td class="text-center" >
+                <td class="text-center">
                     <span *ngIf="overallDataRisksMap && overallDataRisksMap.has(dataOperation.id)">
                         <span style="font-size: medium" [ngClass]="{
                                 'low': overallDataRisksMap.get(dataOperation.id).riskLevel === dataRiskLevelEnum.LOW,
@@ -88,7 +76,7 @@
                         </span>
                     </span>
                 </td>
-                <td class="text-center"  (click)="$event.stopPropagation()" style="cursor: default;">
+                <td class="text-center" (click)="$event.stopPropagation()" style="cursor: default;">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
                                 (click)="selectDataOperation(dataOperation)"
@@ -117,25 +105,51 @@
                     </div>
                 </td>
             </tr>
-            <tr *ngIf="dataOperationsToggleMap.has(dataOperation.id) && dataOperationsToggleMap.get(dataOperation.id)" style="cursor: default;">
+            <tr *ngIf="dataOperationsToggleMap.has(dataOperation.id) && dataOperationsToggleMap.get(dataOperation.id)"
+                style="cursor: default;">
                 <td></td>
-                <td class="text-center" >
-                    <ul class="list-unstyled" *ngIf="securityPillars && securityImpactsByDataOperationAndSecurityPillarMap && securityImpactsByDataOperationAndSecurityPillarMap.has(dataOperation.id)">
+                <td class="text-center">
+                    <ul class="list-unstyled"
+                        *ngIf="securityPillars && securityImpactsByDataOperationAndSecurityPillarMap && securityImpactsByDataOperationAndSecurityPillarMap.has(dataOperation.id)">
                         <li *ngFor="let pillar of securityPillars" class="my-2" style="font-size: larger">
-                            {{pillar | titlecase}}&nbsp;
-                            <span *ngIf="securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar)"
+                            <span
+                                *ngIf="securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar)"
+                                class="badge badge-pill badge-secondary pointer"
+                                style="font-size: large" [ngClass]="{
+                                    'low': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.LOW,
+                                    'medium': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.MEDIUM,
+                                    'high': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.HIGH,
+                                    'very-high': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.VERY_HIGH
+                                }"
+                                [ngSwitch]="pillar">
+                                <i *ngSwitchCase="securityPillarEnum.CONFIDENTIALITY"
+                                   class="fas fa-user-lock"
+                                   [matTooltip]="pillar + ' : ' + securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact | replace:'_':' ' | titlecase"
+                                   [matTooltipPosition]="'above'">&nbsp;C</i>
+                                <i *ngSwitchCase="securityPillarEnum.INTEGRITY"
+                                   class="fas fa-handshake"
+                                   [matTooltip]="pillar + ' : ' + securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact | replace:'_':' ' | titlecase"
+                                   [matTooltipPosition]="'above'">&nbsp;I</i>
+                                <i *ngSwitchCase="securityPillarEnum.AVAILABILITY"
+                                   class="fas fa-business-time"
+                                   [matTooltip]="pillar + ' : ' + securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact | replace:'_':' ' | titlecase"
+                                   [matTooltipPosition]="'above'">&nbsp;A</i>
+                            </span>
+                            <!--&nbsp;
+                            <span
+                                *ngIf="securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar)"
                                 style="font-size: medium" [ngClass]="{
                                 'low': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.LOW,
                                 'medium': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.MEDIUM,
                                 'high': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.HIGH,
                                 'very-high': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.VERY_HIGH
                             }"
-                                  class="badge badge-pill badge-secondary pointer">{{securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact | replace:'_':' ' | titlecase}}
-                        </span>
+                                class="badge badge-pill badge-secondary pointer">{{securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact | replace:'_':' ' | titlecase}}
+                            </span>-->
                         </li>
                     </ul>
                 </td>
-                <td class="text-center" >
+                <td class="text-center">
                     <ul class="list-unstyled" *ngIf="threatAreas && dataThreatsByDataOperationAndThreatAreaMap
                     && dataThreatsByDataOperationAndThreatAreaMap.has(dataOperation.id)">
                         <li *ngFor="let area of threatAreas" class="my-2" style="font-size: larger">
@@ -151,7 +165,7 @@
                         </li>
                     </ul>
                 </td>
-                <td class="text-center align-middle" >
+                <td class="text-center align-middle">
                     <button type="submit"
                             (click)="selectDataOperation(dataOperation)"
                             [routerLink]="['/privacy-board']"
@@ -160,7 +174,7 @@
                         <span class="d-none d-md-inline">Configure</span>
                     </button>
                 </td>
-                <td ></td>
+                <td></td>
             </tr>
         </ng-container>
         </tbody>
