@@ -142,7 +142,7 @@
                                             <label class="form-control-label" [attr.for]="question?.id">
                                                         <span class="circle little"
                                                               *ngIf="form.value[question.id]"
-                                                              [matTooltip]="form.value[question.id].likelihood | replace:'_':' ' | titlecase"
+                                                              [matTooltip]="vulnerabilityTooltip(question.id)"
                                                               [matTooltipPosition]="'above'"
                                                               [ngClass]="{
                                                           'low': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.2,
@@ -221,7 +221,7 @@
                                                 <span
                                                     class="circle little"
                                                     *ngIf="form.value[question.id]"
-                                                    [matTooltip]="form.value[question.id].likelihood | replace:'_':' ' | titlecase"
+                                                    [matTooltip]="form.value[question.id].likelihood + ' Vulnerability' | replace:'_':' ' | titlecase"
                                                     [matTooltipPosition]="'above'"
                                                     [ngClass]="{
                                                     'low': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.2,
@@ -298,7 +298,7 @@
                                             <label class="form-control-label" [attr.for]="question?.id">
                                                 <span class="circle little"
                                                       *ngIf="form.value[question.id]"
-                                                      [matTooltip]="form.value[question.id].likelihood | replace:'_':' ' | titlecase"
+                                                      [matTooltip]="form.value[question.id].likelihood + ' Vulnerability' | replace:'_':' ' | titlecase"
                                                       [matTooltipPosition]="'above'"
                                                       [ngClass]="{
                                               'low': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.2,

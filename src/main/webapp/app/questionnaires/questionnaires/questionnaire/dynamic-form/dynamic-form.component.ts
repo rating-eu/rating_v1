@@ -1023,4 +1023,54 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
                 });
         }
     }
+
+    public vulnerabilityTooltip(questionID: number): string {
+        if (this.form && this.form.value[questionID]) {
+            const answer: AnswerMgm = this.form.value[questionID];
+
+            const answerLikelihoodNumeric: number = Number(AnswerLikelihood[answer.likelihood]);
+            const vulnerabilityNumeric: number = this.numericAnswerLikelihoodToVulnerability(answerLikelihoodNumeric);
+            const vulnerability: string = AnswerLikelihood[vulnerabilityNumeric];
+
+            let tooltip: string = vulnerability + ' Vulnerability';
+
+            // TitleCase
+            tooltip = tooltip.toLowerCase()
+                .replace('_', ' ') // Replace _ with spaces
+                .split(' ') // Array of words
+                .map((word) => { // TitleCase word by word
+                    return (word.charAt(0).toUpperCase() + word.slice(1));
+                })
+                .join(' '); // Concat the TitleCased words with a space as the separator
+
+            return tooltip;
+        } else {
+            return null;
+        }
+    }
+
+    private numericAnswerLikelihoodToVulnerability(answerLikelihood: number): number {
+        const MAX_ANSWER_LIKELIHOOD: number = AnswerLikelihood.LOW;
+        let vulnerability: number = null;
+
+        switch (answerLikelihood) {
+            case 0: {
+                vulnerability = 0;
+                break;
+            }
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5: {
+                vulnerability = Math.abs(answerLikelihood - MAX_ANSWER_LIKELIHOOD) + 1;
+                break;
+            }
+            default: {
+                vulnerability = answerLikelihood;
+            }
+        }
+
+        return vulnerability;
+    }
 }
