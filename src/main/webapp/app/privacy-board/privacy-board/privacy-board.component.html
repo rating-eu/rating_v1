@@ -46,7 +46,7 @@
         </div>
         <div class="row mb-2" *ngIf="privacyBoardStatus.riskEvaluation===statusEnum.FULL">
             <div class="col-md-12">
-                <jhi-overall-data-risk-widget [dataOperation]="dataOperation"></jhi-overall-data-risk-widget>
+                <jhi-overall-data-risk-widget [dataOperation]="dataOperation" [configurationMode]="false"></jhi-overall-data-risk-widget>
             </div>
         </div>
     </ng-container>

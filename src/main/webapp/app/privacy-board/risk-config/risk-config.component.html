@@ -1,0 +1,10 @@
+<div>
+    <h2>
+        <span>Risk Levels Configuration</span>
+    </h2>
+</div>
+<div class="row" *ngIf="dataOperation">
+    <div class="col-md-12">
+        <jhi-overall-data-risk-widget [dataOperation]="dataOperation" [configurationMode]="true"></jhi-overall-data-risk-widget>
+    </div>
+</div>

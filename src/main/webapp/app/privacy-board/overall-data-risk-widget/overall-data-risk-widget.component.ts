@@ -42,12 +42,13 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
 
     // Properties
     private _dataOperation: DataOperationMgm;
+    private _configurationMode: boolean;
 
     private riskLevelConfigs: DataRiskLevelConfigMgm[];
     private riskLevelConfigsMap: Map<DataThreatLikelihood, Map<DataImpact, DataRiskLevelConfigMgm>>;
     public selectedDataRiskLevelConfig: DataRiskLevelConfigMgm;
 
-    public configurationMode: boolean;
+
 
     constructor(private dataRiskLevelConfigService: DataRiskLevelConfigMgmService,
                 private overallSecurityImpactService: OverallSecurityImpactMgmService,
@@ -65,7 +66,6 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
         }
 
         this.loading = false;
-        this.configurationMode = false;
 
         this.dataImpacts = Object.keys(DataImpact).map((key) => DataImpact[key]);
         this.threatLikelihoods = Object.keys(DataThreatLikelihood).map((key) => DataThreatLikelihood[key]);
@@ -77,6 +77,8 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
         this._dataOperation = dataOperation;
 
         if (this._dataOperation && this._dataOperation.id) {
+            console.log("DataOperationset: " + this._dataOperation.name);
+
             this.dataRiskLevelConfigService.getAllByDataOperation(this._dataOperation.id).toPromise()
                 .then((response: HttpResponse<DataRiskLevelConfigMgm[]>) => {
                     this.riskLevelConfigs = response.body;
@@ -138,6 +140,19 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
 
     get dataOperation(): DataOperationMgm {
         return this._dataOperation;
+    }
+
+    @Input()
+    set configurationMode(active: boolean){
+        this._configurationMode = active;
+
+        if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
+            this.changeDetector.detectChanges();
+        }
+    }
+
+    get configurationMode(): boolean{
+        return this._configurationMode;
     }
 
     public selectDataRiskLevelConfig(config: DataRiskLevelConfigMgm) {
