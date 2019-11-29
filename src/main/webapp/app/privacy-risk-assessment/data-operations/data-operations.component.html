@@ -108,9 +108,9 @@
             <tr *ngIf="dataOperationsToggleMap.has(dataOperation.id) && dataOperationsToggleMap.get(dataOperation.id)"
                 style="cursor: default;">
                 <td></td>
-                <td class="text-center">
+                <td class="text-left">
                     <ul class="list-unstyled"
-                        *ngIf="securityPillars && securityImpactsByDataOperationAndSecurityPillarMap && securityImpactsByDataOperationAndSecurityPillarMap.has(dataOperation.id)">
+                        *ngIf="securityPillars && securityPillarsToggleMap && securityImpactsByDataOperationAndSecurityPillarMap && securityImpactsByDataOperationAndSecurityPillarMap.has(dataOperation.id)">
                         <li *ngFor="let pillar of securityPillars" class="my-2" style="font-size: larger">
                             <span
                                 *ngIf="securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar)"
@@ -124,28 +124,26 @@
                                 [ngSwitch]="pillar">
                                 <i *ngSwitchCase="securityPillarEnum.CONFIDENTIALITY"
                                    class="fas fa-user-lock"
-                                   [matTooltip]="pillar + ' : ' + securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact | replace:'_':' ' | titlecase"
-                                   [matTooltipPosition]="'above'">&nbsp;C</i>
+                                   (click)="securityPillarsToggleMap.set(pillar, !securityPillarsToggleMap.get(pillar))"
+                                   [matTooltip]="securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact + ' Impact' | replace:'_':' ' | titlecase"
+                                   [matTooltipPosition]="'above'">&nbsp;C<span
+                                    *ngIf="securityPillarsToggleMap.has(pillar) && securityPillarsToggleMap.get(pillar)"
+                                    style="font-size: medium;">onfidentiality</span></i>
                                 <i *ngSwitchCase="securityPillarEnum.INTEGRITY"
                                    class="fas fa-handshake"
-                                   [matTooltip]="pillar + ' : ' + securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact | replace:'_':' ' | titlecase"
-                                   [matTooltipPosition]="'above'">&nbsp;I</i>
+                                   (click)="securityPillarsToggleMap.set(pillar, !securityPillarsToggleMap.get(pillar))"
+                                   [matTooltip]="securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact + ' Impact' | replace:'_':' ' | titlecase"
+                                   [matTooltipPosition]="'above'">&nbsp;I<span
+                                    *ngIf="securityPillarsToggleMap.has(pillar) && securityPillarsToggleMap.get(pillar)"
+                                    style="font-size: medium;">ntegrity</span></i>
                                 <i *ngSwitchCase="securityPillarEnum.AVAILABILITY"
                                    class="fas fa-business-time"
-                                   [matTooltip]="pillar + ' : ' + securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact | replace:'_':' ' | titlecase"
-                                   [matTooltipPosition]="'above'">&nbsp;A</i>
+                                   (click)="securityPillarsToggleMap.set(pillar, !securityPillarsToggleMap.get(pillar))"
+                                   [matTooltip]="securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact  + ' Impact' | replace:'_':' ' | titlecase"
+                                   [matTooltipPosition]="'above'">&nbsp;A<span
+                                    *ngIf="securityPillarsToggleMap.has(pillar) && securityPillarsToggleMap.get(pillar)"
+                                    style="font-size: medium;">vailability</span></i>
                             </span>
-                            <!--&nbsp;
-                            <span
-                                *ngIf="securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar)"
-                                style="font-size: medium" [ngClass]="{
-                                'low': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.LOW,
-                                'medium': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.MEDIUM,
-                                'high': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.HIGH,
-                                'very-high': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.VERY_HIGH
-                            }"
-                                class="badge badge-pill badge-secondary pointer">{{securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact | replace:'_':' ' | titlecase}}
-                            </span>-->
                         </li>
                     </ul>
                 </td>
