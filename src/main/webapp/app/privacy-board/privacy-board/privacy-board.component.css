@@ -20,6 +20,11 @@
     color: black;
 }
 
+.low-border-bottom{
+    border-bottom: 2px solid;
+    border-color: #2ECC71A6;
+}
+
 .low-background {
     background-color: #2ECC71A5;
     color: black;
@@ -28,6 +33,11 @@
 .medium {
     background-color: #F39C12A6;
     color: black;
+}
+
+.medium-border-bottom {
+    border-bottom: 2px solid;
+    border-color: #F39C12A6;
 }
 
 .medium-background {
@@ -40,6 +50,11 @@
     color: black;
 }
 
+.high-border-bottom {
+    border-bottom: 2px solid;
+    border-color:#C0392BA6;
+}
+
 .high-background {
     background-color:#C0392BA5;
     color: black;
@@ -48,6 +63,11 @@
 .very-high{
     background-color:#FF0000A6;
     color: black;
+}
+
+.very-high-border-bottom{
+    border-bottom: 2px solid;
+    border-color:#FF0000A6;
 }
 
 .very-high-background{
