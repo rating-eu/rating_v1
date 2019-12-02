@@ -61,7 +61,9 @@
                                 'medium': overallSecurityImpactsMap.get(dataOperation.id).impact=== dataImpactEnum.MEDIUM,
                                 'high': overallSecurityImpactsMap.get(dataOperation.id).impact=== dataImpactEnum.HIGH,
                                 'very-high': overallSecurityImpactsMap.get(dataOperation.id).impact=== dataImpactEnum.VERY_HIGH
-                            }"
+                                }"
+                              [matTooltip]="overallSecurityImpactsMap.get(dataOperation.id).impact + ' Impact' | replace:'_':' ' | titlecase"
+                              [matTooltipPosition]="'above'"
                               class="badge badge-pill badge-secondary pointer">{{overallSecurityImpactsMap.get(dataOperation.id).impact | replace:'_':' ' | titlecase}}
                         </span>
                     </span>
@@ -72,7 +74,9 @@
                                 'low': overallDataThreatsMap.get(dataOperation.id).likelihood === dataThreatLikelihoodEnum.LOW,
                                 'medium': overallDataThreatsMap.get(dataOperation.id).likelihood === dataThreatLikelihoodEnum.MEDIUM,
                                 'high': overallDataThreatsMap.get(dataOperation.id).likelihood === dataThreatLikelihoodEnum.HIGH
-                            }"
+                                }"
+                              [matTooltip]="overallDataThreatsMap.get(dataOperation.id).likelihood + ' Likelihood' | replace:'_':' ' | titlecase"
+                              [matTooltipPosition]="'above'"
                               class="badge badge-pill badge-secondary pointer">{{overallDataThreatsMap.get(dataOperation.id).likelihood | replace:'_':' ' | titlecase}}
                         </span>
                     </span>
@@ -83,7 +87,9 @@
                                 'low': overallDataRisksMap.get(dataOperation.id).riskLevel === dataRiskLevelEnum.LOW,
                                 'medium': overallDataRisksMap.get(dataOperation.id).riskLevel=== dataRiskLevelEnum.MEDIUM,
                                 'high': overallDataRisksMap.get(dataOperation.id).riskLevel=== dataRiskLevelEnum.HIGH
-                            }"
+                                }"
+                              [matTooltip]="overallDataRisksMap.get(dataOperation.id).riskLevel + ' Risk' | replace:'_':' ' | titlecase"
+                              [matTooltipPosition]="'above'"
                               class="badge badge-pill badge-secondary pointer">{{overallDataRisksMap.get(dataOperation.id).riskLevel | replace:'_':' ' | titlecase}}
                         </span>
                     </span>
@@ -195,6 +201,8 @@
                                 'medium': dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood === dataThreatLikelihoodEnum.MEDIUM,
                                 'high': dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood === dataThreatLikelihoodEnum.HIGH
                             }"
+                                  [matTooltip]="dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood + ' Likelihood' | replace:'_':' ' | titlecase"
+                                  [matTooltipPosition]="'above'"
                                   class="badge badge-pill badge-secondary pointer">{{dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood | replace:'_':' ' | titlecase}}
                         </span>
                         </li>
@@ -202,9 +210,11 @@
                 </td>
                 <td class="text-center align-middle">
                     <button type="submit"
+                            class="btn btn-info btn-sm"
                             (click)="selectDataOperation(dataOperation)"
                             [routerLink]="['/privacy-board/risk-config']"
-                            class="btn btn-info btn-sm">
+                            [matTooltip]="'Configure Risk Levels'"
+                            [matTooltipPosition]="'above'">
                         <span class="fas fa-cog"></span>
                         <span class="d-none d-md-inline">Configure</span>
                     </button>
