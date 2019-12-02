@@ -34,9 +34,15 @@
         <!--<div class="row well">
             <h2>Details</h2>
         </div>-->
+        <div class="row mb-2" *ngIf="privacyBoardStatus.operationDefinition===statusEnum.FULL">
+            <div class="col-md-12">
+                <jhi-operation-context-widget [dataOperation]="dataOperation"></jhi-operation-context-widget>
+            </div>
+        </div>
         <div class="row mb-2" *ngIf="privacyBoardStatus.impactEvaluation===statusEnum.FULL">
             <div class="col-md-12">
-                <jhi-overall-security-impact-widget [dataOperation]="dataOperation"></jhi-overall-security-impact-widget>
+                <jhi-overall-security-impact-widget
+                    [dataOperation]="dataOperation"></jhi-overall-security-impact-widget>
             </div>
         </div>
         <div class="row mb-2" *ngIf="privacyBoardStatus.threatIdentification===statusEnum.FULL">
@@ -46,7 +52,8 @@
         </div>
         <div class="row mb-2" *ngIf="privacyBoardStatus.riskEvaluation===statusEnum.FULL">
             <div class="col-md-12">
-                <jhi-overall-data-risk-widget [dataOperation]="dataOperation" [configurationMode]="false"></jhi-overall-data-risk-widget>
+                <jhi-overall-data-risk-widget [dataOperation]="dataOperation"
+                                              [configurationMode]="false"></jhi-overall-data-risk-widget>
             </div>
         </div>
     </ng-container>

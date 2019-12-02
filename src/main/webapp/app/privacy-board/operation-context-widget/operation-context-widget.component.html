@@ -1,0 +1,49 @@
+<ng-container *ngIf="loading">
+    <div class="loader"></div>
+</ng-container>
+<ng-container *ngIf="!loading">
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header [collapsedHeight]="'auto'" [expandedHeight]="'auto'">
+                <mat-panel-title>
+                    <h2 class="my-2" style="font-size: large;">
+                        <a href="javascript:void(0);" class="collapse-link">Operation Context</a>
+                    </h2>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="thead-light">
+                    <tr>
+                        <th class="text-center" style="font-size: large;">Title</th>
+                        <th class="text-center" style="font-size: large;">Processed Data</th>
+                        <th class="text-center" style="font-size: large;">Processing Purpose</th>
+                        <th class="text-center" style="font-size: large;">Data Subject</th>
+                        <th class="text-center" style="font-size: large;">Processing Means</th>
+                        <th class="text-center" style="font-size: large;">Data Processor</th>
+                        <th class="text-center" style="font-size: large;">Recipients</th>
+                    </tr>
+                    </thead>
+                    <tbody *ngIf="dataOperation">
+                    <tr>
+                        <td>{{dataOperation.name}}</td>
+                        <td>{{dataOperation.processedData}}</td>
+                        <td>{{dataOperation.processingPurpose}}</td>
+                        <td>{{dataOperation.dataSubject}}</td>
+                        <td>{{dataOperation.processingMeans}}</td>
+                        <td>{{dataOperation.dataProcessor}}</td>
+                        <td>
+                            <ul>
+                                <li *ngFor="let recipient of dataOperation.recipients">
+                                    {{recipient.name}}&nbsp;-&nbsp;{{recipient.type | titlecase}}
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</ng-container>

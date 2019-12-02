@@ -25,6 +25,7 @@ import {OverallDataThreatWidgetComponent} from './overall-data-threat-widget/ove
 import {OverallDataRiskWidgetComponent} from './overall-data-risk-widget/overall-data-risk-widget.component';
 import {OverallDataRiskWidgetService} from "./overall-data-risk-widget/overall-data-risk-widget.service";
 import { RiskConfigComponent } from './risk-config/risk-config.component';
+import { OperationContextWidgetComponent } from './operation-context-widget/operation-context-widget.component';
 
 @NgModule({
     imports: [
@@ -73,7 +74,7 @@ import { RiskConfigComponent } from './risk-config/risk-config.component';
         PrivacyBoardService,
         OverallDataRiskWidgetService
     ],
-    declarations: [PrivacyBoardComponent, PrivacyStepsStatusWidgetComponent, SecurityImpactsWidgetComponent, DataThreatsWidgetComponent, DataRisksWidgetComponent, OverallSecurityImpactWidgetComponent, OverallDataThreatWidgetComponent, OverallDataRiskWidgetComponent, RiskConfigComponent]
+    declarations: [PrivacyBoardComponent, PrivacyStepsStatusWidgetComponent, SecurityImpactsWidgetComponent, DataThreatsWidgetComponent, DataRisksWidgetComponent, OverallSecurityImpactWidgetComponent, OverallDataThreatWidgetComponent, OverallDataRiskWidgetComponent, RiskConfigComponent, OperationContextWidgetComponent]
 })
 export class PrivacyBoardModule {
 }
