@@ -5,6 +5,11 @@
                 "title": "Privacy Board"
             }
         },
+        "risk-config": {
+            "page": {
+                "title": "Risk Config"
+            }
+        },
         "data-operations": {
             "page": {
                 "title": "Data Operations"

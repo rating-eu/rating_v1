@@ -9,7 +9,7 @@
             </span>
         </button>-->
         <button class="btn btn-primary float-right jh-create-entity create-data-operation-mgm"
-        (click)="createNewDataOperation()">
+                (click)="createNewDataOperation()">
             <span class="fa fa-plus"></span>
             <span jhiTranslate="hermeneutApp.dataOperation.home.createLabel">
             Create new Data Operation
@@ -17,40 +17,83 @@
         </button>
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
-    </div>
-    <br/>
-    <div class="table-responsive table-hover" *ngIf="dataOperations">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th><span jhiTranslate="hermeneutApp.dataOperation.name">Name</span></th>
-                <th><span jhiTranslate="hermeneutApp.dataOperation.processedData">Processed Data</span></th>
-                <th><span jhiTranslate="hermeneutApp.dataOperation.processingPurpose">Processing Purpose</span></th>
-                <th><span jhiTranslate="hermeneutApp.dataOperation.dataSubject">Data Subject</span></th>
-                <th><span jhiTranslate="hermeneutApp.dataOperation.processingMeans">Processing Means</span></th>
-                <th><span jhiTranslate="hermeneutApp.dataOperation.dataProcessor">Data Processor</span></th>
-                <th><span jhiTranslate="hermeneutApp.dataOperation.companyProfile">Company Profile</span></th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let dataOperation of dataOperations; trackBy: trackId"
-                (click)="selectDataOperation(dataOperation)"
-                [routerLink]="['/privacy-board']"
-            >
-                <td>{{dataOperation.name}}</td>
-                <td>{{dataOperation.processedData}}</td>
-                <td>{{dataOperation.processingPurpose}}</td>
-                <td>{{dataOperation.dataSubject}}</td>
-                <td>{{dataOperation.processingMeans}}</td>
-                <td>{{dataOperation.dataProcessor}}</td>
-                <td>
-                    <div *ngIf="dataOperation.companyProfile">
-                        <a [routerLink]="['/company-profile-mgm', dataOperation.companyProfile?.id ]">{{dataOperation.companyProfile?.name}}</a>
+</div>
+<br/>
+<div class="table-responsive table-hover" *ngIf="dataOperations">
+    <table class="table table-striped">
+        <thead class="thead-light">
+        <tr>
+            <th class="text-center" style="font-size: medium"><span jhiTranslate="hermeneutApp.dataOperation.title">Title</span>
+            </th>
+            <th class="text-center" style="font-size: medium"><span>Impact</span></th>
+            <th class="text-center" style="font-size: medium"><span>Likelihood</span></th>
+            <th class="text-center" style="font-size: medium"><span>Overall Risk</span></th>
+            <!--<th><span jhiTranslate="hermeneutApp.dataOperation.processedData">Processed Data</span></th>
+            <th><span jhiTranslate="hermeneutApp.dataOperation.processingPurpose">Processing Purpose</span></th>
+            <th><span jhiTranslate="hermeneutApp.dataOperation.dataSubject">Data Subject</span></th>
+            <th><span jhiTranslate="hermeneutApp.dataOperation.processingMeans">Processing Means</span></th>
+            <th><span jhiTranslate="hermeneutApp.dataOperation.dataProcessor">Data Processor</span></th>
+            <th><span jhiTranslate="hermeneutApp.dataOperation.companyProfile">Company Profile</span></th>-->
+            <th style="font-size: medium"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let dataOperation of dataOperations; trackBy: trackId">
+            <tr (click)="dataOperationsToggleMap.set(dataOperation.id, !dataOperationsToggleMap.get(dataOperation.id))">
+                <td class="text-center" (click)="$event.stopPropagation()">
+                    {{dataOperation.name}}
+                    <div class="btn-group flex-btn-group-container d-inline">
+                        <button type="submit"
+                                (click)="selectDataOperation(dataOperation)"
+                                [routerLink]="['/privacy-risk-assessment/context']"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm py-0 px-1">
+                            <span class="fa fa-pencil" [matTooltip]="'Edit'" [matTooltipPosition]="'above'"></span>
+                        </button>
                     </div>
                 </td>
-                <td class="text-right" (click)="$event.stopPropagation()">
+                <td class="text-center">
+                    <span
+                        *ngIf="overallSecurityImpactsMap && overallSecurityImpactsMap.has(dataOperation.id)">
+                        <span style="font-size: medium" [ngClass]="{
+                                'low': overallSecurityImpactsMap.get(dataOperation.id).impact === dataImpactEnum.LOW,
+                                'medium': overallSecurityImpactsMap.get(dataOperation.id).impact=== dataImpactEnum.MEDIUM,
+                                'high': overallSecurityImpactsMap.get(dataOperation.id).impact=== dataImpactEnum.HIGH,
+                                'very-high': overallSecurityImpactsMap.get(dataOperation.id).impact=== dataImpactEnum.VERY_HIGH
+                                }"
+                              [matTooltip]="overallSecurityImpactsMap.get(dataOperation.id).impact + ' Impact' | replace:'_':' ' | titlecase"
+                              [matTooltipPosition]="'above'"
+                              class="badge badge-pill badge-secondary pointer">{{overallSecurityImpactsMap.get(dataOperation.id).impact | replace:'_':' ' | titlecase}}
+                        </span>
+                    </span>
+                </td>
+                <td class="text-center">
+                    <span *ngIf="overallDataThreatsMap && overallDataThreatsMap.has(dataOperation.id)">
+                        <span style="font-size: medium" [ngClass]="{
+                                'low': overallDataThreatsMap.get(dataOperation.id).likelihood === dataThreatLikelihoodEnum.LOW,
+                                'medium': overallDataThreatsMap.get(dataOperation.id).likelihood === dataThreatLikelihoodEnum.MEDIUM,
+                                'high': overallDataThreatsMap.get(dataOperation.id).likelihood === dataThreatLikelihoodEnum.HIGH
+                                }"
+                              [matTooltip]="overallDataThreatsMap.get(dataOperation.id).likelihood + ' Likelihood' | replace:'_':' ' | titlecase"
+                              [matTooltipPosition]="'above'"
+                              class="badge badge-pill badge-secondary pointer">{{overallDataThreatsMap.get(dataOperation.id).likelihood | replace:'_':' ' | titlecase}}
+                        </span>
+                    </span>
+                </td>
+                <td class="text-center">
+                    <span *ngIf="overallDataRisksMap && overallDataRisksMap.has(dataOperation.id)">
+                        <span style="font-size: medium" [ngClass]="{
+                                'low': overallDataRisksMap.get(dataOperation.id).riskLevel === dataRiskLevelEnum.LOW,
+                                'medium': overallDataRisksMap.get(dataOperation.id).riskLevel=== dataRiskLevelEnum.MEDIUM,
+                                'high': overallDataRisksMap.get(dataOperation.id).riskLevel=== dataRiskLevelEnum.HIGH
+                                }"
+                              [matTooltip]="overallDataRisksMap.get(dataOperation.id).riskLevel + ' Risk' | replace:'_':' ' | titlecase"
+                              [matTooltipPosition]="'above'"
+                              class="badge badge-pill badge-secondary pointer">{{overallDataRisksMap.get(dataOperation.id).riskLevel | replace:'_':' ' | titlecase}}
+                        </span>
+                    </span>
+                </td>
+                <td class="text-center" (click)="$event.stopPropagation()" style="cursor: default;">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
                                 (click)="selectDataOperation(dataOperation)"
@@ -59,7 +102,7 @@
                             <span class="fa fa-eye"></span>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
-                        <button type="submit"
+                        <!--<button type="submit"
                                 (click)="selectDataOperation(dataOperation)"
                                 [routerLink]="['/privacy-risk-assessment/context']"
                                 replaceUrl="true"
@@ -67,7 +110,7 @@
                                 class="btn btn-primary btn-sm">
                             <span class="fa fa-pencil"></span>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
+                        </button>-->
                         <button type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'data-operation-mgm/'+ dataOperation.id + '/delete'} }]"
                                 replaceUrl="true"
@@ -79,7 +122,105 @@
                     </div>
                 </td>
             </tr>
-            </tbody>
-        </table>
-    </div>
+            <tr *ngIf="dataOperationsToggleMap.has(dataOperation.id) && dataOperationsToggleMap.get(dataOperation.id)"
+                style="cursor: default;">
+                <td></td>
+                <td class="text-left">
+                    <ul class="list-unstyled"
+                        *ngIf="securityPillars && securityPillarsToggleByDataOperationMap && securityPillarsToggleByDataOperationMap.has(dataOperation.id) && securityImpactsByDataOperationAndSecurityPillarMap && securityImpactsByDataOperationAndSecurityPillarMap.has(dataOperation.id)">
+                        <li *ngFor="let pillar of securityPillars" class="my-2" style="font-size: larger">
+                            <span
+                                *ngIf="securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar)"
+                                class="badge badge-pill badge-secondary pointer"
+                                style="font-size: large"
+                                [ngClass]="{
+                                    'low': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.LOW,
+                                    'medium': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.MEDIUM,
+                                    'high': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.HIGH,
+                                    'very-high': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.VERY_HIGH
+                                }"
+                            >
+                                <i class="fas"
+                                   [ngClass]="{
+                                    'fa-user-lock': pillar === securityPillarEnum.CONFIDENTIALITY,
+                                    'fa-handshake': pillar === securityPillarEnum.INTEGRITY,
+                                    'fa-business-time': pillar === securityPillarEnum.AVAILABILITY
+                                    }"
+                                   [matTooltip]="securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact + ' Impact' | replace:'_':' ' | titlecase"
+                                   [matTooltipPosition]="'above'"
+                                   (click)="securityPillarsToggleByDataOperationMap.get(dataOperation.id).set(pillar, !securityPillarsToggleByDataOperationMap.get(dataOperation.id).get(pillar))"
+                                >
+                                    {{pillar | titlecase | slice:0:1}}
+                                </i>
+                                <!--<i *ngSwitchCase="securityPillarEnum.CONFIDENTIALITY"
+                                   class="fas fa-user-lock"
+                                   (click)="securityPillarsToggleMap.set(pillar, !securityPillarsToggleMap.get(pillar))"
+                                   [matTooltip]="securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact + ' Impact' | replace:'_':' ' | titlecase"
+                                   [matTooltipPosition]="'above'">&nbsp;C<span
+                                    *ngIf="securityPillarsToggleMap.has(pillar) && securityPillarsToggleMap.get(pillar)"
+                                    style="font-size: medium;">onfidentiality</span>
+                                </i>
+                                <i *ngSwitchCase="securityPillarEnum.INTEGRITY"
+                                   class="fas fa-handshake"
+                                   (click)="securityPillarsToggleMap.set(pillar, !securityPillarsToggleMap.get(pillar))"
+                                   [matTooltip]="securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact + ' Impact' | replace:'_':' ' | titlecase"
+                                   [matTooltipPosition]="'above'">&nbsp;I<span
+                                    *ngIf="securityPillarsToggleMap.has(pillar) && securityPillarsToggleMap.get(pillar)"
+                                    style="font-size: medium;">ntegrity</span>
+                                </i>
+                                <i *ngSwitchCase="securityPillarEnum.AVAILABILITY"
+                                   class="fas fa-business-time"
+                                   (click)="securityPillarsToggleMap.set(pillar, !securityPillarsToggleMap.get(pillar))"
+                                   [matTooltip]="securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact  + ' Impact' | replace:'_':' ' | titlecase"
+                                   [matTooltipPosition]="'above'">&nbsp;A<span
+                                    *ngIf="securityPillarsToggleMap.has(pillar) && securityPillarsToggleMap.get(pillar)"
+                                    style="font-size: medium;">vailability</span>
+                                </i>-->
+                            </span>
+                            <span
+                                *ngIf="securityPillarsToggleByDataOperationMap.get(dataOperation.id).has(pillar) && securityPillarsToggleByDataOperationMap.get(dataOperation.id).get(pillar)"
+                                style="font-size: medium;"
+                                [ngClass]="{
+                                    'low-border-bottom': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.LOW,
+                                    'medium-border-bottom': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.MEDIUM,
+                                    'high-border-bottom': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.HIGH,
+                                    'very-high-border-bottom': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.VERY_HIGH
+                                }">{{pillar | titlecase}}</span>
+                        </li>
+                    </ul>
+                </td>
+                <td class="text-center">
+                    <ul class="list-unstyled" *ngIf="threatAreas && dataThreatsByDataOperationAndThreatAreaMap
+                    && dataThreatsByDataOperationAndThreatAreaMap.has(dataOperation.id)">
+                        <li *ngFor="let area of threatAreas" class="my-2" style="font-size: larger">
+                            {{area | replace:'_':' ' | titlecase}}&nbsp;
+                            <span *ngIf="dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area)"
+                                  style="font-size: medium" [ngClass]="{
+                                'low': dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood === dataThreatLikelihoodEnum.LOW,
+                                'medium': dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood === dataThreatLikelihoodEnum.MEDIUM,
+                                'high': dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood === dataThreatLikelihoodEnum.HIGH
+                            }"
+                                  [matTooltip]="dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood + ' Likelihood' | replace:'_':' ' | titlecase"
+                                  [matTooltipPosition]="'above'"
+                                  class="badge badge-pill badge-secondary">{{dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood | replace:'_':' ' | titlecase}}
+                        </span>
+                        </li>
+                    </ul>
+                </td>
+                <td class="text-center align-middle">
+                    <button type="submit"
+                            class="btn btn-info btn-sm"
+                            (click)="selectDataOperation(dataOperation)"
+                            [routerLink]="['/privacy-board/risk-config']"
+                            [matTooltip]="'Configure Risk Levels'"
+                            [matTooltipPosition]="'above'">
+                        <span class="fas fa-cog"></span>
+                        <span class="d-none d-md-inline">Configure</span>
+                    </button>
+                </td>
+                <td></td>
+            </tr>
+        </ng-container>
+        </tbody>
+    </table>
 </div>

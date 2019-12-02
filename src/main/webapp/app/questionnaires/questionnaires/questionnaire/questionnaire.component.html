@@ -16,8 +16,21 @@
   -->
 
 <div *ngIf="questionnaireStatus?.questionnaire?.purpose" [ngSwitch]="questionnaireStatus?.questionnaire?.purpose">
-    <h2 *ngSwitchCase="purposeEnum.ID_THREAT_AGENT" class="text-center">Identify Threat Agents</h2>
-    <h2 *ngSwitchCase="purposeEnum.SELFASSESSMENT" class="text-center">Vulnerability Assessment</h2>
+    <h4 *ngSwitchCase="purposeEnum.ID_THREAT_AGENT" class="text-center pt-1">Identify Threat Agents</h4>
+    <ng-container *ngSwitchCase="purposeEnum.SELFASSESSMENT">
+        <h4 *ngIf="containerType && areaID && area" class="text-center pt-1">
+            Vulnerability: <span class="badge badge-primary" style="font-size: medium; white-space: normal;">{{area.name}}</span>
+        </h4>
+        <h4 *ngIf="!containerType && !areaID && !area" class="text-center pt-1">
+            Vulnerability Assessment
+        </h4>
+    </ng-container>
 </div>
 
-<jhi-dynamic-form *ngIf="questionnaireStatus" [questionnaire]="questionnaireStatus.questionnaire"></jhi-dynamic-form>
+<ng-container *ngIf="questionnaireStatus">
+    <jhi-dynamic-form *ngIf="containerType && areaID" [questionnaire]="questionnaireStatus.questionnaire"
+                      [containerType]="containerType" [areaID]="areaID"></jhi-dynamic-form>
+    <jhi-dynamic-form *ngIf="!containerType || !areaID"
+                      [questionnaire]="questionnaireStatus.questionnaire"></jhi-dynamic-form>
+</ng-container>
+

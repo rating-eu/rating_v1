@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="izio (generated)" id="1574762067466-1">
+        <addUniqueConstraint columnNames="question_id, status_id"
+                             constraintName="question_relevance_UK_question_questionnaire_status"
+                             tableName="question_relevance"/>
+    </changeSet>
+    <changeSet author="izio (generated)" id="1574762067466-2">
+        <addNotNullConstraint columnDataType="bigint"
+                              columnName="question_id"
+                              tableName="question_relevance"/>
+    </changeSet>
+    <changeSet author="izio (generated)" id="1574762067466-3">
+        <addNotNullConstraint columnDataType="bigint"
+                              columnName="status_id"
+                              tableName="question_relevance"/>
+    </changeSet>
+</databaseChangeLog>

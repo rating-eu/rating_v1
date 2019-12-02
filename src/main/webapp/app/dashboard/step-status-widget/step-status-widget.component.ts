@@ -76,6 +76,34 @@ export class StepStatusWidgetComponent implements OnInit, AfterViewChecked, OnDe
                 this.fetchVulnerabilitiesCompletions();
             })
         );
+
+        this.subscriptions.push(
+            this.dataSharingService.vulnerabilityAssessment$.pipe(
+                switchMap(
+                    (vulnerabilityAssessment: QuestionnaireStatusMgm) => {
+                        this.vulnerabilityAssessment = vulnerabilityAssessment;
+                        this.dataSharingService.cisoQuestionnaireStatus = vulnerabilityAssessment;
+                        this.dataSharingService.externalQuestionnaireStatus = vulnerabilityAssessment.refinement;
+
+                        if (this.vulnerabilityAssessment) {
+                            this.assessVulnerabilitiesStatus = this.vulnerabilityAssessment.status;
+                            this.companyBoardStatus.assessVulnerablitiesStatus = this.assessVulnerabilitiesStatus;
+                            this.dataSharingService.companyBoardStatus = this.companyBoardStatus;
+                        }
+
+                        return this.completionDTOService.getAssessVulnerabilitiesCompletionByCompanyProfileAndQuestionnaireStatus(this.myCompany.companyProfile.id, this.vulnerabilityAssessment.id);
+                    }
+                )
+            ).subscribe(
+                (response: HttpResponse<AssessVulnerabilitiesCompletionDTO>) => {
+                    this.assessVulnerabilitiesCompletion = response.body;
+
+                    if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
+                        this.changeDetector.detectChanges();
+                    }
+                }
+            )
+        );
     }
 
     ngAfterViewChecked(): void {

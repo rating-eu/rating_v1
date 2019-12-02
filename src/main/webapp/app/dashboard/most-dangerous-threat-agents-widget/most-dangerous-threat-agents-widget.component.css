@@ -14,5 +14,8 @@
  * limitations under the License.
  *
  */
-
 @import "../../risk-board/risk-board.css";
+
+table thead tr th, table tbody tr th, table tbody tr td {
+    font-size: medium;
+}

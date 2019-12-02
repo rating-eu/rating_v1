@@ -17,6 +17,7 @@
                 "title": "Data Operation"
             },
             "name": "Name",
+            "title": "Title",
             "processedData": "Processed Data",
             "processingPurpose": "Processing Purpose",
             "dataSubject": "Data Subject",

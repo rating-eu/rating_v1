@@ -58,6 +58,7 @@
     <include file="config/liquibase/changelog/20191011102510_added_entity_DataRiskLevelConfig.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191022095226_added_entity_VulnerabilityArea.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191024152116_added_entity_SystemConfig.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191122151831_added_entity_QuestionRelevance.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20180410085152_added_entity_constraints_CompanyProfile.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085155_added_entity_constraints_SelfAssessment.xml" relativeToChangelogFile="false"/>
@@ -200,5 +201,7 @@
     <include file="config/liquibase/changelog/20191022162503_load_question_vulnerability_areas.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191022172125_load_LPA_question_vulnerability_areas.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191023075817_added_UC_VulnerabilityArea_name.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191122151831_added_entity_constraints_QuestionRelevance.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191126095409_added_UK_question_relevance_question_questionnaire_status.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

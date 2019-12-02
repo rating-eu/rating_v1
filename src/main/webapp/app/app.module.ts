@@ -36,6 +36,8 @@ import {HermeneutEntityModule} from './entities/entity.module';
 import {PaginationConfig} from './blocks/config/uib-pagination.config';
 
 import {PanelMenuModule} from 'primeng/panelmenu';
+import { RatingModule } from 'ngx-bootstrap/rating';
+
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 
 import {
@@ -53,7 +55,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {DataSharingModule} from './data-sharing/data-sharing.module';
 import {MaterialModule} from './material/material.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { MainService } from './layouts/main/main.service';
+import {MainService} from './layouts/main/main.service';
 import {DtoModule} from "./dto/dto.module";
 
 @NgModule({
@@ -72,7 +74,8 @@ import {DtoModule} from "./dto/dto.module";
         DataSharingModule.forRoot(),
         BrowserAnimationsModule,
         MaterialModule,
-        PanelMenuModule
+        PanelMenuModule,
+        RatingModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     exports: [

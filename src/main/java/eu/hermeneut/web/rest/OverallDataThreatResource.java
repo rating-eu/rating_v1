@@ -103,8 +103,17 @@ public class OverallDataThreatResource {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(overallDataThreat));
     }
 
+    @GetMapping("/overall-data-threats/company-profile/{companyProfileID}")
+    @Timed
+    public List<OverallDataThreat> getOverallSecurityImpactsByCompanyProfile(@PathVariable Long companyProfileID) {
+        log.debug("REST request to get OverallDataThreats by CompanyProfile : {}", companyProfileID);
+
+        return this.overallDataThreatService.findAllByCompanyProfile(companyProfileID);
+    }
+
     /**
      * GET  /overall-data-threats/operation/:operationID : get the OverallDataThreat for the given DataOperation.
+     *
      * @param operationID the id of the DataOperation
      * @return the ResponseEntity with status 200 (OK) and with body the overallDataThreat, or with status 404 (Not Found)
      */

@@ -1,0 +1,58 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myQuestionRelevanceLabel" jhiTranslate="hermeneutApp.questionRelevance.home.createOrEditLabel">Create or edit a Question Relevance</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!questionRelevance.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="questionRelevance.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.questionRelevance.relevance" for="field_relevance">Relevance</label>
+            <input type="number" class="form-control" name="relevance" id="field_relevance"
+                [(ngModel)]="questionRelevance.relevance" min="0" max="5"/>
+            <div [hidden]="!(editForm.controls.relevance?.dirty && editForm.controls.relevance?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.relevance?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.relevance?.errors?.max" jhiTranslate="entity.validation.max" translateValues="{ max: 5 }">
+                    This field cannot be more than 5.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.relevance?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.questionRelevance.question" for="field_question">Question</label>
+            <select class="form-control" id="field_question" name="question" [(ngModel)]="questionRelevance.question" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="questionOption.id === questionRelevance.question?.id ? questionRelevance.question : questionOption" *ngFor="let questionOption of questions; trackBy: trackQuestionById">{{questionOption.name}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.questionRelevance.status" for="field_status">Status</label>
+            <select class="form-control" id="field_status" name="status" [(ngModel)]="questionRelevance.status" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="questionnaireStatusOption.id === questionRelevance.status?.id ? questionRelevance.status : questionnaireStatusOption" *ngFor="let questionnaireStatusOption of questionnairestatuses; trackBy: trackQuestionnaireStatusById">{{questionnaireStatusOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

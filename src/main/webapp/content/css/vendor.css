@@ -14,3 +14,5 @@
 @import '../assets/css/metismenu.min.css';
 @import '../assets/css/custom-template.css';
 @import '../assets/css/style.css';
+@import '~katex/dist/katex.css';
+

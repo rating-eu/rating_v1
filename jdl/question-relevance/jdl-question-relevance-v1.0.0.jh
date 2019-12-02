@@ -1,0 +1,644 @@
+entity CompanyProfile{
+    Name String required,
+    Description String maxlength(2000),
+    Created ZonedDateTime,
+    Modified ZonedDateTime,
+    Type CompanyType
+}
+
+entity CompanyGroup{
+    Name String required,
+    Description String maxlength(2000),
+    Created ZonedDateTime,
+    Modified ZonedDateTime
+}
+
+enum CompanyType {
+    OTHER,
+    FINANCE_AND_INSURANCE,
+    HEALTH_CARE_AND_SOCIAL_ASSISTANCE,
+    INFORMATION,
+    PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE,
+    LOCAL_PUBLIC_ADMINISTRATION
+}
+
+enum ContainerType {
+    HUMAN, IT, PHYSICAL, INTANGIBLE
+}
+
+entity DomainOfInfluence {
+    Name String required,
+    Description String maxlength(2000)
+}
+
+enum AssetType {
+    TANGIBLE, INTANGIBLE
+}
+
+enum SkillLevel {
+    HIGH, MEDIUM, LOW
+}
+
+enum Intent {
+    HOSTILE, NON_HOSTILE
+}
+
+enum TA_Access {
+    INSIDER, OUTSIDER, BOTH
+}
+
+entity SelfAssessment{
+    Name String required,
+    Created ZonedDateTime,
+    Modified ZonedDateTime
+}
+
+entity Container{
+    Name String required,
+    Description String maxlength(2000),
+    ContainerType ContainerType,
+    Created ZonedDateTime
+}
+
+entity AssetCategory{
+    Name String required,
+    Description String maxlength(2000),
+    Type AssetType required,
+}
+
+entity Asset{
+    Name String required,
+    Description String maxlength(2000),
+    Created ZonedDateTime,
+    Modified ZonedDateTime
+}
+
+entity MyAsset{
+	Ranking Integer,
+    Estimated Boolean,
+    /**WP3*/
+    EconomicValue BigDecimal,
+    Impact Integer min(1) max(5),
+    LossValue BigDecimal
+}
+
+entity DirectAsset {
+}
+
+entity IndirectAsset {
+}
+
+enum CostType{
+    BEFORE_THE_ATTACK_STATUS_RESTORATION,
+    INCREASED_SECURITY,
+    LEGAL_LITIGATION_COSTS_AND_ATTORNEY_FEES,
+    NOTIFICATION_AND_REGULATORY_COMPLIANCE_COSTS,
+    LIABILITY_COSTS,
+    CUSTOMER_BREACH_NOTIFICATION_COSTS,
+    POST_BREACH_CUSTOMER_PROTECTION_OR_CARE_COSTS,
+    LOST_CUSTOMERS_RECOVERY,
+    PUBLIC_RELATIONS,
+    INCREASE_OF_INSURANCE_PREMIUMS,
+    LOSS_OF_REVENUES,
+    INCREASED_COST_TO_RAISE_DEBT,
+    VALUE_OF_LOST_OR_NOT_FULFILLED_CONTRACT_REVENUES,
+    LOST_OR_NON_FULFILLED_CONTRACTS,
+    COST_OF_IT_DOWNTIME
+}
+
+entity AttackCost {
+    Type CostType required,
+    //ImpactFactor String required,
+    Description String maxlength(2000),
+    //Term String,
+    Costs BigDecimal,
+    //TotalCosts String
+}
+
+entity ThreatAgent{
+    Name String required,
+    Description String required,
+    Image ImageBlob,
+    SkillLevel SkillLevel required,
+    Intent Intent required,
+    Access TA_Access required,
+    Created ZonedDateTime,
+    Modified ZonedDateTime,
+    IdentifiedByDefault Boolean required
+}
+
+entity Motivation{
+    Name String required,
+    Description String maxlength(2000),
+    Created ZonedDateTime,
+    Modified ZonedDateTime
+}
+
+entity Level{
+    Name String required,
+    Description String
+}
+
+entity Phase{
+    Name String required,
+    Description String,
+    Weight Float required
+}
+
+entity AttackStrategy{
+    Name String required,
+    Description String maxlength(2000),
+    Frequency Frequency required,
+    Skill SkillLevel required,
+    Resources ResourceLevel required,
+    Likelihood Likelihood,
+    Created ZonedDateTime,
+    Modified ZonedDateTime
+}
+
+enum Likelihood{
+    LOW, LOW_MEDIUM, MEDIUM, MEDIUM_HIGH, HIGH
+}
+
+enum ResourceLevel{
+    LOW, MEDIUM, HIGH
+}
+
+entity Mitigation{
+    Name String,
+    Description String maxlength(2000),
+    Created ZonedDateTime,
+    Modified ZonedDateTime
+}
+
+enum Frequency{
+    LOW, MEDIUM, HIGH
+}
+
+entity Questionnaire{
+    Name String required,
+    Purpose QuestionnairePurpose required,
+    Created ZonedDateTime,
+    Modified ZonedDateTime
+}
+
+enum Status{
+	EMPTY, PENDING, FULL
+}
+
+entity QuestionnaireStatus{
+    Status Status required,
+    Created ZonedDateTime,
+    Modified ZonedDateTime,
+    Role Role required
+}
+
+enum QuestionType{
+	REGULAR, RELEVANT, OTHER
+}
+
+entity Question{
+    Name String required,
+    Created ZonedDateTime,
+    Modified ZonedDateTime,
+    Order Integer,
+    QuestionType QuestionType required,
+    AnswerType AnswerType required
+}
+
+entity Answer{
+	Name String,
+    Created ZonedDateTime,
+    Modified ZonedDateTime,
+    Order Integer,
+    Likelihood Likelihood
+}
+
+entity AnswerWeight{
+	Likelihood Likelihood,
+    QuestionType QuestionType,
+    Weight Float
+}
+
+entity MyAnswer{
+    Note String,
+    AnswerOffset Integer required
+}
+
+entity MyCompany{
+}
+
+enum AnswerType{
+    YESNO, RANGE5, PERC5, RANGE3, PERC3, CUSTOM, ASSET
+}
+
+enum QuestionnairePurpose{
+    ID_THREAT_AGENT, SELFASSESSMENT, ID_ASSETS
+}
+
+entity ExternalAudit{
+    Name String required
+}
+
+enum Role{
+    ROLE_ADMIN,
+    ROLE_USER,
+    ROLE_EXTERNAL_AUDIT,
+    ROLE_CISO
+}
+
+enum AttackCostParamType {
+    NUMBER_OF_CUSTOMERS,
+    PROTECTION_COST_PER_CUSTOMER,
+    NOTIFICATION_COST_PER_CUSTOMER,
+    EMPLOYEE_COST_PER_HOUR,
+    FRACTION_OF_EMPLOYEES_AFFECTED_BY_OUTAGE,
+    AVERAGE_REVENUE_PER_HOUR,
+    FRACTION_OF_REVENUE_AFFECTED_BY_OUTAGE,
+    RECOVERY_COST,
+    REPAIR_SERVICES,
+    REPLACEMENT_PARTS,
+    LOST_DATA_RECOVERY,
+    OTHER_COSTS
+}
+
+entity AttackCostParam {
+    Type AttackCostParamType required,
+    Value BigDecimal
+}
+
+relationship ManyToMany {
+    CompanyProfile{containers(name)} to Container,
+    Asset{container(name)} to Container,
+    Asset{domainsOfInfluence(name)} to DomainOfInfluence,
+    ThreatAgent{motivation(name)} to Motivation,
+    AttackStrategy{mitigation(name)} to Mitigation,
+    Question{attackStrategies(name)} to AttackStrategy,
+    SelfAssessment{companyGroup(name)} to CompanyGroup,
+    SelfAssessment{threatagent(name)} to ThreatAgent,
+    AttackStrategy{level(name)} to Level,
+    AttackStrategy{phase(name)} to Phase,
+    Question{answers(name)} to Answer{question(name)}
+}
+
+relationship OneToMany{
+    AssetCategory{asset(name)} to Asset{assetcategory(name)},
+    Questionnaire{questions(name)} to Question{questionnaire(name)},
+    CompanyProfile{companyGroups(name)} to CompanyGroup{companyprofile(name)},
+    ThreatAgent{questions} to Question{threatAgent(name)},
+    QuestionnaireStatus{answers} to MyAnswer,
+    DirectAsset{effects(name)} to IndirectAsset,
+    MyAsset{costs(type)} to AttackCost
+}
+
+relationship OneToOne{
+    MyCompany{user(login)} to User,
+    MyAnswer{answer(name)} to Answer,
+    MyAnswer{question(name)} to Question,
+    MyAnswer{questionnaire(name)} to Questionnaire,
+    MyAnswer{user(login)} to User,
+    QuestionnaireStatus{selfAssessment(name)} to SelfAssessment,
+    QuestionnaireStatus{questionnaire(name)} to Questionnaire,
+    QuestionnaireStatus{user(login)} to User,
+    Answer{asset(name)} to Asset,
+    Answer{assetCategory(name)} to AssetCategory,
+    DirectAsset{myAsset(asset)} to MyAsset,
+    IndirectAsset{myAsset(asset)} to MyAsset,
+    Level{container(name)} to Container,
+    DomainOfInfluence{container(name)} to Container,
+    ExternalAudit{user(login)} to User,
+    /*WP3*/
+    EconomicCoefficients{selfAssessment(name)} to SelfAssessment,
+    EBIT{selfAssessment(name)} to SelfAssessment,
+    EconomicResults{selfAssessment(name)} to SelfAssessment,
+    SplittingLoss{selfAssessment(name)} to SelfAssessment,
+    /*WP4*/
+    CriticalLevel{selfAssessment(name)} to SelfAssessment
+}
+
+relationship ManyToOne{
+    MyCompany{companyProfile(name)} to CompanyProfile,
+    CompanyProfile{user(login)} to User,
+    CompanyGroup{user(login)} to User,
+    SelfAssessment{companyProfile(name)} to CompanyProfile,
+    SelfAssessment{user(login)} to User,
+    SelfAssessment{externalAudit(name)} to ExternalAudit,
+    MyAsset{asset(name)} to Asset,
+    MyAsset{selfAssessment(name)} to SelfAssessment,
+    MyAsset{questionnaire(name)} to Questionnaire,
+    /*WP4*/
+    LikelihoodScale{selfAssessment(name)} to SelfAssessment,
+    VulnerabilityScale{selfAssessment(name)} to SelfAssessment,
+    SplittingValue{selfAssessment(name)} to SelfAssessment,
+    AttackCostParam{selfAssessment(name)} to SelfAssessment
+}
+
+service all with serviceImpl
+
+angularSuffix * with mgm
+
+/*=======WP3=======*/
+entity EconomicCoefficients{
+	DiscountingRate BigDecimal min(0) max(1),
+    PhysicalAssetsReturn BigDecimal,/*Fixed Assets Return*/
+	FinancialAssetsReturn BigDecimal,/*Current Assets Return*/
+	LossOfIntangible BigDecimal /*18.29%*/
+}
+
+entity EBIT{/*2 (6 times)*/
+	Year Integer,
+    Value BigDecimal,
+    Created ZonedDateTime
+}
+
+entity EconomicResults{
+	EconomicPerformance BigDecimal,
+    IntangibleDrivingEarnings BigDecimal,
+    IntangibleCapital BigDecimal,
+    IntangibleLossByAttacks BigDecimal
+}
+
+/*Step 2 needs to know MyAssets*/
+
+enum SectorType{
+	GLOBAL,
+    FINANCE_AND_INSURANCE,
+    HEALTH_CARE_AND_SOCIAL_ASSISTANCE,
+    INFORMATION,
+    PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE
+}
+
+enum CategoryType{
+	IP, KEY_COMP, ORG_CAPITAL
+}
+
+entity SplittingLoss{
+	SectorType SectorType,
+    CategoryType CategoryType,
+    LossPercentage BigDecimal,
+    Loss BigDecimal
+}
+
+entity SplittingValue{
+	SectorType SectorType,
+    CategoryType CategoryType,
+    Value BigDecimal
+}
+
+/*=======WP4=======*/
+entity CriticalLevel{
+	Side  Integer min(3),
+    LowLimit Integer min(1),
+    MediumLimit Integer min(1),
+    HighLimit Integer min(1)
+}
+
+entity LikelihoodScale{
+	Name String required,
+    Description String required,
+    Likelihood Integer min(1) max(5) required,
+    Frequency Integer min(1) required
+}
+
+entity VulnerabilityScale{
+	Name String required,
+    Description String required,
+    Vulnerability Integer min(1) max(5) required
+}
+
+entity ImpactLevel{
+	SelfAssessmentID Long required,
+    Impact Integer min(1) max(5) required,
+    MinLoss Long min(0) required,
+    MaxLoss Long min(0) required
+}
+
+entity ImpactLevelDescription{
+    Impact Integer min(1) max(5) required,
+    PeopleEffects String required,
+    Reputation String required,
+    ServiceOutputs String required,
+    LegalAndCompliance String required,
+    ManagementImpact String required
+}
+
+entity Logo{
+	Primary Boolean,
+	Image ImageBlob required
+}
+
+/*=======GDPR Enums=======*/
+enum DataRecipientType{
+    INTERNAL,
+    EXTERNAL
+}
+
+enum SecurityPillar{
+    CONFIDENTIALITY,
+    INTEGRITY,
+    AVAILABILITY
+}
+
+enum DataImpact{
+    LOW,
+    MEDIUM,
+    HIGH,
+    VERY_HIGH
+}
+
+enum ThreatArea{
+    NETWORK_AND_TECHNICAL_RESOURCES,
+    PROCEDURES_RELATED_TO_THE_PROCESSING_OF_PERSONAL_DATA,
+    PEOPLE_INVOLVED_IN_THE_PROCESSING_OF_PERSONAL_DATA,
+    BUSINESS_SECTOR_AND_SCALE_OF_PROCESSING
+}
+
+enum DataThreatLikelihood{
+    LOW,
+    MEDIUM,
+    HIGH
+}
+
+enum DataRiskLevel{
+    LOW,
+    MEDIUM,
+    HIGH
+}
+
+enum DataOperationField{
+    NAME,
+    PROCESSED_DATA,
+    PROCESSING_PURPOSE,
+    DATA_SUBJECT,
+    PROCESSING_MEANS,
+    DATA_RECIPIENTS,
+    DATA_PROCESSOR
+}
+
+enum Language{
+    IT,
+    EN,
+    DE,
+    ES,
+    FR,
+    PT_PT
+}
+
+enum AnswerValue{
+    YES,
+    NO
+}
+
+enum GDPRAnswerType{
+    OPEN,
+    MULTIPLE_CHOICE,
+    OBJECT
+}
+
+enum GDPRQuestionnairePurpose{
+    OPERATION_CONTEXT,
+    IMPACT_EVALUATION,
+    THREAT_LIKELIHOOD
+}
+
+/*=======GDPR Entities=======*/
+entity DataImpactDescription{
+    Impact DataImpact required,
+    Description String maxlength(2000) required,
+    Language Language required
+}
+
+entity DataRecipient{
+    Name String required,
+    Type DataRecipientType required
+}
+
+entity SecurityImpact{
+    SecurityPillar SecurityPillar required,
+    Impact DataImpact required
+}
+
+entity OverallSecurityImpact{
+    Impact DataImpact required
+}
+
+entity DataOperation{
+    Name String required,
+    ProcessedData String required,
+    ProcessingPurpose String required,
+    DataSubject String required,
+    ProcessingMeans String required,
+    DataProcessor String required
+}
+
+entity DataThreat{
+    ThreatArea ThreatArea required,
+    Likelihood DataThreatLikelihood required
+}
+
+entity OverallDataThreat{
+    Likelihood DataThreatLikelihood required
+}
+
+entity OverallDataRisk{
+    RiskLevel DataRiskLevel required
+}
+
+entity DataRiskLevelConfig{
+    Rationale String required maxlength(2000),
+    Likelihood DataThreatLikelihood required,
+    Impact DataImpact required,
+    Risk DataRiskLevel required
+}
+
+/*=======GDPR Questions=======*/
+entity GDPRQuestionnaire{
+    Name String required,
+    Purpose GDPRQuestionnairePurpose required
+}
+
+entity GDPRQuestionnaireStatus{
+    Status Status required,
+    Role Role required
+}
+
+entity GDPRQuestion{
+    Text String required,
+    Description String maxlength(2000),
+    Language Language required,
+    AnswerType GDPRAnswerType required,
+    Order Integer required,
+    DataOperationField DataOperationField,
+    SecurityPillar SecurityPillar,
+    ThreatArea ThreatArea
+}
+
+entity GDPRAnswer{
+    Text String required,
+    Language Language required,
+    AnswerValue AnswerValue,
+    DataImpact DataImpact,
+    Order Integer
+}
+
+entity GDPRMyAnswer{
+
+}
+
+entity Translation{
+    Text String required,
+    Language Language required
+}
+
+/*=======GDPR Relationships=======*/
+relationship OneToOne{
+    OverallSecurityImpact{operation(name)} to DataOperation,
+    OverallDataThreat{operation(name)} to DataOperation,
+    OverallDataRisk{operation(name)} to DataOperation
+}
+
+relationship OneToMany{
+    DataOperation{recipients(name)} to DataRecipient{operation(name)},
+    DataOperation{impacts(securityPillar)} to SecurityImpact{operation(name)},
+    OverallSecurityImpact{impact(securityPillar)} to SecurityImpact,
+    DataOperation{threats(threatArea)} to DataThreat{operation(name)},
+    OverallDataThreat{threats(threatArea)} to DataThreat,
+    GDPRQuestion{translations(language)} to Translation,
+    GDPRAnswer{translations(language)} to Translation,
+    DataImpactDescription{translations(language)} to Translation,
+    GDPRQuestionnaireStatus{answers} to GDPRMyAnswer
+}
+
+relationship ManyToOne{
+    DataOperation{companyProfile(name)} to CompanyProfile,
+    GDPRQuestionnaireStatus{operation(name)} to DataOperation,
+    GDPRQuestionnaireStatus{questionnaire(name)} to GDPRQuestionnaire,
+    GDPRQuestionnaireStatus{user(login)} to User,
+    GDPRQuestion{questionnaire(name)} to GDPRQuestionnaire,
+    GDPRMyAnswer{question(text)} to GDPRQuestion,
+    GDPRMyAnswer{answer} to GDPRAnswer,
+    DataRiskLevelConfig{operation(name)} to DataOperation
+}
+
+relationship ManyToMany{
+    GDPRQuestion{answers(text)} to GDPRAnswer{question(text)}
+}
+
+/*==========Vulnerability Area==========*/
+entity VulnerabilityArea{
+    Name String required
+}
+
+relationship ManyToMany{
+    Question{areas(name)} to VulnerabilityArea
+}
+
+/*==========QuestionRelevance==========*/
+entity QuestionRelevance{
+    Relevance Integer min(0) max(5)
+}
+
+relationship ManyToOne{
+    QuestionRelevance{question(name)} to Question,
+    QuestionRelevance{status} to QuestionnaireStatus
+}

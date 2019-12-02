@@ -15,22 +15,27 @@
  *
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {QuestionnairesService} from '../../questionnaires.service';
-import {DataSharingService} from '../../../data-sharing/data-sharing.service';
-import {Router} from '@angular/router';
-import {LocalStorageService} from 'ngx-webstorage';
+import {ActivatedRoute, Router} from '@angular/router';
 import {QuestionnairePurpose} from '../../../entities/enumerations/QuestionnairePurpose.enum';
-import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../../entities/self-assessment-mgm';
-import {AccountService, User, UserService} from '../../../shared';
-import {QuestionnaireStatusMgm} from "../../../entities/questionnaire-status-mgm";
+import {SelfAssessmentMgm} from '../../../entities/self-assessment-mgm';
+import {User} from '../../../shared';
+import {QuestionnaireStatusMgm} from '../../../entities/questionnaire-status-mgm';
+import {ContainerType} from '../../../entities/enumerations/ContainerType.enum';
+import {Subscription} from 'rxjs';
+import {DataSharingService} from '../../../data-sharing/data-sharing.service';
+import {VulnerabilityAreaMgm, VulnerabilityAreaMgmService} from "../../../entities/vulnerability-area-mgm";
+import {HttpResponse} from "@angular/common/http";
 
 @Component({
     selector: 'jhi-questionnaire',
     templateUrl: './questionnaire.component.html',
     styles: [],
 })
-export class QuestionnaireComponent implements OnInit {
+export class QuestionnaireComponent implements OnInit, OnDestroy {
+
+    private subscriptions: Subscription[];
 
     questionnaireStatus: QuestionnaireStatusMgm;
     purposeEnum = QuestionnairePurpose;
@@ -38,17 +43,67 @@ export class QuestionnaireComponent implements OnInit {
     account: Account;
     user: User;
 
+    public containerType: ContainerType;
+    public areaID: number;
+    public area: VulnerabilityAreaMgm;
+
     constructor(
         private router: Router,
+        private route: ActivatedRoute,
         private questionnairesService: QuestionnairesService,
+        private vulnerabilityAreaService: VulnerabilityAreaMgmService,
         private dataSharingService: DataSharingService) {
     }
 
     ngOnInit() {
+        this.subscriptions = [];
         this.questionnaireStatus = this.dataSharingService.cisoQuestionnaireStatus;
 
         if (!this.questionnaireStatus || !this.questionnaireStatus.questionnaire) {
             this.router.navigate(['/']);
+        }
+
+        this.subscriptions.push(
+            this.route.params.subscribe(
+                (params) => {
+                    if (params["container-type"] && params["area-id"]) {
+                        const cType: string = params['container-type'];
+                        this.areaID = Number(params['area-id']);
+
+                        this.vulnerabilityAreaService.find(this.areaID).toPromise()
+                            .then(
+                                (response: HttpResponse<VulnerabilityAreaMgm>) => {
+                                    if (response && response.body) {
+                                        this.area = response.body;
+                                    }
+                                }
+                            );
+
+                        switch (cType) {
+                            case ContainerType[ContainerType.HUMAN]: {
+                                this.containerType = ContainerType.HUMAN;
+                                break;
+                            }
+                            case ContainerType[ContainerType.IT]: {
+                                this.containerType = ContainerType.IT;
+                                break;
+                            }
+                            case ContainerType[ContainerType.PHYSICAL]: {
+                                this.containerType = ContainerType.PHYSICAL;
+                                break;
+                            }
+                        }
+                    }
+                }
+            )
+        );
+    }
+
+    ngOnDestroy(): void {
+        if (this.subscriptions && this.subscriptions.length) {
+            this.subscriptions.forEach(subscription => {
+                subscription.unsubscribe();
+            });
         }
     }
 }

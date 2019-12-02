@@ -8,7 +8,7 @@ import {DataRiskLevel} from "../../entities/enumerations/gdpr/DataRiskLevel.enum
 import {OverallDataRiskMgm, OverallDataRiskMgmService} from "../../entities/overall-data-risk-mgm";
 import {OverallSecurityImpactMgm, OverallSecurityImpactMgmService} from "../../entities/overall-security-impact-mgm";
 import {OverallDataThreatMgm, OverallDataThreatMgmService} from "../../entities/overall-data-threat-mgm";
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {forkJoin} from "rxjs/observable/forkJoin";
 import {OverallDataRiskWidgetService} from "./overall-data-risk-widget.service";
 import {EventManagerService} from "../../data-sharing/event-manager.service";
@@ -24,7 +24,8 @@ import {JhiAlertService} from "ng-jhipster";
 })
 export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
 
-    public loading = false;
+    private subscriptions: Subscription[];
+    public loading: boolean;
 
     public dataImpactEnum = DataImpact;
     public dataImpacts: DataImpact[];
@@ -41,10 +42,13 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
 
     // Properties
     private _dataOperation: DataOperationMgm;
+    private _configurationMode: boolean;
 
     private riskLevelConfigs: DataRiskLevelConfigMgm[];
     private riskLevelConfigsMap: Map<DataThreatLikelihood, Map<DataImpact, DataRiskLevelConfigMgm>>;
     public selectedDataRiskLevelConfig: DataRiskLevelConfigMgm;
+
+
 
     constructor(private dataRiskLevelConfigService: DataRiskLevelConfigMgmService,
                 private overallSecurityImpactService: OverallSecurityImpactMgmService,
@@ -57,6 +61,12 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        if(!this.subscriptions || !this.subscriptions.length){
+            this.subscriptions = [];
+        }
+
+        this.loading = false;
+
         this.dataImpacts = Object.keys(DataImpact).map((key) => DataImpact[key]);
         this.threatLikelihoods = Object.keys(DataThreatLikelihood).map((key) => DataThreatLikelihood[key]);
         this.dataRiskLevels = Object.keys(DataRiskLevel).map((key) => DataRiskLevel[key]);
@@ -67,11 +77,18 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
         this._dataOperation = dataOperation;
 
         if (this._dataOperation && this._dataOperation.id) {
+            console.log("DataOperationset: " + this._dataOperation.name);
+
             this.dataRiskLevelConfigService.getAllByDataOperation(this._dataOperation.id).toPromise()
                 .then((response: HttpResponse<DataRiskLevelConfigMgm[]>) => {
                     this.riskLevelConfigs = response.body;
 
                     this.riskLevelConfigsMap = this.mapRiskLevelConfigs(this.riskLevelConfigs);
+
+                    // Update UI
+                    if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
+                        this.changeDetector.detectChanges();
+                    }
                 });
 
             const join$: Observable<[HttpResponse<OverallSecurityImpactMgm>, HttpResponse<OverallDataThreatMgm>, HttpResponse<OverallDataThreatMgm>]>
@@ -86,17 +103,56 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
                     this.overallSecurityImpact = response[0].body;
                     this.overallDataThreat = response[1].body;
                     this.overallDataRisk = response[2].body;
+
+                    // Update UI
+                    if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
+                        this.changeDetector.detectChanges();
+                    }
                 }
             });
+
+            if(!this.subscriptions || !this.subscriptions.length){
+                this.subscriptions = [];
+            }
+
+            // Register for the update of the RiskLevelConfigs
+            this.subscriptions.push(
+              this.eventManagerService.observe(EventType.DATA_RISK_LEVEL_CONFIG_LIST_UPDATE).subscribe(
+                  (event: Event) => {
+                      if(event && event.type===EventType.DATA_RISK_LEVEL_CONFIG_LIST_UPDATE){
+                          // Update the OverallDataRisk
+                          this.overallDataRiskService.getByDataOperation(this._dataOperation.id).toPromise().then(
+                              (response: HttpResponse<OverallDataRiskMgm>)=>{
+                                  this.overallDataRisk = response.body;
+
+                                  // Update UI
+                                  if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
+                                      this.changeDetector.detectChanges();
+                                  }
+                              }
+                          );
+                      }
+                  }
+              )
+            );
         }
+    }
+
+    get dataOperation(): DataOperationMgm {
+        return this._dataOperation;
+    }
+
+    @Input()
+    set configurationMode(active: boolean){
+        this._configurationMode = active;
 
         if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
             this.changeDetector.detectChanges();
         }
     }
 
-    get dataOperation(): DataOperationMgm {
-        return this._dataOperation;
+    get configurationMode(): boolean{
+        return this._configurationMode;
     }
 
     public selectDataRiskLevelConfig(config: DataRiskLevelConfigMgm) {
@@ -114,6 +170,12 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         if (this.changeDetector) {
             this.changeDetector.detach();
+        }
+
+        if(this.subscriptions && this.subscriptions.length){
+            this.subscriptions.forEach((subscription: Subscription) => {
+                subscription.unsubscribe();
+            });
         }
     }
 

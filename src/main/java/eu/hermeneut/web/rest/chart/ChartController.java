@@ -134,20 +134,33 @@ public class ChartController {
         Map<Long/*VulnerabilityArea.ID*/, Map<ContainerType, Float/*Vulnerability*/>> vulnerabilitiesByAreaDataSet = new HashMap<>();
 
         if (areas != null && !areas.isEmpty()) {
-            Random random = new Random();
-
             // Calculate the vulnerability for each AREA by the corresponding MyAnswers previously stored.
             for (VulnerabilityArea area : areas) {
                 List<MyAnswer> areaAnswers = myAnswersByAreaIDMap.get(area.getId());
+                ContainerType[] containerTypes = {ContainerType.HUMAN, ContainerType.IT, ContainerType.PHYSICAL};
 
                 if (areaAnswers != null && !areaAnswers.isEmpty()) {
                     Set<MyAnswer> answerSet = new HashSet<>(areaAnswers);
 
                     Map<ContainerType, Float> vulnerabilities = new HashMap<>();
 
-                    vulnerabilities.put(ContainerType.HUMAN, this.answerCalculator.getAnswersVulnerability(answerSet, ContainerType.HUMAN));
-                    vulnerabilities.put(ContainerType.IT, this.answerCalculator.getAnswersVulnerability(answerSet, ContainerType.IT));
-                    vulnerabilities.put(ContainerType.PHYSICAL, this.answerCalculator.getAnswersVulnerability(answerSet, ContainerType.PHYSICAL));
+                    // Calculate also the Total Vulnerability % for each Area
+                    int maxAreaVulnerability = AnswerLikelihood.LOW.getValue() * containerTypes.length;
+                    float vulnerabilitiesSum = 0F;
+
+                    for (ContainerType containerType : containerTypes) {
+                        vulnerabilities.put(containerType, this.answerCalculator.getAnswersVulnerability(answerSet, containerType));
+
+                        vulnerabilitiesSum += vulnerabilities.get(containerType);
+                    }
+
+                    float totalVulnerabilityPercentage = Precision.round(vulnerabilitiesSum / maxAreaVulnerability, 2);
+
+                    /*
+                        TODO Think about an alternative,
+                        since all the vulnerabilities does not refer to the IntangibleContainer but are a percentage of the Areas Vulnerabilities.
+                     */
+                    vulnerabilities.put(ContainerType.INTANGIBLE, totalVulnerabilityPercentage);
 
                     vulnerabilitiesByAreaDataSet.put(area.getId(), vulnerabilities);
                 }
@@ -177,7 +190,6 @@ public class ChartController {
                 float totalVulnerabilityPercentage = Precision.round(vulnerabilitiesSum / maxContainerVulnerability, 2);
                 totalVulnerabilitiesByContainer.put(containerType, totalVulnerabilityPercentage);
             }
-
         }
 
         return vulnerabilitiesByAreaDataSet;

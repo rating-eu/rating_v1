@@ -72,6 +72,7 @@ import { HermeneutDataRiskLevelConfigMgmModule } from './data-risk-level-config-
 import { HermeneutQuestionMgmModule } from './question-mgm/question-mgm.module';
 import { HermeneutVulnerabilityAreaMgmModule } from './vulnerability-area-mgm/vulnerability-area-mgm.module';
 import { HermeneutSystemConfigMgmModule } from './system-config-mgm/system-config-mgm.module';
+import { HermeneutQuestionRelevanceMgmModule } from './question-relevance-mgm/question-relevance-mgm.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -131,6 +132,7 @@ import { HermeneutSystemConfigMgmModule } from './system-config-mgm/system-confi
         HermeneutDataRiskLevelConfigMgmModule,
         HermeneutVulnerabilityAreaMgmModule,
         HermeneutSystemConfigMgmModule,
+        HermeneutQuestionRelevanceMgmModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

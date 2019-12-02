@@ -15,7 +15,17 @@
  *
  */
 
-import {Component, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
+import {
+    ChangeDetectorRef,
+    Component,
+    HostListener,
+    Input,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    SimpleChanges,
+    ViewRef
+} from '@angular/core';
 import {QuestionControlService} from './services/question-control.service';
 import {FormGroup} from '@angular/forms';
 import {QuestionMgm, QuestionMgmService} from '../../../../entities/question-mgm';
@@ -40,9 +50,15 @@ import {HttpResponse} from '@angular/common/http';
 import {switchMap} from 'rxjs/operators';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {PartialSubmitDialogComponent} from '../partial-submit-dialog/partial-submit-dialog.component';
-import {MyCompanyMgm, MyCompanyMgmService} from "../../../../entities/my-company-mgm";
-import {Role} from "../../../../entities/enumerations/Role.enum";
-import {ContainerType} from "../../../../entities/enumerations/ContainerType.enum";
+import {MyCompanyMgm, MyCompanyMgmService} from '../../../../entities/my-company-mgm';
+import {Role} from '../../../../entities/enumerations/Role.enum';
+import {ContainerType} from '../../../../entities/enumerations/ContainerType.enum';
+import {VulnerabilityAreaMgm, VulnerabilityAreaMgmService} from '../../../../entities/vulnerability-area-mgm';
+import {AnswerLikelihood} from "../../../../entities/enumerations/AnswerLikelihood.enum";
+import {AnswerWeightMgm, AnswerWeightMgmService} from "../../../../entities/answer-weight-mgm";
+import {QuestionType} from "../../../../entities/enumerations/QuestionType.enum";
+import {VulnerabilityRadarService} from "../../../../dashboard/vulnerability-radar-widget/vulnerability-radar.service";
+import {QuestionRelevanceMgm, QuestionRelevanceMgmService} from "../../../../entities/question-relevance-mgm";
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -50,7 +66,7 @@ import {ContainerType} from "../../../../entities/enumerations/ContainerType.enu
     styleUrls: ['../../../css/radio.css', 'dynamic-form.css'],
     providers: [QuestionControlService]
 })
-export class DynamicFormComponent implements OnInit, OnDestroy {
+export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
 
     private static YES = 'YES';
     private static NO = 'NO';
@@ -61,25 +77,30 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     public loading = false;
     public debug = false;
 
-    roleEnum = Role;
-    purposeEnum = QuestionnairePurpose;
+    public roleEnum = Role;
+    public purposeEnum = QuestionnairePurpose;
+    public answerLikelihoodEnum = AnswerLikelihood;
+    public questionTypeEnum = QuestionType;
 
-    questionsArray: QuestionMgm[];
-    humanQuestionsArray: QuestionMgm[];
-    itQuestionsArray: QuestionMgm[];
-    physicalQuestionsArray: QuestionMgm[];
-    currentTabIndex: number;
+    public questionsArray: QuestionMgm[];
+    public humanQuestionsArray: QuestionMgm[];
+    public itQuestionsArray: QuestionMgm[];
+    public physicalQuestionsArray: QuestionMgm[];
+    public currentTabIndex: number;
 
     /**
      * Map QuestionID ==> Question
      */
-    questionsArrayMap: Map<number, QuestionMgm>;
-    form: FormGroup;
-    cisoQuestionnaireStatus: QuestionnaireStatusMgm;
-    externalQuestionnaireStatus: QuestionnaireStatusMgm;
+    public questionsArrayMap: Map<number, QuestionMgm>;
+    public form: FormGroup;
+    public cisoQuestionnaireStatus: QuestionnaireStatusMgm;
+    public externalQuestionnaireStatus: QuestionnaireStatusMgm;
 
-    cisoMyAnswers: MyAnswerMgm[];
-    externalMyAnswers: MyAnswerMgm[];
+    public questionRelevances: QuestionRelevanceMgm[];
+    public questionRelevancesMap: Map<number/*QuestionID*/, QuestionRelevanceMgm>;
+
+    public cisoMyAnswers: MyAnswerMgm[];
+    public externalMyAnswers: MyAnswerMgm[];
 
     private account: Account;
     private role: Role;
@@ -88,18 +109,41 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
     private _questionnaire: QuestionnaireMgm;
 
+    public containerTypeEnum = ContainerType;
+
+    private _containerType: ContainerType;
+    private _areaID: number;
+
+    public area: VulnerabilityAreaMgm;
+
+    private answerWeights: AnswerWeightMgm[];
+    public answerWeightsMap: Map<QuestionType, Map<AnswerLikelihood, AnswerWeightMgm>>;
+
+    public questionAreasMap: Map<number/*QuestionID*/, Map<number/*areaID*/, VulnerabilityAreaMgm>>;
+
+    // VulnerabilityRadar Data
+    public vulnerabilityRadarData: Map<number/*AreaID*/, Map<ContainerType, number/*Vulnerability*/>>;
+
+    // Vulnerability formula
+    public vulnerabilityFormula: string = "Vulnerability=\\frac{\\sum_{i=1}^nAnswer_i.Vulnerability \\times Answer_i.Weight}{\\sum_{i=1}^nAnswer_i.Weight}";
+
     constructor(private questionControlService: QuestionControlService,
                 private dataSharingSerivce: DataSharingService,
                 private router: Router,
                 private myAnswerService: MyAnswerMgmService,
                 private answerService: AnswerMgmService,
+                private answerWeightService: AnswerWeightMgmService,
                 private questionnaireStatusService: QuestionnaireStatusMgmService,
                 private myCompanyService: MyCompanyMgmService,
                 private accountService: AccountService,
                 private userService: UserService,
                 private questionService: QuestionMgmService,
                 private threatAgentService: ThreatAgentMgmService,
-                private modalService: NgbModal) {
+                private vulnerabilityAreaService: VulnerabilityAreaMgmService,
+                private vulnerabilityRadarService: VulnerabilityRadarService,
+                private questionRelevenceService: QuestionRelevanceMgmService,
+                private modalService: NgbModal,
+                private changeDetector: ChangeDetectorRef) {
     }
 
     @Input()
@@ -109,6 +153,47 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
     get questionnaire() {
         return this._questionnaire;
+    }
+
+    @Input()
+    set containerType(containerType: ContainerType) {
+        this._containerType = containerType;
+
+        if (this._containerType) {
+            switch (this._containerType) {
+                case ContainerType.HUMAN: {
+                    this.currentTabIndex = 0;
+                    break;
+                }
+                case ContainerType.IT: {
+                    this.currentTabIndex = 1;
+                    break;
+                }
+                case ContainerType.PHYSICAL: {
+                    this.currentTabIndex = 2;
+                    break;
+                }
+            }
+        }
+    }
+
+    get containerType(): ContainerType {
+        return this._containerType;
+    }
+
+    @Input()
+    set areaID(areaID: number) {
+        this._areaID = areaID;
+
+        if (this._areaID) {
+            this.vulnerabilityAreaService.find(this._areaID).toPromise().then((response: HttpResponse<VulnerabilityAreaMgm>) => {
+                this.area = response.body;
+            });
+        }
+    }
+
+    get areaID(): number {
+        return this._areaID;
     }
 
     isValid(questionID) {
@@ -233,15 +318,17 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                     }
                 }
 
+                this.buildQuestionAreasMap();
+
                 return this.userService.find(this.account.login);
             }
         );
 
         const myCompany$ = user$.pipe(
             switchMap((response: HttpResponse<User>) => {
-                if(Array.isArray(response.body)){
+                if (Array.isArray(response.body)) {
                     this.user = response.body[0];
-                }else{
+                } else {
                     this.user = response.body;
                 }
 
@@ -259,6 +346,13 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 // Path Values
                 if (this.cisoQuestionnaireStatus && this.cisoQuestionnaireStatus.answers && this.cisoQuestionnaireStatus.answers.length > 0) {
                     this.cisoMyAnswers = this.cisoQuestionnaireStatus.answers;
+
+                    // Fetch Vulnerabilities by Area
+                    this.vulnerabilityRadarService.getVulnerabilityRadar(this.cisoQuestionnaireStatus.id)
+                        .toPromise()
+                        .then((response: HttpResponse<Map<number, Map<ContainerType, number>>>) => {
+                            this.vulnerabilityRadarData = response.body;
+                        });
 
                     // Restore the checked status of the Form inputs
                     this.form.patchValue(this.myAnswersToFormValue(this.cisoMyAnswers, this.questionsArrayMap));
@@ -278,15 +372,55 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
                     this.resizeAnswerHeighs();
                 }
+
+                if (this.questionnaire.purpose === QuestionnairePurpose.SELFASSESSMENT && this.cisoQuestionnaireStatus) {
+                    switch (this._questionnaire.purpose) {
+                        case QuestionnairePurpose.SELFASSESSMENT: {
+                            this.questionRelevenceService.findAllByQuestionnaireStatus(this.cisoQuestionnaireStatus.id)
+                                .toPromise()
+                                .then(
+                                    (response: HttpResponse<QuestionRelevanceMgm[]>) => {
+                                        if (response && response.body) {
+                                            this.questionRelevances = response.body;
+
+                                            this.questionRelevancesMap = new Map();
+                                            this.questionRelevances.forEach((relevance: QuestionRelevanceMgm) => {
+                                                this.questionRelevancesMap.set(relevance.question.id, relevance);
+                                            });
+
+                                            if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
+                                                this.changeDetector.detectChanges();
+                                            }
+                                        }
+                                    }
+                                );
+
+                            break;
+                        }
+                    }
+                }
             }
         );
+
+        this.answerWeightService.query().toPromise()
+            .then((response: HttpResponse<AnswerWeightMgm[]>) => {
+                if (response && response.body) {
+                    this.answerWeights = response.body;
+
+                    this.buildAnswerWeightsMap();
+                }
+            });
     }
 
     ngOnDestroy() {
-        if (this.subscriptions) {
+        if (this.subscriptions && this.subscriptions.length) {
             this.subscriptions.forEach((subscription: Subscription) => {
                 subscription.unsubscribe();
             });
+        }
+
+        if (this.changeDetector) {
+            this.changeDetector.detach();
         }
     }
 
@@ -787,5 +921,156 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         } else {
 
         }
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        console.log("OnCHanges...");
+
+        this.buildQuestionAreasMap();
+    }
+
+    private buildQuestionAreasMap() {
+        if (this.questionsArray && this.questionsArray.length && this._containerType && this._areaID) {
+            this.questionAreasMap = new Map();
+
+            this.questionsArray.forEach((question: QuestionMgm) => {
+                const areas: VulnerabilityAreaMgm[] = question.areas;
+
+                const areasMap: Map<number/*AreaID*/, VulnerabilityAreaMgm> = new Map();
+
+                if (areas && areas.length) {
+                    areas.forEach((area: VulnerabilityAreaMgm) => {
+                        areasMap.set(area.id, area);
+                    });
+                }
+
+                this.questionAreasMap.set(question.id, areasMap);
+            });
+
+            if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
+                this.changeDetector.detectChanges();
+            }
+        }
+    }
+
+    private buildAnswerWeightsMap() {
+        if (this.answerWeights && this.answerWeights.length) {
+            this.answerWeightsMap = new Map();
+
+            this.answerWeights.forEach((answerWeight: AnswerWeightMgm) => {
+                const questionType: QuestionType = answerWeight.questionType;
+                const answerLikelihood: AnswerLikelihood = answerWeight.likelihood;
+
+                let innerMap: Map<AnswerLikelihood, AnswerWeightMgm> = this.answerWeightsMap.get(questionType);
+
+                if (!innerMap) {
+                    innerMap = new Map();
+                    this.answerWeightsMap.set(questionType, innerMap);
+                }
+
+                innerMap.set(answerLikelihood, answerWeight);
+            });
+        }
+    }
+
+    /*private filterQuestionsByArea() {
+        console.log("Filtering Questions by Area...");
+
+        if (this.questionAreasMap) {
+            if (this.humanQuestionsArray) {
+                this.humanQuestionsArray = this.humanQuestionsArray.filter((question: QuestionMgm) => {
+                    return this.questionAreasMap.get(question.id).has(this._areaID);
+                });
+            }
+
+            if (this.itQuestionsArray) {
+                this.itQuestionsArray = this.itQuestionsArray.filter((question: QuestionMgm) => {
+                    return this.questionAreasMap.get(question.id).has(this._areaID);
+                });
+            }
+
+            if (this.physicalQuestionsArray) {
+                this.physicalQuestionsArray = this.physicalQuestionsArray.filter((question: QuestionMgm) => {
+                    return this.questionAreasMap.get(question.id).has(this._areaID);
+                });
+            }
+
+            if (this.changeDetector) {
+                this.changeDetector.detach();
+            }
+        }
+    }*/
+
+    public ratingChange(newRelevance: number, questionID: number) {
+        if (this.questionRelevancesMap.has(questionID)) {
+            const oldRelevance: number = this.questionRelevancesMap.get(questionID).relevance;
+
+            if (oldRelevance === newRelevance) {
+                this.questionRelevancesMap.get(questionID).relevance = oldRelevance - 1;
+            } else {
+                this.questionRelevancesMap.get(questionID).relevance = newRelevance;
+            }
+        }
+    }
+
+    updateQuestionRelevances() {
+        if (this.questionRelevances && this.questionRelevances.length) {
+            this.questionRelevenceService.updateAll(this.questionRelevances)
+                .toPromise()
+                .then((response: HttpResponse<QuestionRelevanceMgm[]>) => {
+                    // Redirect to dashboard
+                    this.router.navigate(['/dashboard']);
+                });
+        }
+    }
+
+    public vulnerabilityTooltip(questionID: number): string {
+        if (this.form && this.form.value[questionID]) {
+            const answer: AnswerMgm = this.form.value[questionID];
+
+            const answerLikelihoodNumeric: number = Number(AnswerLikelihood[answer.likelihood]);
+            const vulnerabilityNumeric: number = this.numericAnswerLikelihoodToVulnerability(answerLikelihoodNumeric);
+            const vulnerability: string = AnswerLikelihood[vulnerabilityNumeric];
+
+            let tooltip: string = vulnerability + ' Vulnerability';
+
+            // TitleCase
+            tooltip = tooltip.toLowerCase()
+                .replace('_', ' ') // Replace _ with spaces
+                .split(' ') // Array of words
+                .map((word) => { // TitleCase word by word
+                    return (word.charAt(0).toUpperCase() + word.slice(1));
+                })
+                .join(' '); // Concat the TitleCased words with a space as the separator
+
+            return tooltip;
+        } else {
+            return null;
+        }
+    }
+
+    private numericAnswerLikelihoodToVulnerability(answerLikelihood: number): number {
+        const MAX_ANSWER_LIKELIHOOD: number = AnswerLikelihood.LOW;
+        let vulnerability: number = null;
+
+        switch (answerLikelihood) {
+            case 0: {
+                vulnerability = 0;
+                break;
+            }
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5: {
+                vulnerability = Math.abs(answerLikelihood - MAX_ANSWER_LIKELIHOOD) + 1;
+                break;
+            }
+            default: {
+                vulnerability = answerLikelihood;
+            }
+        }
+
+        return vulnerability;
     }
 }

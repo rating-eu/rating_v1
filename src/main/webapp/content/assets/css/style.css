@@ -2340,7 +2340,7 @@ input[type="radio"]:disabled:checked:after,
     border-color: #91bbe9;
 }
 
-.alert-primary {
+/*.alert-primary {
     color: #5d6dc3;
     background-color: #cdd2ec;
     border-color: #a7b0df;
@@ -2385,7 +2385,7 @@ input[type="radio"]:disabled:checked:after,
     color: #313a46;
     background-color: #afb9c7;
     border-color: #5b6c82;
-}
+}*/
 
 .jq-toast-single {
     border-radius: 0;
@@ -3683,14 +3683,14 @@ textarea.form-control {
    Tables
 ============= */
 
-.table > tbody > tr > td,
+/*.table > tbody > tr > td,
 .table > tbody > tr > th,
 .table > tfoot > tr > td,
 .table > tfoot > tr > th,
 .table > thead > tr > td,
 .table > thead > tr > th {
     padding: 9px 8px;
-}
+}*/
 
 .table-sm td,
 .table-sm th {

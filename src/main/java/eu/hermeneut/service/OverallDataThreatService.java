@@ -46,4 +46,6 @@ public interface OverallDataThreatService {
      * @return the entity
      */
     OverallDataThreat findOneByDataOperation(Long operationID);
+
+    List<OverallDataThreat> findAllByCompanyProfile(Long companyID);
 }

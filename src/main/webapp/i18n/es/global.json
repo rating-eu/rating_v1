@@ -62,6 +62,7 @@
                 "dataRiskLevelConfigMgm": "Data Risk Level Config",
                 "vulnerabilityAreaMgm": "Vulnerability Area",
                 "systemConfigMgm": "System Config",
+                "questionRelevanceMgm": "Question Relevance",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

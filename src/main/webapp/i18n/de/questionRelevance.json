@@ -1,0 +1,24 @@
+
+{
+    "hermeneutApp": {
+        "questionRelevance" : {
+            "home": {
+                "title": "Question Relevances",
+                "createLabel": "Question Relevance erstellen",
+                "createOrEditLabel": "Question Relevance erstellen oder bearbeiten"
+            },
+            "created": "Question Relevance erstellt mit ID {{ param }}",
+            "updated": "Question Relevance aktualisiert mit ID {{ param }}",
+            "deleted": "Question Relevance gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Question Relevance {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Question Relevance"
+            },
+            "relevance": "Relevance",
+            "question": "Question",
+            "status": "Status"
+        }
+    }
+}

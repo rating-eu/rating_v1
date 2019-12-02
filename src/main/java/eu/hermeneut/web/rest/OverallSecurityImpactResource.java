@@ -103,6 +103,14 @@ public class OverallSecurityImpactResource {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(overallSecurityImpact));
     }
 
+    @GetMapping("/overall-security-impacts/company-profile/{companyProfileID}")
+    @Timed
+    public List<OverallSecurityImpact> getOverallSecurityImpactsByCompanyProfile(@PathVariable Long companyProfileID){
+        log.debug("REST request to get OverallSecurityImpacts by CompanyProfile : {}", companyProfileID);
+
+        return this.overallSecurityImpactService.findAllByCompanyProfile(companyProfileID);
+    }
+
     /**
      * GET  /overall-security-impacts/operation/:operationID : get the overallSecurityImpact.
      *
