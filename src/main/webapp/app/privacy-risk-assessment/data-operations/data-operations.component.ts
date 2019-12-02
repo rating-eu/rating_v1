@@ -33,7 +33,7 @@ export class DataOperationsComponent implements OnInit, OnDestroy {
 
     public securityPillarEnum = SecurityPillar;
     public securityPillars: SecurityPillar[];
-    public securityPillarsToggleMap: Map<SecurityPillar, boolean>;
+    public securityPillarsToggleByDataOperationMap: Map<number/*DataOperationID*/, Map<SecurityPillar, boolean>>;
 
     public myCompany: MyCompanyMgm;
 
@@ -78,12 +78,6 @@ export class DataOperationsComponent implements OnInit, OnDestroy {
         this.subscriptions = [];
 
         this.securityPillars = Object.keys(SecurityPillar).map((key) => SecurityPillar[key]);
-        this.securityPillarsToggleMap = new Map();
-
-        this.securityPillars.forEach((securityPillar: SecurityPillar) => {
-            this.securityPillarsToggleMap.set(securityPillar, false);
-        });
-
         this.threatAreas = Object.keys(ThreatArea).map((key) => ThreatArea[key]);
 
         this.dataImpacts = Object.keys(DataImpact).map((key) => DataImpact[key]);
@@ -128,6 +122,8 @@ export class DataOperationsComponent implements OnInit, OnDestroy {
 
                         this.dataThreatsByDataOperationAndThreatAreaMap = new Map();
 
+                        this.securityPillarsToggleByDataOperationMap = new Map();
+
                         this.dataOperations.forEach((operation: DataOperationMgm) => {
                             this.dataOperationsToggleMap.set(operation.id, false);
 
@@ -150,6 +146,15 @@ export class DataOperationsComponent implements OnInit, OnDestroy {
                             }
 
                             this.dataThreatsByDataOperationAndThreatAreaMap.set(operation.id, threatsMap);
+
+                            // Security Pillars Toggle Map
+                            const securityPillarsToggleMap: Map<SecurityPillar, boolean> = new Map();
+
+                            this.securityPillars.forEach((securityPillar: SecurityPillar) => {
+                                securityPillarsToggleMap.set(securityPillar, false);
+                            });
+
+                            this.securityPillarsToggleByDataOperationMap.set(operation.id, securityPillarsToggleMap);
                         });
 
                         if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {

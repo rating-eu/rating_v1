@@ -128,7 +128,7 @@
                 <td></td>
                 <td class="text-left">
                     <ul class="list-unstyled"
-                        *ngIf="securityPillars && securityPillarsToggleMap && securityImpactsByDataOperationAndSecurityPillarMap && securityImpactsByDataOperationAndSecurityPillarMap.has(dataOperation.id)">
+                        *ngIf="securityPillars && securityPillarsToggleByDataOperationMap && securityPillarsToggleByDataOperationMap.has(dataOperation.id) && securityImpactsByDataOperationAndSecurityPillarMap && securityImpactsByDataOperationAndSecurityPillarMap.has(dataOperation.id)">
                         <li *ngFor="let pillar of securityPillars" class="my-2" style="font-size: larger">
                             <span
                                 *ngIf="securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar)"
@@ -149,7 +149,7 @@
                                     }"
                                    [matTooltip]="securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact + ' Impact' | replace:'_':' ' | titlecase"
                                    [matTooltipPosition]="'above'"
-                                   (click)="securityPillarsToggleMap.set(pillar, !securityPillarsToggleMap.get(pillar))"
+                                   (click)="securityPillarsToggleByDataOperationMap.get(dataOperation.id).set(pillar, !securityPillarsToggleByDataOperationMap.get(dataOperation.id).get(pillar))"
                                 >
                                     {{pillar | titlecase | slice:0:1}}
                                 </i>
@@ -179,7 +179,7 @@
                                 </i>-->
                             </span>
                             <span
-                                *ngIf="securityPillarsToggleMap.has(pillar) && securityPillarsToggleMap.get(pillar)"
+                                *ngIf="securityPillarsToggleByDataOperationMap.get(dataOperation.id).has(pillar) && securityPillarsToggleByDataOperationMap.get(dataOperation.id).get(pillar)"
                                 style="font-size: medium;"
                                 [ngClass]="{
                                     'low-border-bottom': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.LOW,
