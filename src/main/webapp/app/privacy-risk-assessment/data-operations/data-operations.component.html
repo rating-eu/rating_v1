@@ -202,7 +202,7 @@
                             }"
                                   [matTooltip]="dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood + ' Likelihood' | replace:'_':' ' | titlecase"
                                   [matTooltipPosition]="'above'"
-                                  class="badge badge-pill badge-secondary pointer">{{dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood | replace:'_':' ' | titlecase}}
+                                  class="badge badge-pill badge-secondary">{{dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood | replace:'_':' ' | titlecase}}
                         </span>
                         </li>
                     </ul>
