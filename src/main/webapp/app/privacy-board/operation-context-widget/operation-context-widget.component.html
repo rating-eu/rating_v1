@@ -34,9 +34,9 @@
                         <td>{{dataOperation.processingMeans}}</td>
                         <td>{{dataOperation.dataProcessor}}</td>
                         <td>
-                            <ul>
+                            <ul class="list-unstyled">
                                 <li *ngFor="let recipient of dataOperation.recipients">
-                                    {{recipient.name}}&nbsp;-&nbsp;{{recipient.type | titlecase}}
+                                    <span class="badge badge-pill badge-primary">{{recipient.name}}</span>&nbsp;-&nbsp;{{recipient.type | titlecase}}
                                 </li>
                             </ul>
                         </td>
