@@ -23,18 +23,18 @@
     <table class="table table-striped">
         <thead class="thead-light">
         <tr>
-            <th class="text-center" style="font-size: medium"><span jhiTranslate="hermeneutApp.dataOperation.title">Title</span>
+            <th class="text-center" style="font-size: medium; width: 20%;"><span jhiTranslate="hermeneutApp.dataOperation.title">Title</span>
             </th>
-            <th class="text-center" style="font-size: medium"><span>Impact</span></th>
-            <th class="text-center" style="font-size: medium"><span>Likelihood</span></th>
-            <th class="text-center" style="font-size: medium"><span>Overall Risk</span></th>
+            <th class="text-center" style="font-size: medium; width: 20%;"><span>Impact</span></th>
+            <th class="text-center" style="font-size: medium; width: 30%;"><span>Likelihood</span></th>
+            <th class="text-center" style="font-size: medium; width: 15%;"><span>Overall Risk</span></th>
             <!--<th><span jhiTranslate="hermeneutApp.dataOperation.processedData">Processed Data</span></th>
             <th><span jhiTranslate="hermeneutApp.dataOperation.processingPurpose">Processing Purpose</span></th>
             <th><span jhiTranslate="hermeneutApp.dataOperation.dataSubject">Data Subject</span></th>
             <th><span jhiTranslate="hermeneutApp.dataOperation.processingMeans">Processing Means</span></th>
             <th><span jhiTranslate="hermeneutApp.dataOperation.dataProcessor">Data Processor</span></th>
             <th><span jhiTranslate="hermeneutApp.dataOperation.companyProfile">Company Profile</span></th>-->
-            <th style="font-size: medium"></th>
+            <th style="font-size: medium; width: 15%;"></th>
         </tr>
         </thead>
         <tbody>
@@ -189,21 +189,88 @@
                         </li>
                     </ul>
                 </td>
-                <td class="text-center">
+                <td class="text-left">
                     <ul class="list-unstyled" *ngIf="threatAreas && dataThreatsByDataOperationAndThreatAreaMap
                     && dataThreatsByDataOperationAndThreatAreaMap.has(dataOperation.id)">
                         <li *ngFor="let area of threatAreas" class="my-2" style="font-size: larger">
-                            {{area | replace:'_':' ' | titlecase}}&nbsp;
                             <span *ngIf="dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area)"
-                                  style="font-size: medium" [ngClass]="{
-                                'low': dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood === dataThreatLikelihoodEnum.LOW,
-                                'medium': dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood === dataThreatLikelihoodEnum.MEDIUM,
-                                'high': dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood === dataThreatLikelihoodEnum.HIGH
-                            }"
-                                  [matTooltip]="dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood + ' Likelihood' | replace:'_':' ' | titlecase"
-                                  [matTooltipPosition]="'above'"
-                                  class="badge badge-pill badge-secondary">{{dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood | replace:'_':' ' | titlecase}}
-                        </span>
+                                  class="badge badge-pill badge-secondary pointer"
+                                  style="font-size: large;" [ngClass]="{
+                                    'low': dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood === dataThreatLikelihoodEnum.LOW,
+                                    'medium': dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood === dataThreatLikelihoodEnum.MEDIUM,
+                                    'high': dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood === dataThreatLikelihoodEnum.HIGH
+                                   }"
+                            >
+                                <!--{{dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood | replace:'_':' ' | titlecase}}-->
+                                <i class="fas"
+                                   [ngClass]="{
+                                     'fa-network-wired': area === threatAreaEnum.NETWORK_AND_TECHNICAL_RESOURCES,
+                                     'fa-id-card': area === threatAreaEnum.PROCEDURES_RELATED_TO_THE_PROCESSING_OF_PERSONAL_DATA,
+                                     'fa-users': area === threatAreaEnum.PEOPLE_INVOLVED_IN_THE_PROCESSING_OF_PERSONAL_DATA,
+                                     'fa-briefcase': area === threatAreaEnum.BUSINESS_SECTOR_AND_SCALE_OF_PROCESSING
+                                    }"
+                                   [matTooltip]="dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood + ' Likelihood' | replace:'_':' ' | titlecase"
+                                   [matTooltipPosition]="'above'"
+                                   (click)="threatAreasToggleByDataOperationMap.get(dataOperation.id).set(area, !threatAreasToggleByDataOperationMap.get(dataOperation.id).get(area))"
+                                >
+                                </i>
+                            </span>
+                            <span
+                                *ngIf="threatAreasToggleByDataOperationMap.get(dataOperation.id).has(area) && threatAreasToggleByDataOperationMap.get(dataOperation.id).get(area)"
+                                style="font-size: medium;"
+                                [ngClass]="{
+                                    'low-border-bottom': dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood === dataThreatLikelihoodEnum.LOW,
+                                    'medium-border-bottom': dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood === dataThreatLikelihoodEnum.MEDIUM,
+                                    'high-border-bottom': dataThreatsByDataOperationAndThreatAreaMap.get(dataOperation.id).get(area).likelihood === dataThreatLikelihoodEnum.HIGH
+                                }">{{area | replace:'_':' ' | titlecase}}</span>
+                            <!--<span-->
+                            <!--*ngIf="securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar)"-->
+                            <!--class="badge badge-pill badge-secondary pointer"-->
+                            <!--style="font-size: large"-->
+                            <!--[ngClass]="{-->
+                            <!--'low': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.LOW,-->
+                            <!--'medium': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.MEDIUM,-->
+                            <!--'high': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.HIGH,-->
+                            <!--'very-high': securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact === dataImpactEnum.VERY_HIGH-->
+                            <!--}"-->
+                            <!--&gt;-->
+                            <!--<i class="fas"-->
+                            <!--[ngClass]="{-->
+                            <!--'fa-user-lock': pillar === securityPillarEnum.CONFIDENTIALITY,-->
+                            <!--'fa-handshake': pillar === securityPillarEnum.INTEGRITY,-->
+                            <!--'fa-business-time': pillar === securityPillarEnum.AVAILABILITY-->
+                            <!--}"-->
+                            <!--[matTooltip]="securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact + ' Impact' | replace:'_':' ' | titlecase"-->
+                            <!--[matTooltipPosition]="'above'"-->
+                            <!--(click)="securityPillarsToggleByDataOperationMap.get(dataOperation.id).set(pillar, !securityPillarsToggleByDataOperationMap.get(dataOperation.id).get(pillar))"-->
+                            <!--&gt;-->
+                            <!--{{pillar | titlecase | slice:0:1}}-->
+                            <!--</i>-->
+                            <!--<i *ngSwitchCase="securityPillarEnum.CONFIDENTIALITY"
+                               class="fas fa-user-lock"
+                               (click)="securityPillarsToggleMap.set(pillar, !securityPillarsToggleMap.get(pillar))"
+                               [matTooltip]="securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact + ' Impact' | replace:'_':' ' | titlecase"
+                               [matTooltipPosition]="'above'">&nbsp;C<span
+                                *ngIf="securityPillarsToggleMap.has(pillar) && securityPillarsToggleMap.get(pillar)"
+                                style="font-size: medium;">onfidentiality</span>
+                            </i>
+                            <i *ngSwitchCase="securityPillarEnum.INTEGRITY"
+                               class="fas fa-handshake"
+                               (click)="securityPillarsToggleMap.set(pillar, !securityPillarsToggleMap.get(pillar))"
+                               [matTooltip]="securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact + ' Impact' | replace:'_':' ' | titlecase"
+                               [matTooltipPosition]="'above'">&nbsp;I<span
+                                *ngIf="securityPillarsToggleMap.has(pillar) && securityPillarsToggleMap.get(pillar)"
+                                style="font-size: medium;">ntegrity</span>
+                            </i>
+                            <i *ngSwitchCase="securityPillarEnum.AVAILABILITY"
+                               class="fas fa-business-time"
+                               (click)="securityPillarsToggleMap.set(pillar, !securityPillarsToggleMap.get(pillar))"
+                               [matTooltip]="securityImpactsByDataOperationAndSecurityPillarMap.get(dataOperation.id).get(pillar).impact  + ' Impact' | replace:'_':' ' | titlecase"
+                               [matTooltipPosition]="'above'">&nbsp;A<span
+                                *ngIf="securityPillarsToggleMap.has(pillar) && securityPillarsToggleMap.get(pillar)"
+                                style="font-size: medium;">vailability</span>
+                            </i>-->
+                            <!--</span>-->
                         </li>
                     </ul>
                 </td>

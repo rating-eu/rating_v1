@@ -60,6 +60,8 @@ export class DataOperationsComponent implements OnInit, OnDestroy {
     public dataRiskLevelEnum = DataRiskLevel;
     public dataRiskLevels: DataRiskLevel[];
 
+    public threatAreaEnum = ThreatArea;
+    public threatAreasToggleByDataOperationMap: Map<number/*DataOperationID*/, Map<ThreatArea, boolean>>;
     public threatAreas: ThreatArea[];
     public dataThreatsByDataOperationAndThreatAreaMap: Map<number/*OperationID*/, Map<ThreatArea, DataThreatMgm>>;
 
@@ -124,6 +126,8 @@ export class DataOperationsComponent implements OnInit, OnDestroy {
 
                         this.securityPillarsToggleByDataOperationMap = new Map();
 
+                        this.threatAreasToggleByDataOperationMap = new Map();
+
                         this.dataOperations.forEach((operation: DataOperationMgm) => {
                             this.dataOperationsToggleMap.set(operation.id, false);
 
@@ -155,6 +159,15 @@ export class DataOperationsComponent implements OnInit, OnDestroy {
                             });
 
                             this.securityPillarsToggleByDataOperationMap.set(operation.id, securityPillarsToggleMap);
+
+                            // Threat Areas Toggle
+                            const threatAreasToggleMap: Map<ThreatArea, boolean> = new Map();
+
+                            this.threatAreas.forEach((area: ThreatArea) => {
+                               threatAreasToggleMap.set(area, false);
+                            });
+
+                            this.threatAreasToggleByDataOperationMap.set(operation.id, threatAreasToggleMap);
                         });
 
                         if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
