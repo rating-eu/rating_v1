@@ -34,11 +34,28 @@
                         <td>{{dataOperation.processingMeans}}</td>
                         <td>{{dataOperation.dataProcessor}}</td>
                         <td>
-                            <ul class="list-unstyled">
-                                <li *ngFor="let recipient of dataOperation.recipients">
-                                    <span class="badge badge-pill badge-primary">{{recipient.name}}</span>&nbsp;-&nbsp;{{recipient.type | titlecase}}
-                                </li>
-                            </ul>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>Internal</h6>
+                                    <ul class="list-unstyled">
+                                        <ng-container *ngFor="let recipient of dataOperation.recipients">
+                                            <li *ngIf="recipient.type === recipientTypeEnum.INTERNAL">
+                                                <span class="badge badge-pill badge-primary">{{recipient.name}}</span>
+                                            </li>
+                                        </ng-container>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>External</h6>
+                                    <ul class="list-unstyled">
+                                        <ng-container *ngFor="let recipient of dataOperation.recipients">
+                                            <li *ngIf="recipient.type === recipientTypeEnum.EXTERNAL">
+                                                <span class="badge badge-pill badge-primary">{{recipient.name}}</span>
+                                            </li>
+                                        </ng-container>
+                                    </ul>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                     </tbody>
