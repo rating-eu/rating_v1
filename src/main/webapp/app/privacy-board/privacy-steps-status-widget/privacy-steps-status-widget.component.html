@@ -3,6 +3,13 @@
 </ng-container>
 <ng-container *ngIf="!loading">
     <mat-accordion *ngIf="dataOperation">
+        <div *ngIf="dataOperation.name" class="row">
+            <div class="col-md-12 text-center">
+                <h3>
+                    <a href="javascript:void(0);" class="collapse-link">{{dataOperation.name}}</a>
+                </h3>
+            </div>
+        </div>
         <mat-expansion-panel *ngIf="privacyBoardStatus"
                              [expanded]="privacyBoardStatus.operationDefinition !== statusEnum.FULL
                                 || privacyBoardStatus.impactEvaluation !== statusEnum.FULL
@@ -10,15 +17,15 @@
                                 || privacyBoardStatus.riskEvaluation !== statusEnum.FULL">
             <mat-expansion-panel-header>
                 <mat-panel-title>
-                    <h2>
+                    <h2 style="font-size: large;">
                         <a href="javascript:void(0);" class="collapse-link">Privacy Board</a>
                     </h2>
                 </mat-panel-title>
-                <mat-panel-description *ngIf="dataOperation.name">
+                <!--<mat-panel-description *ngIf="dataOperation.name">
                     <h3>
                         <a href="javascript:void(0);" class="collapse-link">{{dataOperation.name}}</a>
                     </h3>
-                </mat-panel-description>
+                </mat-panel-description>-->
             </mat-expansion-panel-header>
 
             <div class="table-responsive">
