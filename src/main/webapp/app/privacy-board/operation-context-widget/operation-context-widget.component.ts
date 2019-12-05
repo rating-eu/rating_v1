@@ -1,5 +1,6 @@
-import {Component, Input, OnInit, ViewRef} from '@angular/core';
-import {DataOperationMgm} from "../../entities/data-operation-mgm";
+import {Component, Input, OnInit} from '@angular/core';
+import {DataOperationMgm} from '../../entities/data-operation-mgm';
+import {DataRecipientType} from '../../entities/enumerations/gdpr/DataRecipientType.enum';
 
 @Component({
     selector: 'jhi-operation-context-widget',
@@ -9,6 +10,7 @@ import {DataOperationMgm} from "../../entities/data-operation-mgm";
 export class OperationContextWidgetComponent implements OnInit {
 
     public loading: boolean;
+    public recipientTypeEnum = DataRecipientType;
 
     // Properties
     private _dataOperation: DataOperationMgm;

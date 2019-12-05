@@ -190,6 +190,20 @@ public class ChartController {
                 float totalVulnerabilityPercentage = Precision.round(vulnerabilitiesSum / maxContainerVulnerability, 2);
                 totalVulnerabilitiesByContainer.put(containerType, totalVulnerabilityPercentage);
             }
+
+            // Calculate the OverallVulnerability for all the Containers
+            float overallVulnerabilitySum = 0L;
+            int overallVulnerabilitiesCount = 0;
+
+            for(ContainerType containerType: ContainerType.values()){
+                if(!ContainerType.INTANGIBLE.equals(containerType)){
+                    overallVulnerabilitySum += totalVulnerabilitiesByContainer.get(containerType);
+                    overallVulnerabilitiesCount++;
+                }
+            }
+
+            float overallVulnerabilityPercentage = Precision.round(overallVulnerabilitySum/overallVulnerabilitiesCount, 2);
+            totalVulnerabilitiesByContainer.put(ContainerType.INTANGIBLE, overallVulnerabilityPercentage);
         }
 
         return vulnerabilitiesByAreaDataSet;
