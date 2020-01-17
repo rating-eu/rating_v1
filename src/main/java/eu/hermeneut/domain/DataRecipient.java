@@ -28,7 +28,7 @@ public class DataRecipient implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", length = 2000, nullable = false)
     private String name;
 
     @NotNull
