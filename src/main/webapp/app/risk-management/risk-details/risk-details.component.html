@@ -204,7 +204,7 @@
                         </tbody>
                     </table>
                     <ngb-tabset>
-                        <ngb-tab title="Direct Cost">
+                        <ngb-tab title="Attack Costs">
                             <ng-template ngbTabContent>
                                 <div class="col-md-12" *ngIf="directImpactTable.length === 0">
                                     <div class="alert alert-danger text-center" role="alert">
@@ -315,8 +315,8 @@
                                 </table>
                             </ng-template>
                         </ngb-tab>
-                        <ngb-tab title="Indirect Cost">
-                            <ng-template ngbTabContent>
+                        <!--<ngb-tab title="Indirect Cost">-->
+                            <!--<ng-template ngbTabContent>
                                 <div class="col-md-12" *ngIf="indirectImpactTable.length === 0">
                                     <div class="alert alert-danger text-center" role="alert">
                                         No attack cost was defined for this asset yet!
@@ -362,64 +362,11 @@
                                             <td>{{impact.attackCost.costs | compactNumber | currency:'EUR':'symbol':'1.0-2'}}{{impact.attackCost.costs | compactSuffix}}
                                             </td>
                                         </tr>
-                                        <!--
-                                        <ng-container *ngIf="selectedImpact && !selectedImpact.direct">
-                                          <tr *ngIf="selectedImpact.attackCost.id === impact.attackCost.id">
-                                            <td colspan="3">
-                                              <table class="col-md-12">
-                                                <thead>
-                                                  <tr>
-                                                    <th scope="col" class="text-center align-middle">
-                                                      Param</th>
-                                                    <th scope="col" class="text-center align-middle">
-                                                      Value</th>
-                                                    <th scope="col" class="text-center align-middle">
-                                                      Value min</th>
-                                                    <th scope="col" class="text-center align-middle">
-                                                      Value max</th>
-                                                  </tr>
-                                                </thead>
-                                                <tbody>
-                                                  <tr *ngFor="let param of selectedImpact.attackCostParams"
-                                                    class="text-center align-middle">
-                                                    <td>{{param.type | replace:'_':' ' | titlecase}}
-                                                    </td>
-                                                    <td *ngIf="isMoney(param.type)">
-                                                      {{param.value | currency:'EUR':'symbol':'1.0-0'}}
-                                                    </td>
-                                                    <td *ngIf="isFraction(param.type)">
-                                                      {{param.value | number : '1.1-2'}}%
-                                                    </td>
-                                                    <td *ngIf="!isMoney(param.type) && !isFraction(param.type)">
-                                                      {{param.value}}</td>
-                                                    <td *ngIf="isMoney(param.type) && param.min">
-                                                      {{param.min | currency:'EUR':'symbol':'1.0-0'}}
-                                                    </td>
-                                                    <td *ngIf="isFraction(param.type) && param.min">
-                                                      {{param.min}}%</td>
-                                                    <td *ngIf="!isMoney(param.type) && !isFraction(param.type) && param.min">
-                                                      {{param.min}}</td>
-                                                    <td *ngIf="!param.min">-</td>
-                                                    <td *ngIf="isMoney(param.type) && param.max">
-                                                      {{param.max | currency:'EUR':'symbol':'1.0-0'}}
-                                                    </td>
-                                                    <td *ngIf="isFraction(param.type) && param.max">
-                                                      {{param.max}}%</td>
-                                                    <td *ngIf="!isMoney(param.type) && !isFraction(param.type) && param.max">
-                                                      {{param.max}}</td>
-                                                    <td *ngIf="!param.max">-</td>
-                                                  </tr>
-                                                </tbody>
-                                              </table>
-                                            </td>
-                                          </tr>
-                                        </ng-container>
-                                        -->
                                     </ng-container>
                                     </tbody>
                                 </table>
-                            </ng-template>
-                        </ngb-tab>
+                            </ng-template>-->
+                        <!--</ngb-tab>-->
                     </ngb-tabset>
                 </ng-container>
             </ng-container>
