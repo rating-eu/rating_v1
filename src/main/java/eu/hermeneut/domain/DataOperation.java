@@ -27,27 +27,27 @@ public class DataOperation implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", length = 2000, nullable = false)
     private String name;
 
     @NotNull
-    @Column(name = "processed_data", nullable = false)
+    @Column(name = "processed_data", length = 2000, nullable = false)
     private String processedData;
 
     @NotNull
-    @Column(name = "processing_purpose", nullable = false)
+    @Column(name = "processing_purpose", length = 2000, nullable = false)
     private String processingPurpose;
 
     @NotNull
-    @Column(name = "data_subject", nullable = false)
+    @Column(name = "data_subject", length = 2000, nullable = false)
     private String dataSubject;
 
     @NotNull
-    @Column(name = "processing_means", nullable = false)
+    @Column(name = "processing_means", length = 2000, nullable = false)
     private String processingMeans;
 
     @NotNull
-    @Column(name = "data_processor", nullable = false)
+    @Column(name = "data_processor", length = 2000, nullable = false)
     private String dataProcessor;
 
     @OneToMany(mappedBy = "operation", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
