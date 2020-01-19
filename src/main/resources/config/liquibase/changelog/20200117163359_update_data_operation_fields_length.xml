@@ -5,12 +5,28 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
     <changeSet author="developer" id="1579278855635-1" runOnChange="true">
+        <dropNotNullConstraint tableName="data_operation" columnName="name"/>
+        <dropNotNullConstraint tableName="data_operation" columnName="processed_data"/>
+        <dropNotNullConstraint tableName="data_operation" columnName="processing_purpose"/>
+        <dropNotNullConstraint tableName="data_operation" columnName="data_subject"/>
+        <dropNotNullConstraint tableName="data_operation" columnName="data_processor"/>
+
         <update tableName="data_operation">
-            <column name="name" defaultValue="''" type="varchar(2000)"/>
-            <column name="processed_data" defaultValue="''" type="varchar(2000)"/>
-            <column name="processing_purpose" defaultValue="''" type="varchar(2000)"/>
-            <column name="data_subject" defaultValue="''" type="varchar(2000)"/>
-            <column name="data_processor" defaultValue="''" type="varchar(2000)"/>
+            <column name="name" defaultValue="''" type="varchar(2000)">
+                <constraints nullable="false" />
+            </column>
+            <column name="processed_data" defaultValue="''" type="varchar(2000)">
+                <constraints nullable="false" />
+            </column>
+            <column name="processing_purpose" defaultValue="''" type="varchar(2000)">
+                <constraints nullable="false" />
+            </column>
+            <column name="data_subject" defaultValue="''" type="varchar(2000)">
+                <constraints nullable="false" />
+            </column>
+            <column name="data_processor" defaultValue="''" type="varchar(2000)">
+                <constraints nullable="false" />
+            </column>
         </update>
     </changeSet>
 </databaseChangeLog>
