@@ -12,8 +12,8 @@
         "modified" : "2019-06-11T10:14:58.715776Z",
         "companyType" : "OTHER"
     },
-    "answers" : [ {
-        "id" : 7040,
+    "answers" : [
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -101,8 +101,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7041,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -190,9 +190,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7042,
-        "note" : null,
+    },
+        {"note" : null,
         "answerOffset" : 0,
         "answer" : {
             "id" : 11,
@@ -279,8 +278,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7043,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -368,8 +367,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7044,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -457,8 +456,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7045,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -546,8 +545,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7046,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -635,8 +634,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7047,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -724,8 +723,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7048,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -818,8 +817,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7049,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -936,8 +935,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7050,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -1025,8 +1024,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7051,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -1114,8 +1113,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7052,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -1232,8 +1231,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7053,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -1350,8 +1349,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7054,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -1439,8 +1438,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7055,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -1557,8 +1556,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7056,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -1646,8 +1645,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7057,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -1735,8 +1734,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7058,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -1853,8 +1852,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7059,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -1942,8 +1941,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7060,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -2031,8 +2030,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7061,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -2149,8 +2148,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7062,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -2238,8 +2237,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7063,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -2327,8 +2326,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7064,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -2416,8 +2415,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7065,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -2505,8 +2504,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7066,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -2594,8 +2593,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7067,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -2688,8 +2687,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7068,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -2777,8 +2776,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7069,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -2895,8 +2894,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7070,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -2984,8 +2983,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7071,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -3073,8 +3072,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7015,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -3220,8 +3219,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7016,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -3309,8 +3308,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7017,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -3398,8 +3397,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7018,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -3492,8 +3491,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7019,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -3581,8 +3580,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7020,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -3670,8 +3669,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7021,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -3904,8 +3903,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7022,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -3998,8 +3997,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7023,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -4087,8 +4086,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7024,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -4205,8 +4204,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7025,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -4294,8 +4293,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7026,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -4383,8 +4382,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7027,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -4535,8 +4534,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7028,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -4624,8 +4623,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7029,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -4742,8 +4741,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7030,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -4831,8 +4830,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7031,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -5036,8 +5035,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7032,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -5130,8 +5129,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7033,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -5219,8 +5218,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7034,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -5308,8 +5307,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7035,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -5397,8 +5396,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7036,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -5515,8 +5514,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7037,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -5752,8 +5751,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7038,
+    }, 
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -5870,8 +5869,8 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, {
-        "id" : 7039,
+    },
+        {
         "note" : null,
         "answerOffset" : 0,
         "answer" : {
@@ -6017,7 +6016,6 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    } ],
-    "external" : null,
-    "refinement" : null
+    }
+    ]
 }
