@@ -1,5 +1,4 @@
 {
-    "id" : 5052,
     "status" : "FULL",
     "created" : "2020-01-17T10:10:00Z",
     "modified" : "2020-01-19T20:11:19.312Z",
@@ -5751,7 +5750,7 @@
             "imageUrl" : null,
             "resetDate" : null
         }
-    }, 
+    },
         {
         "note" : null,
         "answerOffset" : 0,
