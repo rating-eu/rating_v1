@@ -4,28 +4,6 @@
     "created" : "2020-01-17T10:10:00Z",
     "modified" : "2020-01-19T20:11:19.312Z",
     "role" : "ROLE_CISO",
-    "companyProfile" : {
-        "id" : 4951,
-        "name" : "HAcME",
-        "description" : "HAcME",
-        "created" : "2020-01-17T14:00:00Z",
-        "modified" : "2020-01-17T14:00:00Z",
-        "type" : "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-        "user" : {
-            "id" : 4702,
-            "login" : "v_health",
-            "firstName" : "Paolo",
-            "lastName" : "Roccetti",
-            "companyName" : "HAcME",
-            "companySector" : "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-            "companyWebsite" : "www.eng.it",
-            "email" : "vayaxa9866@etcone.net",
-            "activated" : true,
-            "langKey" : "en",
-            "imageUrl" : null,
-            "resetDate" : null
-        }
-    },
     "questionnaire" : {
         "id" : 2,
         "name" : "Self Assessment Questionnaire",
@@ -33,20 +11,6 @@
         "created" : "2019-06-11T10:14:58.715776Z",
         "modified" : "2019-06-11T10:14:58.715776Z",
         "companyType" : "OTHER"
-    },
-    "user" : {
-        "id" : 4702,
-        "login" : "v_health",
-        "firstName" : "Paolo",
-        "lastName" : "Roccetti",
-        "companyName" : "HAcME",
-        "companySector" : "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-        "companyWebsite" : "www.eng.it",
-        "email" : "vayaxa9866@etcone.net",
-        "activated" : true,
-        "langKey" : "en",
-        "imageUrl" : null,
-        "resetDate" : null
     },
     "answers" : [ {
         "id" : 7040,
