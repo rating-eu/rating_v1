@@ -552,6 +552,13 @@
                         </a>
                     </li>
                     <li *ngSwitchCase="true">
+                        <a class="dropdown-item" routerLink="demo" routerLinkActive="active"
+                           (click)="collapseNavbar()">
+                            <i class="fas fa-play" aria-hidden="true"></i>
+                            <span>Demo</span>
+                        </a>
+                    </li>
+                    <li *ngSwitchCase="true">
                         <a class="dropdown-item" routerLink="password" routerLinkActive="active"
                            (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>
