@@ -1,0 +1,1587 @@
+{
+    "id": 5051,
+    "status": "FULL",
+    "created": "1906-11-10T14:08:00Z",
+    "modified": "2020-01-17T14:10:16.871Z",
+    "role": "ROLE_CISO",
+    "companyProfile": {
+        "id": 4951,
+        "name": "HAcME",
+        "description": "HAcME",
+        "created": "2020-01-17T14:00:00Z",
+        "modified": "2020-01-17T14:00:00Z",
+        "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+        "user": {
+            "id": 4702,
+            "login": "v_health",
+            "firstName": "Paolo",
+            "lastName": "Roccetti",
+            "companyName": "HAcME",
+            "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+            "companyWebsite": "www.eng.it",
+            "email": "vayaxa9866@etcone.net",
+            "activated": true,
+            "langKey": "en",
+            "imageUrl": null,
+            "resetDate": null
+        }
+    },
+    "questionnaire": {
+        "id": 1,
+        "name": "Threat Agents Questionnaire",
+        "purpose": "ID_THREAT_AGENT",
+        "created": "2019-06-11T10:14:58.715776Z",
+        "modified": "2019-06-11T10:14:58.715776Z",
+        "companyType": "OTHER"
+    },
+    "user": {
+        "id": 4702,
+        "login": "v_health",
+        "firstName": "Paolo",
+        "lastName": "Roccetti",
+        "companyName": "HAcME",
+        "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+        "companyWebsite": "www.eng.it",
+        "email": "vayaxa9866@etcone.net",
+        "activated": true,
+        "langKey": "en",
+        "imageUrl": null,
+        "resetDate": null
+    },
+    "answers": [
+        {
+            "id": 5101,
+            "note": null,
+            "answerOffset": 0,
+            "answer": {
+                "id": 1,
+                "name": "Yes",
+                "created": "2019-06-11T10:14:58.741062Z",
+                "modified": "2019-06-11T10:14:58.741062Z",
+                "order": 1,
+                "likelihood": "HIGH",
+                "asset": null,
+                "assetCategory": null
+            },
+            "question": {
+                "id": 3,
+                "name": "Does your company manage critical infrastructure/SCADA?",
+                "created": "2019-06-11T10:14:58.724062Z",
+                "modified": "2019-06-11T10:14:58.724062Z",
+                "order": 3,
+                "questionType": "OTHER",
+                "answerType": "YESNO",
+                "attackStrategies": [],
+                "answers": null,
+                "areas": [],
+                "questionnaire": {
+                    "id": 1,
+                    "name": "Threat Agents Questionnaire",
+                    "purpose": "ID_THREAT_AGENT",
+                    "created": "2019-06-11T10:14:58.715776Z",
+                    "modified": "2019-06-11T10:14:58.715776Z",
+                    "companyType": "OTHER"
+                },
+                "threatAgent": {
+                    "id": 1,
+                    "name": "Governament Hacker",
+                    "description": "A Governament Hacker combines the skills of a Government Spy and a Government Cyberwarrior. A Government Spy is a state-sponsored spy as a trusted insider, supporting idealistic goals. On the other side, a Government Cyberwarrior is a state-sponsored attacker with significant resources to affect major disruption on national scale.",
+                    "image": "",
+                    "imageContentType": "image/jpeg",
+                    "skillLevel": "HIGH",
+                    "intent": "HOSTILE",
+                    "access": "BOTH",
+                    "created": "2019-06-11T10:14:58.658709Z",
+                    "modified": "2019-06-11T10:14:58.658709Z",
+                    "identifiedByDefault": false,
+                    "motivations": [
+                        {
+                            "id": 1,
+                            "name": "Dominance",
+                            "description": "A desire to assert superiority over someone or something else. Adversaries who are seeking dominance over a target are focused on using their power to force their target into submission or irrelevance. Dominance may be found with ideology in some state-sponsored attacks and with notoriety in some cyber vandalism based attacks.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 2,
+                            "name": "Organizational Gain",
+                            "description": "Seeking advantage over a competing organization, including a military organization. Adversaries motivated by increased profit or other gains through an unfairly obtained competitive advantage are often seeking theft of intellectual property, business processes, or supply chain agreements and thus accelerating their position in a market or capability.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        }
+                    ]
+                }
+            },
+            "questionnaire": {
+                "id": 1,
+                "name": "Threat Agents Questionnaire",
+                "purpose": "ID_THREAT_AGENT",
+                "created": "2019-06-11T10:14:58.715776Z",
+                "modified": "2019-06-11T10:14:58.715776Z",
+                "companyType": "OTHER"
+            },
+            "user": {
+                "id": 4702,
+                "login": "v_health",
+                "firstName": "Paolo",
+                "lastName": "Roccetti",
+                "companyName": "HAcME",
+                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+                "companyWebsite": "www.eng.it",
+                "email": "vayaxa9866@etcone.net",
+                "activated": true,
+                "langKey": "en",
+                "imageUrl": null,
+                "resetDate": null
+            }
+        },
+        {
+            "id": 5102,
+            "note": null,
+            "answerOffset": 0,
+            "answer": {
+                "id": 1,
+                "name": "Yes",
+                "created": "2019-06-11T10:14:58.741062Z",
+                "modified": "2019-06-11T10:14:58.741062Z",
+                "order": 1,
+                "likelihood": "HIGH",
+                "asset": null,
+                "assetCategory": null
+            },
+            "question": {
+                "id": 1,
+                "name": "Does your company manage relevant/important data?",
+                "created": "2019-06-11T10:14:58.724062Z",
+                "modified": "2019-06-11T10:14:58.724062Z",
+                "order": 1,
+                "questionType": "OTHER",
+                "answerType": "YESNO",
+                "attackStrategies": [],
+                "answers": null,
+                "areas": [],
+                "questionnaire": {
+                    "id": 1,
+                    "name": "Threat Agents Questionnaire",
+                    "purpose": "ID_THREAT_AGENT",
+                    "created": "2019-06-11T10:14:58.715776Z",
+                    "modified": "2019-06-11T10:14:58.715776Z",
+                    "companyType": "OTHER"
+                },
+                "threatAgent": {
+                    "id": 1,
+                    "name": "Governament Hacker",
+                    "description": "A Governament Hacker combines the skills of a Government Spy and a Government Cyberwarrior. A Government Spy is a state-sponsored spy as a trusted insider, supporting idealistic goals. On the other side, a Government Cyberwarrior is a state-sponsored attacker with significant resources to affect major disruption on national scale.",
+                    "image": "",
+                    "imageContentType": "image/jpeg",
+                    "skillLevel": "HIGH",
+                    "intent": "HOSTILE",
+                    "access": "BOTH",
+                    "created": "2019-06-11T10:14:58.658709Z",
+                    "modified": "2019-06-11T10:14:58.658709Z",
+                    "identifiedByDefault": false,
+                    "motivations": [
+                        {
+                            "id": 1,
+                            "name": "Dominance",
+                            "description": "A desire to assert superiority over someone or something else. Adversaries who are seeking dominance over a target are focused on using their power to force their target into submission or irrelevance. Dominance may be found with ideology in some state-sponsored attacks and with notoriety in some cyber vandalism based attacks.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 2,
+                            "name": "Organizational Gain",
+                            "description": "Seeking advantage over a competing organization, including a military organization. Adversaries motivated by increased profit or other gains through an unfairly obtained competitive advantage are often seeking theft of intellectual property, business processes, or supply chain agreements and thus accelerating their position in a market or capability.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        }
+                    ]
+                }
+            },
+            "questionnaire": {
+                "id": 1,
+                "name": "Threat Agents Questionnaire",
+                "purpose": "ID_THREAT_AGENT",
+                "created": "2019-06-11T10:14:58.715776Z",
+                "modified": "2019-06-11T10:14:58.715776Z",
+                "companyType": "OTHER"
+            },
+            "user": {
+                "id": 4702,
+                "login": "v_health",
+                "firstName": "Paolo",
+                "lastName": "Roccetti",
+                "companyName": "HAcME",
+                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+                "companyWebsite": "www.eng.it",
+                "email": "vayaxa9866@etcone.net",
+                "activated": true,
+                "langKey": "en",
+                "imageUrl": null,
+                "resetDate": null
+            }
+        },
+        {
+            "id": 5103,
+            "note": null,
+            "answerOffset": 0,
+            "answer": {
+                "id": 1,
+                "name": "Yes",
+                "created": "2019-06-11T10:14:58.741062Z",
+                "modified": "2019-06-11T10:14:58.741062Z",
+                "order": 1,
+                "likelihood": "HIGH",
+                "asset": null,
+                "assetCategory": null
+            },
+            "question": {
+                "id": 2,
+                "name": "Does your company have a national or international visibility?",
+                "created": "2019-06-11T10:14:58.724062Z",
+                "modified": "2019-06-11T10:14:58.724062Z",
+                "order": 2,
+                "questionType": "OTHER",
+                "answerType": "YESNO",
+                "attackStrategies": [],
+                "answers": null,
+                "areas": [],
+                "questionnaire": {
+                    "id": 1,
+                    "name": "Threat Agents Questionnaire",
+                    "purpose": "ID_THREAT_AGENT",
+                    "created": "2019-06-11T10:14:58.715776Z",
+                    "modified": "2019-06-11T10:14:58.715776Z",
+                    "companyType": "OTHER"
+                },
+                "threatAgent": {
+                    "id": 1,
+                    "name": "Governament Hacker",
+                    "description": "A Governament Hacker combines the skills of a Government Spy and a Government Cyberwarrior. A Government Spy is a state-sponsored spy as a trusted insider, supporting idealistic goals. On the other side, a Government Cyberwarrior is a state-sponsored attacker with significant resources to affect major disruption on national scale.",
+                    "image": "",
+                    "imageContentType": "image/jpeg",
+                    "skillLevel": "HIGH",
+                    "intent": "HOSTILE",
+                    "access": "BOTH",
+                    "created": "2019-06-11T10:14:58.658709Z",
+                    "modified": "2019-06-11T10:14:58.658709Z",
+                    "identifiedByDefault": false,
+                    "motivations": [
+                        {
+                            "id": 1,
+                            "name": "Dominance",
+                            "description": "A desire to assert superiority over someone or something else. Adversaries who are seeking dominance over a target are focused on using their power to force their target into submission or irrelevance. Dominance may be found with ideology in some state-sponsored attacks and with notoriety in some cyber vandalism based attacks.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 2,
+                            "name": "Organizational Gain",
+                            "description": "Seeking advantage over a competing organization, including a military organization. Adversaries motivated by increased profit or other gains through an unfairly obtained competitive advantage are often seeking theft of intellectual property, business processes, or supply chain agreements and thus accelerating their position in a market or capability.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        }
+                    ]
+                }
+            },
+            "questionnaire": {
+                "id": 1,
+                "name": "Threat Agents Questionnaire",
+                "purpose": "ID_THREAT_AGENT",
+                "created": "2019-06-11T10:14:58.715776Z",
+                "modified": "2019-06-11T10:14:58.715776Z",
+                "companyType": "OTHER"
+            },
+            "user": {
+                "id": 4702,
+                "login": "v_health",
+                "firstName": "Paolo",
+                "lastName": "Roccetti",
+                "companyName": "HAcME",
+                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+                "companyWebsite": "www.eng.it",
+                "email": "vayaxa9866@etcone.net",
+                "activated": true,
+                "langKey": "en",
+                "imageUrl": null,
+                "resetDate": null
+            }
+        },
+        {
+            "id": 5104,
+            "note": null,
+            "answerOffset": 0,
+            "answer": {
+                "id": 1,
+                "name": "Yes",
+                "created": "2019-06-11T10:14:58.741062Z",
+                "modified": "2019-06-11T10:14:58.741062Z",
+                "order": 1,
+                "likelihood": "HIGH",
+                "asset": null,
+                "assetCategory": null
+            },
+            "question": {
+                "id": 16,
+                "name": "Have there ever been discontent among employees? (Caused by layoffs, fusion, relocation etc.)",
+                "created": "2019-06-11T10:14:58.724062Z",
+                "modified": "2019-06-11T10:14:58.724062Z",
+                "order": 16,
+                "questionType": "OTHER",
+                "answerType": "YESNO",
+                "attackStrategies": [],
+                "answers": null,
+                "areas": [],
+                "questionnaire": {
+                    "id": 1,
+                    "name": "Threat Agents Questionnaire",
+                    "purpose": "ID_THREAT_AGENT",
+                    "created": "2019-06-11T10:14:58.715776Z",
+                    "modified": "2019-06-11T10:14:58.715776Z",
+                    "companyType": "OTHER"
+                },
+                "threatAgent": {
+                    "id": 6,
+                    "name": "Insider",
+                    "description": "An Insider can be one of the following figures. An Employee Disgruntled, that is a current or former employee with intent to harm the company. An Internal Spy, namely a professional data gatherer as a trusted insider, generally with a simple profit motive.",
+                    "image": "",
+                    "imageContentType": "image/jpeg",
+                    "skillLevel": "MEDIUM",
+                    "intent": "HOSTILE",
+                    "access": "INSIDER",
+                    "created": "2019-06-11T10:14:58.658709Z",
+                    "modified": "2019-06-11T10:14:58.658709Z",
+                    "identifiedByDefault": false,
+                    "motivations": [
+                        {
+                            "id": 8,
+                            "name": "Coercion",
+                            "description": "Being forced to act on someone else's behalf. Adversaries who are motivated by coercion are often forced through intimidation or blackmail to act illegally for someone else's benefit. Unlike the other motivations, a coerced person does not act for personal gain, but out of fear of incurring a loss.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 5,
+                            "name": "Personal Financial Gain",
+                            "description": "The desire to improve one’s own financial status. Adversaries motivated by a selfish desire for personal gain are often out for gains that come from financial fraud, hacking for hire, or intellectual property theft. While a Threat Actor or Intrusion Set may be seeking personal gain this does not mean they are acting alone. Individuals can band together solely to maximize their own personal profits.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        }
+                    ]
+                }
+            },
+            "questionnaire": {
+                "id": 1,
+                "name": "Threat Agents Questionnaire",
+                "purpose": "ID_THREAT_AGENT",
+                "created": "2019-06-11T10:14:58.715776Z",
+                "modified": "2019-06-11T10:14:58.715776Z",
+                "companyType": "OTHER"
+            },
+            "user": {
+                "id": 4702,
+                "login": "v_health",
+                "firstName": "Paolo",
+                "lastName": "Roccetti",
+                "companyName": "HAcME",
+                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+                "companyWebsite": "www.eng.it",
+                "email": "vayaxa9866@etcone.net",
+                "activated": true,
+                "langKey": "en",
+                "imageUrl": null,
+                "resetDate": null
+            }
+        },
+        {
+            "id": 5105,
+            "note": null,
+            "answerOffset": 0,
+            "answer": {
+                "id": 2,
+                "name": "No",
+                "created": "2019-06-11T10:14:58.741062Z",
+                "modified": "2019-06-11T10:14:58.741062Z",
+                "order": 2,
+                "likelihood": "LOW",
+                "asset": null,
+                "assetCategory": null
+            },
+            "question": {
+                "id": 4,
+                "name": "Does your company have offices in countries with political tensions?",
+                "created": "2019-06-11T10:14:58.724062Z",
+                "modified": "2019-06-11T10:14:58.724062Z",
+                "order": 4,
+                "questionType": "OTHER",
+                "answerType": "YESNO",
+                "attackStrategies": [],
+                "answers": null,
+                "areas": [],
+                "questionnaire": {
+                    "id": 1,
+                    "name": "Threat Agents Questionnaire",
+                    "purpose": "ID_THREAT_AGENT",
+                    "created": "2019-06-11T10:14:58.715776Z",
+                    "modified": "2019-06-11T10:14:58.715776Z",
+                    "companyType": "OTHER"
+                },
+                "threatAgent": {
+                    "id": 1,
+                    "name": "Governament Hacker",
+                    "description": "A Governament Hacker combines the skills of a Government Spy and a Government Cyberwarrior. A Government Spy is a state-sponsored spy as a trusted insider, supporting idealistic goals. On the other side, a Government Cyberwarrior is a state-sponsored attacker with significant resources to affect major disruption on national scale.",
+                    "image": "",
+                    "imageContentType": "image/jpeg",
+                    "skillLevel": "HIGH",
+                    "intent": "HOSTILE",
+                    "access": "BOTH",
+                    "created": "2019-06-11T10:14:58.658709Z",
+                    "modified": "2019-06-11T10:14:58.658709Z",
+                    "identifiedByDefault": false,
+                    "motivations": [
+                        {
+                            "id": 1,
+                            "name": "Dominance",
+                            "description": "A desire to assert superiority over someone or something else. Adversaries who are seeking dominance over a target are focused on using their power to force their target into submission or irrelevance. Dominance may be found with ideology in some state-sponsored attacks and with notoriety in some cyber vandalism based attacks.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 2,
+                            "name": "Organizational Gain",
+                            "description": "Seeking advantage over a competing organization, including a military organization. Adversaries motivated by increased profit or other gains through an unfairly obtained competitive advantage are often seeking theft of intellectual property, business processes, or supply chain agreements and thus accelerating their position in a market or capability.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        }
+                    ]
+                }
+            },
+            "questionnaire": {
+                "id": 1,
+                "name": "Threat Agents Questionnaire",
+                "purpose": "ID_THREAT_AGENT",
+                "created": "2019-06-11T10:14:58.715776Z",
+                "modified": "2019-06-11T10:14:58.715776Z",
+                "companyType": "OTHER"
+            },
+            "user": {
+                "id": 4702,
+                "login": "v_health",
+                "firstName": "Paolo",
+                "lastName": "Roccetti",
+                "companyName": "HAcME",
+                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+                "companyWebsite": "www.eng.it",
+                "email": "vayaxa9866@etcone.net",
+                "activated": true,
+                "langKey": "en",
+                "imageUrl": null,
+                "resetDate": null
+            }
+        },
+        {
+            "id": 5106,
+            "note": null,
+            "answerOffset": 0,
+            "answer": {
+                "id": 2,
+                "name": "No",
+                "created": "2019-06-11T10:14:58.741062Z",
+                "modified": "2019-06-11T10:14:58.741062Z",
+                "order": 2,
+                "likelihood": "LOW",
+                "asset": null,
+                "assetCategory": null
+            },
+            "question": {
+                "id": 5,
+                "name": "Is your company a potential target for political, ethnical, religious or environmental reasons?",
+                "created": "2019-06-11T10:14:58.724062Z",
+                "modified": "2019-06-11T10:14:58.724062Z",
+                "order": 5,
+                "questionType": "OTHER",
+                "answerType": "YESNO",
+                "attackStrategies": [],
+                "answers": null,
+                "areas": [],
+                "questionnaire": {
+                    "id": 1,
+                    "name": "Threat Agents Questionnaire",
+                    "purpose": "ID_THREAT_AGENT",
+                    "created": "2019-06-11T10:14:58.715776Z",
+                    "modified": "2019-06-11T10:14:58.715776Z",
+                    "companyType": "OTHER"
+                },
+                "threatAgent": {
+                    "id": 2,
+                    "name": "Hacktivist",
+                    "description": "An Hacktivist combines the skills of an Anarchist, a Civil Activist and a Radical Activist. An Anarchist is someone who rejects all forms of structure, private or public, and acts with few constraints. A Civil Activist is an highly motivated but non-violent supporter of a cause. A Radical Activist is an highly motivated, potentially destructive supporter of cause.",
+                    "image": "",
+                    "imageContentType": "image/jpeg",
+                    "skillLevel": "HIGH",
+                    "intent": "HOSTILE",
+                    "access": "OUTSIDER",
+                    "created": "2019-06-11T10:14:58.658709Z",
+                    "modified": "2019-06-11T10:14:58.658709Z",
+                    "identifiedByDefault": false,
+                    "motivations": [
+                        {
+                            "id": 1,
+                            "name": "Dominance",
+                            "description": "A desire to assert superiority over someone or something else. Adversaries who are seeking dominance over a target are focused on using their power to force their target into submission or irrelevance. Dominance may be found with ideology in some state-sponsored attacks and with notoriety in some cyber vandalism based attacks.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 3,
+                            "name": "Ideology",
+                            "description": "A passion to express a set of ideas, beliefs, and values that may shape and drive harmful and illegal acts. Adversaries who act for ideological reasons (e.g., political, religious, human rights, environmental, desire to cause cause/anarchy, etc.) are not usually motivated primarily by the desire for profit. They are acting on their own sense of morality, justice, or political loyalty. For example, an activist group may sabotage a company’s equipment because they believe the company is harming the environment.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        }
+                    ]
+                }
+            },
+            "questionnaire": {
+                "id": 1,
+                "name": "Threat Agents Questionnaire",
+                "purpose": "ID_THREAT_AGENT",
+                "created": "2019-06-11T10:14:58.715776Z",
+                "modified": "2019-06-11T10:14:58.715776Z",
+                "companyType": "OTHER"
+            },
+            "user": {
+                "id": 4702,
+                "login": "v_health",
+                "firstName": "Paolo",
+                "lastName": "Roccetti",
+                "companyName": "HAcME",
+                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+                "companyWebsite": "www.eng.it",
+                "email": "vayaxa9866@etcone.net",
+                "activated": true,
+                "langKey": "en",
+                "imageUrl": null,
+                "resetDate": null
+            }
+        },
+        {
+            "id": 5107,
+            "note": null,
+            "answerOffset": 0,
+            "answer": {
+                "id": 1,
+                "name": "Yes",
+                "created": "2019-06-11T10:14:58.741062Z",
+                "modified": "2019-06-11T10:14:58.741062Z",
+                "order": 1,
+                "likelihood": "HIGH",
+                "asset": null,
+                "assetCategory": null
+            },
+            "question": {
+                "id": 6,
+                "name": "Does your company have government contracts?",
+                "created": "2019-06-11T10:14:58.724062Z",
+                "modified": "2019-06-11T10:14:58.724062Z",
+                "order": 6,
+                "questionType": "OTHER",
+                "answerType": "YESNO",
+                "attackStrategies": [],
+                "answers": null,
+                "areas": [],
+                "questionnaire": {
+                    "id": 1,
+                    "name": "Threat Agents Questionnaire",
+                    "purpose": "ID_THREAT_AGENT",
+                    "created": "2019-06-11T10:14:58.715776Z",
+                    "modified": "2019-06-11T10:14:58.715776Z",
+                    "companyType": "OTHER"
+                },
+                "threatAgent": {
+                    "id": 2,
+                    "name": "Hacktivist",
+                    "description": "An Hacktivist combines the skills of an Anarchist, a Civil Activist and a Radical Activist. An Anarchist is someone who rejects all forms of structure, private or public, and acts with few constraints. A Civil Activist is an highly motivated but non-violent supporter of a cause. A Radical Activist is an highly motivated, potentially destructive supporter of cause.",
+                    "image": "",
+                    "imageContentType": "image/jpeg",
+                    "skillLevel": "HIGH",
+                    "intent": "HOSTILE",
+                    "access": "OUTSIDER",
+                    "created": "2019-06-11T10:14:58.658709Z",
+                    "modified": "2019-06-11T10:14:58.658709Z",
+                    "identifiedByDefault": false,
+                    "motivations": [
+                        {
+                            "id": 1,
+                            "name": "Dominance",
+                            "description": "A desire to assert superiority over someone or something else. Adversaries who are seeking dominance over a target are focused on using their power to force their target into submission or irrelevance. Dominance may be found with ideology in some state-sponsored attacks and with notoriety in some cyber vandalism based attacks.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 3,
+                            "name": "Ideology",
+                            "description": "A passion to express a set of ideas, beliefs, and values that may shape and drive harmful and illegal acts. Adversaries who act for ideological reasons (e.g., political, religious, human rights, environmental, desire to cause cause/anarchy, etc.) are not usually motivated primarily by the desire for profit. They are acting on their own sense of morality, justice, or political loyalty. For example, an activist group may sabotage a company’s equipment because they believe the company is harming the environment.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        }
+                    ]
+                }
+            },
+            "questionnaire": {
+                "id": 1,
+                "name": "Threat Agents Questionnaire",
+                "purpose": "ID_THREAT_AGENT",
+                "created": "2019-06-11T10:14:58.715776Z",
+                "modified": "2019-06-11T10:14:58.715776Z",
+                "companyType": "OTHER"
+            },
+            "user": {
+                "id": 4702,
+                "login": "v_health",
+                "firstName": "Paolo",
+                "lastName": "Roccetti",
+                "companyName": "HAcME",
+                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+                "companyWebsite": "www.eng.it",
+                "email": "vayaxa9866@etcone.net",
+                "activated": true,
+                "langKey": "en",
+                "imageUrl": null,
+                "resetDate": null
+            }
+        },
+        {
+            "id": 5108,
+            "note": null,
+            "answerOffset": 0,
+            "answer": {
+                "id": 2,
+                "name": "No",
+                "created": "2019-06-11T10:14:58.741062Z",
+                "modified": "2019-06-11T10:14:58.741062Z",
+                "order": 2,
+                "likelihood": "LOW",
+                "asset": null,
+                "assetCategory": null
+            },
+            "question": {
+                "id": 7,
+                "name": "Does your company have a negative media impact?",
+                "created": "2019-06-11T10:14:58.724062Z",
+                "modified": "2019-06-11T10:14:58.724062Z",
+                "order": 7,
+                "questionType": "OTHER",
+                "answerType": "YESNO",
+                "attackStrategies": [],
+                "answers": null,
+                "areas": [],
+                "questionnaire": {
+                    "id": 1,
+                    "name": "Threat Agents Questionnaire",
+                    "purpose": "ID_THREAT_AGENT",
+                    "created": "2019-06-11T10:14:58.715776Z",
+                    "modified": "2019-06-11T10:14:58.715776Z",
+                    "companyType": "OTHER"
+                },
+                "threatAgent": {
+                    "id": 2,
+                    "name": "Hacktivist",
+                    "description": "An Hacktivist combines the skills of an Anarchist, a Civil Activist and a Radical Activist. An Anarchist is someone who rejects all forms of structure, private or public, and acts with few constraints. A Civil Activist is an highly motivated but non-violent supporter of a cause. A Radical Activist is an highly motivated, potentially destructive supporter of cause.",
+                    "image": "",
+                    "imageContentType": "image/jpeg",
+                    "skillLevel": "HIGH",
+                    "intent": "HOSTILE",
+                    "access": "OUTSIDER",
+                    "created": "2019-06-11T10:14:58.658709Z",
+                    "modified": "2019-06-11T10:14:58.658709Z",
+                    "identifiedByDefault": false,
+                    "motivations": [
+                        {
+                            "id": 1,
+                            "name": "Dominance",
+                            "description": "A desire to assert superiority over someone or something else. Adversaries who are seeking dominance over a target are focused on using their power to force their target into submission or irrelevance. Dominance may be found with ideology in some state-sponsored attacks and with notoriety in some cyber vandalism based attacks.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 3,
+                            "name": "Ideology",
+                            "description": "A passion to express a set of ideas, beliefs, and values that may shape and drive harmful and illegal acts. Adversaries who act for ideological reasons (e.g., political, religious, human rights, environmental, desire to cause cause/anarchy, etc.) are not usually motivated primarily by the desire for profit. They are acting on their own sense of morality, justice, or political loyalty. For example, an activist group may sabotage a company’s equipment because they believe the company is harming the environment.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        }
+                    ]
+                }
+            },
+            "questionnaire": {
+                "id": 1,
+                "name": "Threat Agents Questionnaire",
+                "purpose": "ID_THREAT_AGENT",
+                "created": "2019-06-11T10:14:58.715776Z",
+                "modified": "2019-06-11T10:14:58.715776Z",
+                "companyType": "OTHER"
+            },
+            "user": {
+                "id": 4702,
+                "login": "v_health",
+                "firstName": "Paolo",
+                "lastName": "Roccetti",
+                "companyName": "HAcME",
+                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+                "companyWebsite": "www.eng.it",
+                "email": "vayaxa9866@etcone.net",
+                "activated": true,
+                "langKey": "en",
+                "imageUrl": null,
+                "resetDate": null
+            }
+        },
+        {
+            "id": 5109,
+            "note": null,
+            "answerOffset": 0,
+            "answer": {
+                "id": 2,
+                "name": "No",
+                "created": "2019-06-11T10:14:58.741062Z",
+                "modified": "2019-06-11T10:14:58.741062Z",
+                "order": 2,
+                "likelihood": "LOW",
+                "asset": null,
+                "assetCategory": null
+            },
+            "question": {
+                "id": 8,
+                "name": "Does your company operate in a war zone?",
+                "created": "2019-06-11T10:14:58.724062Z",
+                "modified": "2019-06-11T10:14:58.724062Z",
+                "order": 8,
+                "questionType": "OTHER",
+                "answerType": "YESNO",
+                "attackStrategies": [],
+                "answers": null,
+                "areas": [],
+                "questionnaire": {
+                    "id": 1,
+                    "name": "Threat Agents Questionnaire",
+                    "purpose": "ID_THREAT_AGENT",
+                    "created": "2019-06-11T10:14:58.715776Z",
+                    "modified": "2019-06-11T10:14:58.715776Z",
+                    "companyType": "OTHER"
+                },
+                "threatAgent": {
+                    "id": 3,
+                    "name": "Terrorist",
+                    "description": "A Terrorist is a person who relies on the use of violence to support personal socio-political agenda.",
+                    "image": "",
+                    "imageContentType": "image/jpeg",
+                    "skillLevel": "HIGH",
+                    "intent": "HOSTILE",
+                    "access": "OUTSIDER",
+                    "created": "2019-06-11T10:14:58.658709Z",
+                    "modified": "2019-06-11T10:14:58.658709Z",
+                    "identifiedByDefault": false,
+                    "motivations": [
+                        {
+                            "id": 1,
+                            "name": "Dominance",
+                            "description": "A desire to assert superiority over someone or something else. Adversaries who are seeking dominance over a target are focused on using their power to force their target into submission or irrelevance. Dominance may be found with ideology in some state-sponsored attacks and with notoriety in some cyber vandalism based attacks.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 3,
+                            "name": "Ideology",
+                            "description": "A passion to express a set of ideas, beliefs, and values that may shape and drive harmful and illegal acts. Adversaries who act for ideological reasons (e.g., political, religious, human rights, environmental, desire to cause cause/anarchy, etc.) are not usually motivated primarily by the desire for profit. They are acting on their own sense of morality, justice, or political loyalty. For example, an activist group may sabotage a company’s equipment because they believe the company is harming the environment.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 4,
+                            "name": "Disgruntlement",
+                            "description": "A desire to avenge perceived wrongs through harm.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        }
+                    ]
+                }
+            },
+            "questionnaire": {
+                "id": 1,
+                "name": "Threat Agents Questionnaire",
+                "purpose": "ID_THREAT_AGENT",
+                "created": "2019-06-11T10:14:58.715776Z",
+                "modified": "2019-06-11T10:14:58.715776Z",
+                "companyType": "OTHER"
+            },
+            "user": {
+                "id": 4702,
+                "login": "v_health",
+                "firstName": "Paolo",
+                "lastName": "Roccetti",
+                "companyName": "HAcME",
+                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+                "companyWebsite": "www.eng.it",
+                "email": "vayaxa9866@etcone.net",
+                "activated": true,
+                "langKey": "en",
+                "imageUrl": null,
+                "resetDate": null
+            }
+        },
+        {
+            "id": 5110,
+            "note": null,
+            "answerOffset": 0,
+            "answer": {
+                "id": 1,
+                "name": "Yes",
+                "created": "2019-06-11T10:14:58.741062Z",
+                "modified": "2019-06-11T10:14:58.741062Z",
+                "order": 1,
+                "likelihood": "HIGH",
+                "asset": null,
+                "assetCategory": null
+            },
+            "question": {
+                "id": 15,
+                "name": "Does your employee manage assets that could be easily resold to competitors or on black markets?",
+                "created": "2019-06-11T10:14:58.724062Z",
+                "modified": "2019-06-11T10:14:58.724062Z",
+                "order": 15,
+                "questionType": "OTHER",
+                "answerType": "YESNO",
+                "attackStrategies": [],
+                "answers": null,
+                "areas": [],
+                "questionnaire": {
+                    "id": 1,
+                    "name": "Threat Agents Questionnaire",
+                    "purpose": "ID_THREAT_AGENT",
+                    "created": "2019-06-11T10:14:58.715776Z",
+                    "modified": "2019-06-11T10:14:58.715776Z",
+                    "companyType": "OTHER"
+                },
+                "threatAgent": {
+                    "id": 6,
+                    "name": "Insider",
+                    "description": "An Insider can be one of the following figures. An Employee Disgruntled, that is a current or former employee with intent to harm the company. An Internal Spy, namely a professional data gatherer as a trusted insider, generally with a simple profit motive.",
+                    "image": "",
+                    "imageContentType": "image/jpeg",
+                    "skillLevel": "MEDIUM",
+                    "intent": "HOSTILE",
+                    "access": "INSIDER",
+                    "created": "2019-06-11T10:14:58.658709Z",
+                    "modified": "2019-06-11T10:14:58.658709Z",
+                    "identifiedByDefault": false,
+                    "motivations": [
+                        {
+                            "id": 8,
+                            "name": "Coercion",
+                            "description": "Being forced to act on someone else's behalf. Adversaries who are motivated by coercion are often forced through intimidation or blackmail to act illegally for someone else's benefit. Unlike the other motivations, a coerced person does not act for personal gain, but out of fear of incurring a loss.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 5,
+                            "name": "Personal Financial Gain",
+                            "description": "The desire to improve one’s own financial status. Adversaries motivated by a selfish desire for personal gain are often out for gains that come from financial fraud, hacking for hire, or intellectual property theft. While a Threat Actor or Intrusion Set may be seeking personal gain this does not mean they are acting alone. Individuals can band together solely to maximize their own personal profits.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        }
+                    ]
+                }
+            },
+            "questionnaire": {
+                "id": 1,
+                "name": "Threat Agents Questionnaire",
+                "purpose": "ID_THREAT_AGENT",
+                "created": "2019-06-11T10:14:58.715776Z",
+                "modified": "2019-06-11T10:14:58.715776Z",
+                "companyType": "OTHER"
+            },
+            "user": {
+                "id": 4702,
+                "login": "v_health",
+                "firstName": "Paolo",
+                "lastName": "Roccetti",
+                "companyName": "HAcME",
+                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+                "companyWebsite": "www.eng.it",
+                "email": "vayaxa9866@etcone.net",
+                "activated": true,
+                "langKey": "en",
+                "imageUrl": null,
+                "resetDate": null
+            }
+        },
+        {
+            "id": 5111,
+            "note": null,
+            "answerOffset": 0,
+            "answer": {
+                "id": 2,
+                "name": "No",
+                "created": "2019-06-11T10:14:58.741062Z",
+                "modified": "2019-06-11T10:14:58.741062Z",
+                "order": 2,
+                "likelihood": "LOW",
+                "asset": null,
+                "assetCategory": null
+            },
+            "question": {
+                "id": 17,
+                "name": "Does your company ever suffer for data leaks in the past?",
+                "created": "2019-06-11T10:14:58.724062Z",
+                "modified": "2019-06-11T10:14:58.724062Z",
+                "order": 17,
+                "questionType": "OTHER",
+                "answerType": "YESNO",
+                "attackStrategies": [],
+                "answers": null,
+                "areas": [],
+                "questionnaire": {
+                    "id": 1,
+                    "name": "Threat Agents Questionnaire",
+                    "purpose": "ID_THREAT_AGENT",
+                    "created": "2019-06-11T10:14:58.715776Z",
+                    "modified": "2019-06-11T10:14:58.715776Z",
+                    "companyType": "OTHER"
+                },
+                "threatAgent": {
+                    "id": 6,
+                    "name": "Insider",
+                    "description": "An Insider can be one of the following figures. An Employee Disgruntled, that is a current or former employee with intent to harm the company. An Internal Spy, namely a professional data gatherer as a trusted insider, generally with a simple profit motive.",
+                    "image": "",
+                    "imageContentType": "image/jpeg",
+                    "skillLevel": "MEDIUM",
+                    "intent": "HOSTILE",
+                    "access": "INSIDER",
+                    "created": "2019-06-11T10:14:58.658709Z",
+                    "modified": "2019-06-11T10:14:58.658709Z",
+                    "identifiedByDefault": false,
+                    "motivations": [
+                        {
+                            "id": 8,
+                            "name": "Coercion",
+                            "description": "Being forced to act on someone else's behalf. Adversaries who are motivated by coercion are often forced through intimidation or blackmail to act illegally for someone else's benefit. Unlike the other motivations, a coerced person does not act for personal gain, but out of fear of incurring a loss.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 5,
+                            "name": "Personal Financial Gain",
+                            "description": "The desire to improve one’s own financial status. Adversaries motivated by a selfish desire for personal gain are often out for gains that come from financial fraud, hacking for hire, or intellectual property theft. While a Threat Actor or Intrusion Set may be seeking personal gain this does not mean they are acting alone. Individuals can band together solely to maximize their own personal profits.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        }
+                    ]
+                }
+            },
+            "questionnaire": {
+                "id": 1,
+                "name": "Threat Agents Questionnaire",
+                "purpose": "ID_THREAT_AGENT",
+                "created": "2019-06-11T10:14:58.715776Z",
+                "modified": "2019-06-11T10:14:58.715776Z",
+                "companyType": "OTHER"
+            },
+            "user": {
+                "id": 4702,
+                "login": "v_health",
+                "firstName": "Paolo",
+                "lastName": "Roccetti",
+                "companyName": "HAcME",
+                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+                "companyWebsite": "www.eng.it",
+                "email": "vayaxa9866@etcone.net",
+                "activated": true,
+                "langKey": "en",
+                "imageUrl": null,
+                "resetDate": null
+            }
+        },
+        {
+            "id": 5112,
+            "note": null,
+            "answerOffset": 0,
+            "answer": {
+                "id": 2,
+                "name": "No",
+                "created": "2019-06-11T10:14:58.741062Z",
+                "modified": "2019-06-11T10:14:58.741062Z",
+                "order": 2,
+                "likelihood": "LOW",
+                "asset": null,
+                "assetCategory": null
+            },
+            "question": {
+                "id": 9,
+                "name": "Does your company work closely with high-profile people?",
+                "created": "2019-06-11T10:14:58.724062Z",
+                "modified": "2019-06-11T10:14:58.724062Z",
+                "order": 9,
+                "questionType": "OTHER",
+                "answerType": "YESNO",
+                "attackStrategies": [],
+                "answers": null,
+                "areas": [],
+                "questionnaire": {
+                    "id": 1,
+                    "name": "Threat Agents Questionnaire",
+                    "purpose": "ID_THREAT_AGENT",
+                    "created": "2019-06-11T10:14:58.715776Z",
+                    "modified": "2019-06-11T10:14:58.715776Z",
+                    "companyType": "OTHER"
+                },
+                "threatAgent": {
+                    "id": 3,
+                    "name": "Terrorist",
+                    "description": "A Terrorist is a person who relies on the use of violence to support personal socio-political agenda.",
+                    "image": "",
+                    "imageContentType": "image/jpeg",
+                    "skillLevel": "HIGH",
+                    "intent": "HOSTILE",
+                    "access": "OUTSIDER",
+                    "created": "2019-06-11T10:14:58.658709Z",
+                    "modified": "2019-06-11T10:14:58.658709Z",
+                    "identifiedByDefault": false,
+                    "motivations": [
+                        {
+                            "id": 1,
+                            "name": "Dominance",
+                            "description": "A desire to assert superiority over someone or something else. Adversaries who are seeking dominance over a target are focused on using their power to force their target into submission or irrelevance. Dominance may be found with ideology in some state-sponsored attacks and with notoriety in some cyber vandalism based attacks.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 3,
+                            "name": "Ideology",
+                            "description": "A passion to express a set of ideas, beliefs, and values that may shape and drive harmful and illegal acts. Adversaries who act for ideological reasons (e.g., political, religious, human rights, environmental, desire to cause cause/anarchy, etc.) are not usually motivated primarily by the desire for profit. They are acting on their own sense of morality, justice, or political loyalty. For example, an activist group may sabotage a company’s equipment because they believe the company is harming the environment.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 4,
+                            "name": "Disgruntlement",
+                            "description": "A desire to avenge perceived wrongs through harm.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        }
+                    ]
+                }
+            },
+            "questionnaire": {
+                "id": 1,
+                "name": "Threat Agents Questionnaire",
+                "purpose": "ID_THREAT_AGENT",
+                "created": "2019-06-11T10:14:58.715776Z",
+                "modified": "2019-06-11T10:14:58.715776Z",
+                "companyType": "OTHER"
+            },
+            "user": {
+                "id": 4702,
+                "login": "v_health",
+                "firstName": "Paolo",
+                "lastName": "Roccetti",
+                "companyName": "HAcME",
+                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+                "companyWebsite": "www.eng.it",
+                "email": "vayaxa9866@etcone.net",
+                "activated": true,
+                "langKey": "en",
+                "imageUrl": null,
+                "resetDate": null
+            }
+        },
+        {
+            "id": 5113,
+            "note": null,
+            "answerOffset": 0,
+            "answer": {
+                "id": 1,
+                "name": "Yes",
+                "created": "2019-06-11T10:14:58.741062Z",
+                "modified": "2019-06-11T10:14:58.741062Z",
+                "order": 1,
+                "likelihood": "HIGH",
+                "asset": null,
+                "assetCategory": null
+            },
+            "question": {
+                "id": 11,
+                "name": "Does your company manage relevant data that could be easily resold to competitors or in black markets?",
+                "created": "2019-06-11T10:14:58.724062Z",
+                "modified": "2019-06-11T10:14:58.724062Z",
+                "order": 11,
+                "questionType": "OTHER",
+                "answerType": "YESNO",
+                "attackStrategies": [],
+                "answers": null,
+                "areas": [],
+                "questionnaire": {
+                    "id": 1,
+                    "name": "Threat Agents Questionnaire",
+                    "purpose": "ID_THREAT_AGENT",
+                    "created": "2019-06-11T10:14:58.715776Z",
+                    "modified": "2019-06-11T10:14:58.715776Z",
+                    "companyType": "OTHER"
+                },
+                "threatAgent": {
+                    "id": 4,
+                    "name": "Hacker",
+                    "description": "An Hacker combines the skills od a Data Miner and a Mobster. A Data Miner is a professional data gatherer external to the company (includes cyber methods); while a Mobster is a manager of organized crime organization with significant resources.",
+                    "image": "",
+                    "imageContentType": "image/jpeg",
+                    "skillLevel": "HIGH",
+                    "intent": "HOSTILE",
+                    "access": "BOTH",
+                    "created": "2019-06-11T10:14:58.658709Z",
+                    "modified": "2019-06-11T10:14:58.658709Z",
+                    "identifiedByDefault": false,
+                    "motivations": [
+                        {
+                            "id": 1,
+                            "name": "Dominance",
+                            "description": "A desire to assert superiority over someone or something else. Adversaries who are seeking dominance over a target are focused on using their power to force their target into submission or irrelevance. Dominance may be found with ideology in some state-sponsored attacks and with notoriety in some cyber vandalism based attacks.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 2,
+                            "name": "Organizational Gain",
+                            "description": "Seeking advantage over a competing organization, including a military organization. Adversaries motivated by increased profit or other gains through an unfairly obtained competitive advantage are often seeking theft of intellectual property, business processes, or supply chain agreements and thus accelerating their position in a market or capability.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 5,
+                            "name": "Personal Financial Gain",
+                            "description": "The desire to improve one’s own financial status. Adversaries motivated by a selfish desire for personal gain are often out for gains that come from financial fraud, hacking for hire, or intellectual property theft. While a Threat Actor or Intrusion Set may be seeking personal gain this does not mean they are acting alone. Individuals can band together solely to maximize their own personal profits.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 6,
+                            "name": "Notoriety",
+                            "description": "Seeking prestige or to become well known through some activity. Adversaries motivated by notoriety are often seeking either personal validation or respect within a community and staying covert is not a priority. In fact one of the main goals is to garner the respect of their target audience.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 7,
+                            "name": "Personal Satisfaction",
+                            "description": "A desire to satisfy a strictly personal goal, including curiosity, thrill-seeking, amusement, etc. Threat Actors or Intrusion Set driven by personal satisfaction may incidentally receive some other gain from their actions, such as a profit, but their primary motivation is to gratify a personal, emotional need. Individuals can band together with others toward a mutual, but not necessarily organizational, objective.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        }
+                    ]
+                }
+            },
+            "questionnaire": {
+                "id": 1,
+                "name": "Threat Agents Questionnaire",
+                "purpose": "ID_THREAT_AGENT",
+                "created": "2019-06-11T10:14:58.715776Z",
+                "modified": "2019-06-11T10:14:58.715776Z",
+                "companyType": "OTHER"
+            },
+            "user": {
+                "id": 4702,
+                "login": "v_health",
+                "firstName": "Paolo",
+                "lastName": "Roccetti",
+                "companyName": "HAcME",
+                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+                "companyWebsite": "www.eng.it",
+                "email": "vayaxa9866@etcone.net",
+                "activated": true,
+                "langKey": "en",
+                "imageUrl": null,
+                "resetDate": null
+            }
+        },
+        {
+            "id": 5114,
+            "note": null,
+            "answerOffset": 0,
+            "answer": {
+                "id": 1,
+                "name": "Yes",
+                "created": "2019-06-11T10:14:58.741062Z",
+                "modified": "2019-06-11T10:14:58.741062Z",
+                "order": 1,
+                "likelihood": "HIGH",
+                "asset": null,
+                "assetCategory": null
+            },
+            "question": {
+                "id": 14,
+                "name": "Is your company a market leader?",
+                "created": "2019-06-11T10:14:58.724062Z",
+                "modified": "2019-06-11T10:14:58.724062Z",
+                "order": 14,
+                "questionType": "OTHER",
+                "answerType": "YESNO",
+                "attackStrategies": [],
+                "answers": null,
+                "areas": [],
+                "questionnaire": {
+                    "id": 1,
+                    "name": "Threat Agents Questionnaire",
+                    "purpose": "ID_THREAT_AGENT",
+                    "created": "2019-06-11T10:14:58.715776Z",
+                    "modified": "2019-06-11T10:14:58.715776Z",
+                    "companyType": "OTHER"
+                },
+                "threatAgent": {
+                    "id": 5,
+                    "name": "Competitor/Hireling Hacker",
+                    "description": "This threat agent combines the following figures. A Competitor, that is a business adversary who competes for revenues or resources (acquisitions, etc.). A Legal Adversary, namely an adversary in legal proceedings against the company, warranted or not. A Vendor, that is a business partner who seeks inside information for financial advantage over competitors. An Hireling Hacker, namely someone who works solely for compensation that is hired by somebody else.",
+                    "image": "",
+                    "imageContentType": "image/jpeg",
+                    "skillLevel": "MEDIUM",
+                    "intent": "HOSTILE",
+                    "access": "OUTSIDER",
+                    "created": "2019-06-11T10:14:58.658709Z",
+                    "modified": "2019-06-11T10:14:58.658709Z",
+                    "identifiedByDefault": false,
+                    "motivations": [
+                        {
+                            "id": 1,
+                            "name": "Dominance",
+                            "description": "A desire to assert superiority over someone or something else. Adversaries who are seeking dominance over a target are focused on using their power to force their target into submission or irrelevance. Dominance may be found with ideology in some state-sponsored attacks and with notoriety in some cyber vandalism based attacks.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 2,
+                            "name": "Organizational Gain",
+                            "description": "Seeking advantage over a competing organization, including a military organization. Adversaries motivated by increased profit or other gains through an unfairly obtained competitive advantage are often seeking theft of intellectual property, business processes, or supply chain agreements and thus accelerating their position in a market or capability.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 5,
+                            "name": "Personal Financial Gain",
+                            "description": "The desire to improve one’s own financial status. Adversaries motivated by a selfish desire for personal gain are often out for gains that come from financial fraud, hacking for hire, or intellectual property theft. While a Threat Actor or Intrusion Set may be seeking personal gain this does not mean they are acting alone. Individuals can band together solely to maximize their own personal profits.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        }
+                    ]
+                }
+            },
+            "questionnaire": {
+                "id": 1,
+                "name": "Threat Agents Questionnaire",
+                "purpose": "ID_THREAT_AGENT",
+                "created": "2019-06-11T10:14:58.715776Z",
+                "modified": "2019-06-11T10:14:58.715776Z",
+                "companyType": "OTHER"
+            },
+            "user": {
+                "id": 4702,
+                "login": "v_health",
+                "firstName": "Paolo",
+                "lastName": "Roccetti",
+                "companyName": "HAcME",
+                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+                "companyWebsite": "www.eng.it",
+                "email": "vayaxa9866@etcone.net",
+                "activated": true,
+                "langKey": "en",
+                "imageUrl": null,
+                "resetDate": null
+            }
+        },
+        {
+            "id": 5115,
+            "note": null,
+            "answerOffset": 0,
+            "answer": {
+                "id": 2,
+                "name": "No",
+                "created": "2019-06-11T10:14:58.741062Z",
+                "modified": "2019-06-11T10:14:58.741062Z",
+                "order": 2,
+                "likelihood": "LOW",
+                "asset": null,
+                "assetCategory": null
+            },
+            "question": {
+                "id": 18,
+                "name": "In your company can every employee have easily access to relevant assets?",
+                "created": "2019-06-11T10:14:58.724062Z",
+                "modified": "2019-06-11T10:14:58.724062Z",
+                "order": 18,
+                "questionType": "OTHER",
+                "answerType": "YESNO",
+                "attackStrategies": [],
+                "answers": null,
+                "areas": [],
+                "questionnaire": {
+                    "id": 1,
+                    "name": "Threat Agents Questionnaire",
+                    "purpose": "ID_THREAT_AGENT",
+                    "created": "2019-06-11T10:14:58.715776Z",
+                    "modified": "2019-06-11T10:14:58.715776Z",
+                    "companyType": "OTHER"
+                },
+                "threatAgent": {
+                    "id": 6,
+                    "name": "Insider",
+                    "description": "An Insider can be one of the following figures. An Employee Disgruntled, that is a current or former employee with intent to harm the company. An Internal Spy, namely a professional data gatherer as a trusted insider, generally with a simple profit motive.",
+                    "image": "",
+                    "imageContentType": "image/jpeg",
+                    "skillLevel": "MEDIUM",
+                    "intent": "HOSTILE",
+                    "access": "INSIDER",
+                    "created": "2019-06-11T10:14:58.658709Z",
+                    "modified": "2019-06-11T10:14:58.658709Z",
+                    "identifiedByDefault": false,
+                    "motivations": [
+                        {
+                            "id": 8,
+                            "name": "Coercion",
+                            "description": "Being forced to act on someone else's behalf. Adversaries who are motivated by coercion are often forced through intimidation or blackmail to act illegally for someone else's benefit. Unlike the other motivations, a coerced person does not act for personal gain, but out of fear of incurring a loss.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 5,
+                            "name": "Personal Financial Gain",
+                            "description": "The desire to improve one’s own financial status. Adversaries motivated by a selfish desire for personal gain are often out for gains that come from financial fraud, hacking for hire, or intellectual property theft. While a Threat Actor or Intrusion Set may be seeking personal gain this does not mean they are acting alone. Individuals can band together solely to maximize their own personal profits.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        }
+                    ]
+                }
+            },
+            "questionnaire": {
+                "id": 1,
+                "name": "Threat Agents Questionnaire",
+                "purpose": "ID_THREAT_AGENT",
+                "created": "2019-06-11T10:14:58.715776Z",
+                "modified": "2019-06-11T10:14:58.715776Z",
+                "companyType": "OTHER"
+            },
+            "user": {
+                "id": 4702,
+                "login": "v_health",
+                "firstName": "Paolo",
+                "lastName": "Roccetti",
+                "companyName": "HAcME",
+                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+                "companyWebsite": "www.eng.it",
+                "email": "vayaxa9866@etcone.net",
+                "activated": true,
+                "langKey": "en",
+                "imageUrl": null,
+                "resetDate": null
+            }
+        },
+        {
+            "id": 5116,
+            "note": null,
+            "answerOffset": 0,
+            "answer": {
+                "id": 1,
+                "name": "Yes",
+                "created": "2019-06-11T10:14:58.741062Z",
+                "modified": "2019-06-11T10:14:58.741062Z",
+                "order": 1,
+                "likelihood": "HIGH",
+                "asset": null,
+                "assetCategory": null
+            },
+            "question": {
+                "id": 13,
+                "name": "Does your company has industrial secrets or intellectual properties?",
+                "created": "2019-06-11T10:14:58.724062Z",
+                "modified": "2019-06-11T10:14:58.724062Z",
+                "order": 13,
+                "questionType": "OTHER",
+                "answerType": "YESNO",
+                "attackStrategies": [],
+                "answers": null,
+                "areas": [],
+                "questionnaire": {
+                    "id": 1,
+                    "name": "Threat Agents Questionnaire",
+                    "purpose": "ID_THREAT_AGENT",
+                    "created": "2019-06-11T10:14:58.715776Z",
+                    "modified": "2019-06-11T10:14:58.715776Z",
+                    "companyType": "OTHER"
+                },
+                "threatAgent": {
+                    "id": 5,
+                    "name": "Competitor/Hireling Hacker",
+                    "description": "This threat agent combines the following figures. A Competitor, that is a business adversary who competes for revenues or resources (acquisitions, etc.). A Legal Adversary, namely an adversary in legal proceedings against the company, warranted or not. A Vendor, that is a business partner who seeks inside information for financial advantage over competitors. An Hireling Hacker, namely someone who works solely for compensation that is hired by somebody else.",
+                    "image": "",
+                    "imageContentType": "image/jpeg",
+                    "skillLevel": "MEDIUM",
+                    "intent": "HOSTILE",
+                    "access": "OUTSIDER",
+                    "created": "2019-06-11T10:14:58.658709Z",
+                    "modified": "2019-06-11T10:14:58.658709Z",
+                    "identifiedByDefault": false,
+                    "motivations": [
+                        {
+                            "id": 1,
+                            "name": "Dominance",
+                            "description": "A desire to assert superiority over someone or something else. Adversaries who are seeking dominance over a target are focused on using their power to force their target into submission or irrelevance. Dominance may be found with ideology in some state-sponsored attacks and with notoriety in some cyber vandalism based attacks.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 2,
+                            "name": "Organizational Gain",
+                            "description": "Seeking advantage over a competing organization, including a military organization. Adversaries motivated by increased profit or other gains through an unfairly obtained competitive advantage are often seeking theft of intellectual property, business processes, or supply chain agreements and thus accelerating their position in a market or capability.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 5,
+                            "name": "Personal Financial Gain",
+                            "description": "The desire to improve one’s own financial status. Adversaries motivated by a selfish desire for personal gain are often out for gains that come from financial fraud, hacking for hire, or intellectual property theft. While a Threat Actor or Intrusion Set may be seeking personal gain this does not mean they are acting alone. Individuals can band together solely to maximize their own personal profits.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        }
+                    ]
+                }
+            },
+            "questionnaire": {
+                "id": 1,
+                "name": "Threat Agents Questionnaire",
+                "purpose": "ID_THREAT_AGENT",
+                "created": "2019-06-11T10:14:58.715776Z",
+                "modified": "2019-06-11T10:14:58.715776Z",
+                "companyType": "OTHER"
+            },
+            "user": {
+                "id": 4702,
+                "login": "v_health",
+                "firstName": "Paolo",
+                "lastName": "Roccetti",
+                "companyName": "HAcME",
+                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+                "companyWebsite": "www.eng.it",
+                "email": "vayaxa9866@etcone.net",
+                "activated": true,
+                "langKey": "en",
+                "imageUrl": null,
+                "resetDate": null
+            }
+        },
+        {
+            "id": 5117,
+            "note": null,
+            "answerOffset": 0,
+            "answer": {
+                "id": 1,
+                "name": "Yes",
+                "created": "2019-06-11T10:14:58.741062Z",
+                "modified": "2019-06-11T10:14:58.741062Z",
+                "order": 1,
+                "likelihood": "HIGH",
+                "asset": null,
+                "assetCategory": null
+            },
+            "question": {
+                "id": 12,
+                "name": "Does your company have a well-known brand?",
+                "created": "2019-06-11T10:14:58.724062Z",
+                "modified": "2019-06-11T10:14:58.724062Z",
+                "order": 12,
+                "questionType": "OTHER",
+                "answerType": "YESNO",
+                "attackStrategies": [],
+                "answers": null,
+                "areas": [],
+                "questionnaire": {
+                    "id": 1,
+                    "name": "Threat Agents Questionnaire",
+                    "purpose": "ID_THREAT_AGENT",
+                    "created": "2019-06-11T10:14:58.715776Z",
+                    "modified": "2019-06-11T10:14:58.715776Z",
+                    "companyType": "OTHER"
+                },
+                "threatAgent": {
+                    "id": 4,
+                    "name": "Hacker",
+                    "description": "An Hacker combines the skills od a Data Miner and a Mobster. A Data Miner is a professional data gatherer external to the company (includes cyber methods); while a Mobster is a manager of organized crime organization with significant resources.",
+                    "image": "",
+                    "imageContentType": "image/jpeg",
+                    "skillLevel": "HIGH",
+                    "intent": "HOSTILE",
+                    "access": "BOTH",
+                    "created": "2019-06-11T10:14:58.658709Z",
+                    "modified": "2019-06-11T10:14:58.658709Z",
+                    "identifiedByDefault": false,
+                    "motivations": [
+                        {
+                            "id": 1,
+                            "name": "Dominance",
+                            "description": "A desire to assert superiority over someone or something else. Adversaries who are seeking dominance over a target are focused on using their power to force their target into submission or irrelevance. Dominance may be found with ideology in some state-sponsored attacks and with notoriety in some cyber vandalism based attacks.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 2,
+                            "name": "Organizational Gain",
+                            "description": "Seeking advantage over a competing organization, including a military organization. Adversaries motivated by increased profit or other gains through an unfairly obtained competitive advantage are often seeking theft of intellectual property, business processes, or supply chain agreements and thus accelerating their position in a market or capability.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 5,
+                            "name": "Personal Financial Gain",
+                            "description": "The desire to improve one’s own financial status. Adversaries motivated by a selfish desire for personal gain are often out for gains that come from financial fraud, hacking for hire, or intellectual property theft. While a Threat Actor or Intrusion Set may be seeking personal gain this does not mean they are acting alone. Individuals can band together solely to maximize their own personal profits.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 6,
+                            "name": "Notoriety",
+                            "description": "Seeking prestige or to become well known through some activity. Adversaries motivated by notoriety are often seeking either personal validation or respect within a community and staying covert is not a priority. In fact one of the main goals is to garner the respect of their target audience.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        },
+                        {
+                            "id": 7,
+                            "name": "Personal Satisfaction",
+                            "description": "A desire to satisfy a strictly personal goal, including curiosity, thrill-seeking, amusement, etc. Threat Actors or Intrusion Set driven by personal satisfaction may incidentally receive some other gain from their actions, such as a profit, but their primary motivation is to gratify a personal, emotional need. Individuals can band together with others toward a mutual, but not necessarily organizational, objective.",
+                            "created": "2019-06-11T10:14:58.846696Z",
+                            "modified": "2019-06-11T10:14:58.846696Z"
+                        }
+                    ]
+                }
+            },
+            "questionnaire": {
+                "id": 1,
+                "name": "Threat Agents Questionnaire",
+                "purpose": "ID_THREAT_AGENT",
+                "created": "2019-06-11T10:14:58.715776Z",
+                "modified": "2019-06-11T10:14:58.715776Z",
+                "companyType": "OTHER"
+            },
+            "user": {
+                "id": 4702,
+                "login": "v_health",
+                "firstName": "Paolo",
+                "lastName": "Roccetti",
+                "companyName": "HAcME",
+                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+                "companyWebsite": "www.eng.it",
+                "email": "vayaxa9866@etcone.net",
+                "activated": true,
+                "langKey": "en",
+                "imageUrl": null,
+                "resetDate": null
+            }
+        }
+    ],
+    "external": null,
+    "refinement": null
+}
