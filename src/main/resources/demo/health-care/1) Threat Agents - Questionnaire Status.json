@@ -1,5 +1,4 @@
 {
-    "id": 5051,
     "status": "FULL",
     "created": "1906-11-10T14:08:00Z",
     "modified": "2020-01-17T14:10:16.871Z",
@@ -14,7 +13,6 @@
     },
     "answers": [
         {
-            "id": 5101,
             "note": null,
             "answerOffset": 0,
             "answer": {
@@ -100,7 +98,6 @@
             }
         },
         {
-            "id": 5102,
             "note": null,
             "answerOffset": 0,
             "answer": {
@@ -186,7 +183,6 @@
             }
         },
         {
-            "id": 5103,
             "note": null,
             "answerOffset": 0,
             "answer": {
@@ -272,7 +268,6 @@
             }
         },
         {
-            "id": 5104,
             "note": null,
             "answerOffset": 0,
             "answer": {
@@ -358,7 +353,6 @@
             }
         },
         {
-            "id": 5105,
             "note": null,
             "answerOffset": 0,
             "answer": {
@@ -444,7 +438,6 @@
             }
         },
         {
-            "id": 5106,
             "note": null,
             "answerOffset": 0,
             "answer": {
@@ -530,7 +523,6 @@
             }
         },
         {
-            "id": 5107,
             "note": null,
             "answerOffset": 0,
             "answer": {
@@ -616,7 +608,6 @@
             }
         },
         {
-            "id": 5108,
             "note": null,
             "answerOffset": 0,
             "answer": {
@@ -702,7 +693,6 @@
             }
         },
         {
-            "id": 5109,
             "note": null,
             "answerOffset": 0,
             "answer": {
@@ -795,7 +785,6 @@
             }
         },
         {
-            "id": 5110,
             "note": null,
             "answerOffset": 0,
             "answer": {
@@ -881,7 +870,6 @@
             }
         },
         {
-            "id": 5111,
             "note": null,
             "answerOffset": 0,
             "answer": {
@@ -967,7 +955,6 @@
             }
         },
         {
-            "id": 5112,
             "note": null,
             "answerOffset": 0,
             "answer": {
@@ -1060,7 +1047,6 @@
             }
         },
         {
-            "id": 5113,
             "note": null,
             "answerOffset": 0,
             "answer": {
@@ -1167,7 +1153,6 @@
             }
         },
         {
-            "id": 5114,
             "note": null,
             "answerOffset": 0,
             "answer": {
@@ -1260,7 +1245,6 @@
             }
         },
         {
-            "id": 5115,
             "note": null,
             "answerOffset": 0,
             "answer": {
@@ -1346,7 +1330,6 @@
             }
         },
         {
-            "id": 5116,
             "note": null,
             "answerOffset": 0,
             "answer": {
@@ -1439,7 +1422,6 @@
             }
         },
         {
-            "id": 5117,
             "note": null,
             "answerOffset": 0,
             "answer": {
@@ -1545,7 +1527,5 @@
                 "resetDate": null
             }
         }
-    ],
-    "external": null,
-    "refinement": null
+    ]
 }
