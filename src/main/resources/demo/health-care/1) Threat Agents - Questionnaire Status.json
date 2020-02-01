@@ -1,7 +1,5 @@
 {
     "status": "FULL",
-    "created": "1906-11-10T14:08:00Z",
-    "modified": "2020-01-17T14:10:16.871Z",
     "role": "ROLE_CISO",
     "questionnaire": {
         "id": 1,
@@ -81,20 +79,6 @@
                 "created": "2019-06-11T10:14:58.715776Z",
                 "modified": "2019-06-11T10:14:58.715776Z",
                 "companyType": "OTHER"
-            },
-            "user": {
-                "id": 4702,
-                "login": "v_health",
-                "firstName": "Paolo",
-                "lastName": "Roccetti",
-                "companyName": "HAcME",
-                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "companyWebsite": "www.eng.it",
-                "email": "vayaxa9866@etcone.net",
-                "activated": true,
-                "langKey": "en",
-                "imageUrl": null,
-                "resetDate": null
             }
         },
         {
@@ -166,20 +150,6 @@
                 "created": "2019-06-11T10:14:58.715776Z",
                 "modified": "2019-06-11T10:14:58.715776Z",
                 "companyType": "OTHER"
-            },
-            "user": {
-                "id": 4702,
-                "login": "v_health",
-                "firstName": "Paolo",
-                "lastName": "Roccetti",
-                "companyName": "HAcME",
-                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "companyWebsite": "www.eng.it",
-                "email": "vayaxa9866@etcone.net",
-                "activated": true,
-                "langKey": "en",
-                "imageUrl": null,
-                "resetDate": null
             }
         },
         {
@@ -251,20 +221,6 @@
                 "created": "2019-06-11T10:14:58.715776Z",
                 "modified": "2019-06-11T10:14:58.715776Z",
                 "companyType": "OTHER"
-            },
-            "user": {
-                "id": 4702,
-                "login": "v_health",
-                "firstName": "Paolo",
-                "lastName": "Roccetti",
-                "companyName": "HAcME",
-                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "companyWebsite": "www.eng.it",
-                "email": "vayaxa9866@etcone.net",
-                "activated": true,
-                "langKey": "en",
-                "imageUrl": null,
-                "resetDate": null
             }
         },
         {
@@ -336,20 +292,6 @@
                 "created": "2019-06-11T10:14:58.715776Z",
                 "modified": "2019-06-11T10:14:58.715776Z",
                 "companyType": "OTHER"
-            },
-            "user": {
-                "id": 4702,
-                "login": "v_health",
-                "firstName": "Paolo",
-                "lastName": "Roccetti",
-                "companyName": "HAcME",
-                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "companyWebsite": "www.eng.it",
-                "email": "vayaxa9866@etcone.net",
-                "activated": true,
-                "langKey": "en",
-                "imageUrl": null,
-                "resetDate": null
             }
         },
         {
@@ -421,20 +363,6 @@
                 "created": "2019-06-11T10:14:58.715776Z",
                 "modified": "2019-06-11T10:14:58.715776Z",
                 "companyType": "OTHER"
-            },
-            "user": {
-                "id": 4702,
-                "login": "v_health",
-                "firstName": "Paolo",
-                "lastName": "Roccetti",
-                "companyName": "HAcME",
-                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "companyWebsite": "www.eng.it",
-                "email": "vayaxa9866@etcone.net",
-                "activated": true,
-                "langKey": "en",
-                "imageUrl": null,
-                "resetDate": null
             }
         },
         {
@@ -506,20 +434,6 @@
                 "created": "2019-06-11T10:14:58.715776Z",
                 "modified": "2019-06-11T10:14:58.715776Z",
                 "companyType": "OTHER"
-            },
-            "user": {
-                "id": 4702,
-                "login": "v_health",
-                "firstName": "Paolo",
-                "lastName": "Roccetti",
-                "companyName": "HAcME",
-                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "companyWebsite": "www.eng.it",
-                "email": "vayaxa9866@etcone.net",
-                "activated": true,
-                "langKey": "en",
-                "imageUrl": null,
-                "resetDate": null
             }
         },
         {
@@ -591,20 +505,6 @@
                 "created": "2019-06-11T10:14:58.715776Z",
                 "modified": "2019-06-11T10:14:58.715776Z",
                 "companyType": "OTHER"
-            },
-            "user": {
-                "id": 4702,
-                "login": "v_health",
-                "firstName": "Paolo",
-                "lastName": "Roccetti",
-                "companyName": "HAcME",
-                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "companyWebsite": "www.eng.it",
-                "email": "vayaxa9866@etcone.net",
-                "activated": true,
-                "langKey": "en",
-                "imageUrl": null,
-                "resetDate": null
             }
         },
         {
@@ -676,20 +576,6 @@
                 "created": "2019-06-11T10:14:58.715776Z",
                 "modified": "2019-06-11T10:14:58.715776Z",
                 "companyType": "OTHER"
-            },
-            "user": {
-                "id": 4702,
-                "login": "v_health",
-                "firstName": "Paolo",
-                "lastName": "Roccetti",
-                "companyName": "HAcME",
-                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "companyWebsite": "www.eng.it",
-                "email": "vayaxa9866@etcone.net",
-                "activated": true,
-                "langKey": "en",
-                "imageUrl": null,
-                "resetDate": null
             }
         },
         {
@@ -768,20 +654,6 @@
                 "created": "2019-06-11T10:14:58.715776Z",
                 "modified": "2019-06-11T10:14:58.715776Z",
                 "companyType": "OTHER"
-            },
-            "user": {
-                "id": 4702,
-                "login": "v_health",
-                "firstName": "Paolo",
-                "lastName": "Roccetti",
-                "companyName": "HAcME",
-                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "companyWebsite": "www.eng.it",
-                "email": "vayaxa9866@etcone.net",
-                "activated": true,
-                "langKey": "en",
-                "imageUrl": null,
-                "resetDate": null
             }
         },
         {
@@ -853,20 +725,6 @@
                 "created": "2019-06-11T10:14:58.715776Z",
                 "modified": "2019-06-11T10:14:58.715776Z",
                 "companyType": "OTHER"
-            },
-            "user": {
-                "id": 4702,
-                "login": "v_health",
-                "firstName": "Paolo",
-                "lastName": "Roccetti",
-                "companyName": "HAcME",
-                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "companyWebsite": "www.eng.it",
-                "email": "vayaxa9866@etcone.net",
-                "activated": true,
-                "langKey": "en",
-                "imageUrl": null,
-                "resetDate": null
             }
         },
         {
@@ -938,20 +796,6 @@
                 "created": "2019-06-11T10:14:58.715776Z",
                 "modified": "2019-06-11T10:14:58.715776Z",
                 "companyType": "OTHER"
-            },
-            "user": {
-                "id": 4702,
-                "login": "v_health",
-                "firstName": "Paolo",
-                "lastName": "Roccetti",
-                "companyName": "HAcME",
-                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "companyWebsite": "www.eng.it",
-                "email": "vayaxa9866@etcone.net",
-                "activated": true,
-                "langKey": "en",
-                "imageUrl": null,
-                "resetDate": null
             }
         },
         {
@@ -1030,20 +874,6 @@
                 "created": "2019-06-11T10:14:58.715776Z",
                 "modified": "2019-06-11T10:14:58.715776Z",
                 "companyType": "OTHER"
-            },
-            "user": {
-                "id": 4702,
-                "login": "v_health",
-                "firstName": "Paolo",
-                "lastName": "Roccetti",
-                "companyName": "HAcME",
-                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "companyWebsite": "www.eng.it",
-                "email": "vayaxa9866@etcone.net",
-                "activated": true,
-                "langKey": "en",
-                "imageUrl": null,
-                "resetDate": null
             }
         },
         {
@@ -1136,20 +966,6 @@
                 "created": "2019-06-11T10:14:58.715776Z",
                 "modified": "2019-06-11T10:14:58.715776Z",
                 "companyType": "OTHER"
-            },
-            "user": {
-                "id": 4702,
-                "login": "v_health",
-                "firstName": "Paolo",
-                "lastName": "Roccetti",
-                "companyName": "HAcME",
-                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "companyWebsite": "www.eng.it",
-                "email": "vayaxa9866@etcone.net",
-                "activated": true,
-                "langKey": "en",
-                "imageUrl": null,
-                "resetDate": null
             }
         },
         {
@@ -1228,20 +1044,6 @@
                 "created": "2019-06-11T10:14:58.715776Z",
                 "modified": "2019-06-11T10:14:58.715776Z",
                 "companyType": "OTHER"
-            },
-            "user": {
-                "id": 4702,
-                "login": "v_health",
-                "firstName": "Paolo",
-                "lastName": "Roccetti",
-                "companyName": "HAcME",
-                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "companyWebsite": "www.eng.it",
-                "email": "vayaxa9866@etcone.net",
-                "activated": true,
-                "langKey": "en",
-                "imageUrl": null,
-                "resetDate": null
             }
         },
         {
@@ -1313,20 +1115,6 @@
                 "created": "2019-06-11T10:14:58.715776Z",
                 "modified": "2019-06-11T10:14:58.715776Z",
                 "companyType": "OTHER"
-            },
-            "user": {
-                "id": 4702,
-                "login": "v_health",
-                "firstName": "Paolo",
-                "lastName": "Roccetti",
-                "companyName": "HAcME",
-                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "companyWebsite": "www.eng.it",
-                "email": "vayaxa9866@etcone.net",
-                "activated": true,
-                "langKey": "en",
-                "imageUrl": null,
-                "resetDate": null
             }
         },
         {
@@ -1405,20 +1193,6 @@
                 "created": "2019-06-11T10:14:58.715776Z",
                 "modified": "2019-06-11T10:14:58.715776Z",
                 "companyType": "OTHER"
-            },
-            "user": {
-                "id": 4702,
-                "login": "v_health",
-                "firstName": "Paolo",
-                "lastName": "Roccetti",
-                "companyName": "HAcME",
-                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "companyWebsite": "www.eng.it",
-                "email": "vayaxa9866@etcone.net",
-                "activated": true,
-                "langKey": "en",
-                "imageUrl": null,
-                "resetDate": null
             }
         },
         {
@@ -1511,20 +1285,6 @@
                 "created": "2019-06-11T10:14:58.715776Z",
                 "modified": "2019-06-11T10:14:58.715776Z",
                 "companyType": "OTHER"
-            },
-            "user": {
-                "id": 4702,
-                "login": "v_health",
-                "firstName": "Paolo",
-                "lastName": "Roccetti",
-                "companyName": "HAcME",
-                "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "companyWebsite": "www.eng.it",
-                "email": "vayaxa9866@etcone.net",
-                "activated": true,
-                "langKey": "en",
-                "imageUrl": null,
-                "resetDate": null
             }
         }
     ]
