@@ -1,8 +1,23 @@
-<p>
-    demo works!
-</p>
+<h2>
+    Demo
+</h2>
 
-<button class="btn btn-primary" type="button" [disabled]="threatAgentsDemoLoaded" (click)="loadThreatAgentsDemo()">
-    Load Threat Agents Demo
-</button>
-<span *ngIf="threatAgentsDemoLoaded">Demo of Threat Agents loaded</span>
+<ul class="list-unstyled">
+    <li>
+        <button *ngIf="companyBoardStatus" class="btn btn-primary" type="button"
+                [disabled]="companyBoardStatus.identifyThreatAgentsStatus !== statusEnum.EMPTY"
+                (click)="loadThreatAgentsDemo()">
+            Load Threat Agents Demo
+        </button>
+    </li>
+    <li>
+        <button *ngIf="companyBoardStatus" class="btn btn-primary" type="button"
+                [disabled]="companyBoardStatus.assessVulnerablitiesStatus !== statusEnum.EMPTY"
+                (click)="loadVulnerabilitiesDemo()">
+            Load Vulnerabilities Demo
+        </button>
+    </li>
+</ul>
+
+
+

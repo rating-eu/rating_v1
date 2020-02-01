@@ -34,7 +34,10 @@ import java.io.IOException;
 public class DemoServiceImpl implements DemoService {
 
     @Value("classpath:demo/health-care/1) Threat Agents - Questionnaire Status.json")
-    private File questionnaireStatusJSON;
+    private File threatAgentsQuestionnaireStatusJSON;
+
+    @Value("classpath:demo/health-care/2) Vulnerabilities - Questionnaire Status.json")
+    private File vulnerabilitiesQuestionnaireStatusJSON;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -44,14 +47,17 @@ public class DemoServiceImpl implements DemoService {
 
     @Override
     public boolean loadThreatAgentsQuestionnaireStatus(User user, CompanyProfile companyProfile) {
+        return this.loadQuestionnaireStatus(this.threatAgentsQuestionnaireStatusJSON, user, companyProfile);
+    }
+
+    @Override
+    public boolean loadVulnerabilitiesQuestionnaireStatus(User user, CompanyProfile companyProfile) {
+        return this.loadQuestionnaireStatus(this.vulnerabilitiesQuestionnaireStatusJSON, user, companyProfile);
+    }
+
+    private boolean loadQuestionnaireStatus(File fileJSON, User user, CompanyProfile companyProfile) {
         try {
-            QuestionnaireStatus questionnaireStatus = this.objectMapper.readValue(this.questionnaireStatusJSON, QuestionnaireStatus.class);
-
-            System.out.println("QuestionnaireStatus from JSON:");
-            System.out.println("ID: " + questionnaireStatus.getId());
-
-            System.out.println("Target User: " + user.getLogin());
-            System.out.println("Target Company: " + companyProfile.getName());
+            QuestionnaireStatus questionnaireStatus = this.objectMapper.readValue(fileJSON, QuestionnaireStatus.class);
 
             /*
              * 1) Change Reference to the new User

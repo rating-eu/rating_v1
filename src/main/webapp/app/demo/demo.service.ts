@@ -8,11 +8,16 @@ export class DemoService {
 
     // {companyProfileID}/privacy-board/operation/{operationID}/status
     private loadThreatAgentsDemoURL = SERVER_API_URL + '/api/demo/threat-agents';
+    private loadVulnerabilitiesDemoURL = SERVER_API_URL + '/api/demo/vulnerabilities';
 
     constructor(private http: HttpClient) {
     }
 
     public loadThreatAgentsDemo(): Observable<boolean> {
         return this.http.post<boolean>(this.loadThreatAgentsDemoURL, {});
+    }
+
+    public loadVulnerabilitiesDemo(): Observable<boolean> {
+        return this.http.post<boolean>(this.loadVulnerabilitiesDemoURL, {});
     }
 }
