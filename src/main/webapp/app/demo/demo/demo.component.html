@@ -1,3 +1,8 @@
 <p>
-  demo works!
+    demo works!
 </p>
+
+<button class="btn btn-primary" type="button" [disabled]="threatAgentsDemoLoaded" (click)="loadThreatAgentsDemo()">
+    Load Threat Agents Demo
+</button>
+<span *ngIf="threatAgentsDemoLoaded">Demo of Threat Agents loaded</span>

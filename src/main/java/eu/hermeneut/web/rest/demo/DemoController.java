@@ -44,7 +44,9 @@ public class DemoController {
 
     @PostMapping("/threat-agents")
     @Timed
-    public void loadThreatAgentsDemo() {
+    public boolean loadThreatAgentsDemo() {
+        boolean loaded = false;
+
         //Get the current user
         User currentUser = this.userService.getUserWithAuthorities().orElse(null);
 
@@ -56,10 +58,12 @@ public class DemoController {
                     CompanyProfile companyProfile = myCompany.getCompanyProfile();
 
                     if (companyProfile != null) {
-                        this.demoService.loadThreatAgentsQuestionnaireStatus(currentUser, companyProfile);
+                        loaded = this.demoService.loadThreatAgentsQuestionnaireStatus(currentUser, companyProfile);
                     }
                 }
             }
         }
+
+        return loaded;
     }
 }
