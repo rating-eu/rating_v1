@@ -9,25 +9,21 @@
         "lossValue": 1418595.54,
         "costs": [
             {
-                "id": 5528,
                 "type": "PUBLIC_RELATIONS",
                 "description": null,
                 "costs": 100000.00
             },
             {
-                "id": 5529,
                 "type": "LOSS_OF_REVENUES",
                 "description": null,
                 "costs": 100000.00
             },
             {
-                "id": 5530,
                 "type": "INCREASED_SECURITY",
                 "description": null,
                 "costs": 100000.00
             },
             {
-                "id": 5531,
                 "type": "LOST_CUSTOMERS_RECOVERY",
                 "description": null,
                 "costs": 100000.00
@@ -132,37 +128,6 @@
             },
             "directlyVulnerable": false,
             "indirectlyVulnerable": true
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -175,31 +140,26 @@
         "lossValue": 2837191.07,
         "costs": [
             {
-                "id": 5520,
                 "type": "LOST_CUSTOMERS_RECOVERY",
                 "description": null,
                 "costs": 100000.00
             },
             {
-                "id": 5521,
                 "type": "LOST_OR_NON_FULFILLED_CONTRACTS",
                 "description": null,
                 "costs": 1000000.00
             },
             {
-                "id": 5517,
                 "type": "PUBLIC_RELATIONS",
                 "description": null,
                 "costs": 100000.00
             },
             {
-                "id": 5518,
                 "type": "LOSS_OF_REVENUES",
                 "description": null,
                 "costs": 100000.00
             },
             {
-                "id": 5519,
                 "type": "VALUE_OF_LOST_OR_NOT_FULFILLED_CONTRACT_REVENUES",
                 "description": null,
                 "costs": 5000000.00
@@ -304,37 +264,6 @@
             },
             "directlyVulnerable": false,
             "indirectlyVulnerable": true
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -421,37 +350,6 @@
             },
             "directlyVulnerable": true,
             "indirectlyVulnerable": false
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -464,43 +362,36 @@
         "lossValue": 15000000.00,
         "costs": [
             {
-                "id": 5504,
                 "type": "VALUE_OF_LOST_OR_NOT_FULFILLED_CONTRACT_REVENUES",
                 "description": null,
                 "costs": 5000000.00
             },
             {
-                "id": 5505,
                 "type": "INCREASED_SECURITY",
                 "description": null,
                 "costs": 100000.00
             },
             {
-                "id": 5506,
                 "type": "LOST_CUSTOMERS_RECOVERY",
                 "description": null,
                 "costs": 100000.00
             },
             {
-                "id": 5507,
                 "type": "LOST_OR_NON_FULFILLED_CONTRACTS",
                 "description": null,
                 "costs": 1000000.00
             },
             {
-                "id": 5501,
                 "type": "BEFORE_THE_ATTACK_STATUS_RESTORATION",
                 "description": null,
                 "costs": 60000.00
             },
             {
-                "id": 5502,
                 "type": "LEGAL_LITIGATION_COSTS_AND_ATTORNEY_FEES",
                 "description": null,
                 "costs": 5000000.00
             },
             {
-                "id": 5503,
                 "type": "PUBLIC_RELATIONS",
                 "description": null,
                 "costs": 100000.00
@@ -581,37 +472,6 @@
             },
             "directlyVulnerable": true,
             "indirectlyVulnerable": false
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -722,37 +582,6 @@
             },
             "directlyVulnerable": false,
             "indirectlyVulnerable": false
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -820,37 +649,6 @@
             },
             "directlyVulnerable": true,
             "indirectlyVulnerable": false
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -937,37 +735,6 @@
             },
             "directlyVulnerable": true,
             "indirectlyVulnerable": false
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -980,31 +747,26 @@
         "lossValue": 3546488.84,
         "costs": [
             {
-                "id": 5536,
                 "type": "VALUE_OF_LOST_OR_NOT_FULFILLED_CONTRACT_REVENUES",
                 "description": null,
                 "costs": 5000000.00
             },
             {
-                "id": 5537,
                 "type": "LOST_OR_NON_FULFILLED_CONTRACTS",
                 "description": null,
                 "costs": 1000000.00
             },
             {
-                "id": 5533,
                 "type": "LEGAL_LITIGATION_COSTS_AND_ATTORNEY_FEES",
                 "description": null,
                 "costs": 5000000.00
             },
             {
-                "id": 5534,
                 "type": "PUBLIC_RELATIONS",
                 "description": null,
                 "costs": 100000.00
             },
             {
-                "id": 5535,
                 "type": "LOSS_OF_REVENUES",
                 "description": null,
                 "costs": 100000.00
@@ -1109,37 +871,6 @@
             },
             "directlyVulnerable": false,
             "indirectlyVulnerable": true
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -1152,55 +883,46 @@
         "lossValue": 10000000.00,
         "costs": [
             {
-                "id": 5508,
                 "type": "PUBLIC_RELATIONS",
                 "description": null,
                 "costs": 100000.00
             },
             {
-                "id": 5509,
                 "type": "LOST_CUSTOMERS_RECOVERY",
                 "description": null,
                 "costs": 100000.00
             },
             {
-                "id": 5510,
                 "type": "CUSTOMER_BREACH_NOTIFICATION_COSTS",
                 "description": null,
                 "costs": 125000.00
             },
             {
-                "id": 5511,
                 "type": "LOSS_OF_REVENUES",
                 "description": null,
                 "costs": 100000.00
             },
             {
-                "id": 5512,
                 "type": "LOST_OR_NON_FULFILLED_CONTRACTS",
                 "description": null,
                 "costs": 1000000.00
             },
             {
-                "id": 5513,
                 "type": "INCREASED_SECURITY",
                 "description": null,
                 "costs": 100000.00
             },
             {
-                "id": 5514,
                 "type": "LIABILITY_COSTS",
                 "description": null,
                 "costs": 5000000.00
             },
             {
-                "id": 5515,
                 "type": "BEFORE_THE_ATTACK_STATUS_RESTORATION",
                 "description": null,
                 "costs": 60000.00
             },
             {
-                "id": 5516,
                 "type": "NOTIFICATION_AND_REGULATORY_COMPLIANCE_COSTS",
                 "description": null,
                 "costs": 100000.00
@@ -1281,37 +1003,6 @@
             },
             "directlyVulnerable": true,
             "indirectlyVulnerable": false
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -1324,25 +1015,21 @@
         "lossValue": 3546488.84,
         "costs": [
             {
-                "id": 5523,
                 "type": "PUBLIC_RELATIONS",
                 "description": null,
                 "costs": 100000.00
             },
             {
-                "id": 5524,
                 "type": "VALUE_OF_LOST_OR_NOT_FULFILLED_CONTRACT_REVENUES",
                 "description": null,
                 "costs": 5000000.00
             },
             {
-                "id": 5525,
                 "type": "LOST_CUSTOMERS_RECOVERY",
                 "description": null,
                 "costs": 100000.00
             },
             {
-                "id": 5526,
                 "type": "LOST_OR_NON_FULFILLED_CONTRACTS",
                 "description": null,
                 "costs": 1000000.00
@@ -1447,37 +1134,6 @@
             },
             "directlyVulnerable": false,
             "indirectlyVulnerable": true
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -1520,37 +1176,6 @@
             },
             "directlyVulnerable": true,
             "indirectlyVulnerable": false
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -1637,37 +1262,6 @@
             },
             "directlyVulnerable": true,
             "indirectlyVulnerable": false
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -1680,7 +1274,6 @@
         "lossValue": 2837191.07,
         "costs": [
             {
-                "id": 5527,
                 "type": "LOST_CUSTOMERS_RECOVERY",
                 "description": null,
                 "costs": 100000.00
@@ -1742,37 +1335,6 @@
             },
             "directlyVulnerable": false,
             "indirectlyVulnerable": true
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -1895,37 +1457,6 @@
             },
             "directlyVulnerable": false,
             "indirectlyVulnerable": true
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -1968,37 +1499,6 @@
             },
             "directlyVulnerable": true,
             "indirectlyVulnerable": false
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -2078,37 +1578,6 @@
             },
             "directlyVulnerable": true,
             "indirectlyVulnerable": false
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -2195,37 +1664,6 @@
             },
             "directlyVulnerable": true,
             "indirectlyVulnerable": false
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -2312,37 +1750,6 @@
             },
             "directlyVulnerable": true,
             "indirectlyVulnerable": false
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -2355,7 +1762,6 @@
         "lossValue": 16326745.00,
         "costs": [
             {
-                "id": 5532,
                 "type": "INCREASED_SECURITY",
                 "description": null,
                 "costs": 100000.00
@@ -2460,37 +1866,6 @@
             },
             "directlyVulnerable": false,
             "indirectlyVulnerable": true
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -2565,37 +1940,6 @@
             },
             "directlyVulnerable": false,
             "indirectlyVulnerable": true
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -2638,37 +1982,6 @@
             },
             "directlyVulnerable": false,
             "indirectlyVulnerable": true
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -2755,37 +2068,6 @@
             },
             "directlyVulnerable": true,
             "indirectlyVulnerable": false
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -2798,7 +2080,6 @@
         "lossValue": 16326745.00,
         "costs": [
             {
-                "id": 5522,
                 "type": "INCREASED_SECURITY",
                 "description": null,
                 "costs": 100000.00
@@ -2903,37 +2184,6 @@
             },
             "directlyVulnerable": false,
             "indirectlyVulnerable": true
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -2982,37 +2232,6 @@
             },
             "directlyVulnerable": false,
             "indirectlyVulnerable": true
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -3092,37 +2311,6 @@
             },
             "directlyVulnerable": true,
             "indirectlyVulnerable": false
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -3221,37 +2409,6 @@
             },
             "directlyVulnerable": false,
             "indirectlyVulnerable": true
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -3300,37 +2457,6 @@
             },
             "directlyVulnerable": false,
             "indirectlyVulnerable": true
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -3391,37 +2517,6 @@
             },
             "directlyVulnerable": true,
             "indirectlyVulnerable": false
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     },
     {
@@ -3470,37 +2565,6 @@
             },
             "directlyVulnerable": false,
             "indirectlyVulnerable": true
-        },
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
         }
     }
 ]
