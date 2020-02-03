@@ -1,0 +1,116 @@
+[
+    {
+        "id": 7454,
+        "sectorType": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+        "categoryType": "IP",
+        "lossPercentage": 14.70,
+        "loss": 12322436.69,
+        "selfAssessment": {
+            "id": 5301,
+            "name": "Health Services Provisioning",
+            "created": "2020-01-17T12:27:00Z",
+            "modified": "2020-01-20T14:16:04.443Z",
+            "companyProfile": {
+                "id": 4951,
+                "name": "HAcME",
+                "description": "HAcME",
+                "created": "2020-01-17T14:00:00Z",
+                "modified": "2020-01-17T14:00:00Z",
+                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+                "user": {
+                    "id": 4702,
+                    "login": "v_health",
+                    "firstName": "Paolo",
+                    "lastName": "Roccetti",
+                    "companyName": "HAcME",
+                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+                    "companyWebsite": "www.eng.it",
+                    "email": "vayaxa9866@etcone.net",
+                    "activated": true,
+                    "langKey": "en",
+                    "imageUrl": null,
+                    "resetDate": null
+                }
+            },
+            "user": null,
+            "companyGroups": [],
+            "impactMode": "QUANTITATIVE"
+        }
+    },
+    {
+        "id": 7455,
+        "sectorType": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+        "categoryType": "KEY_COMP",
+        "lossPercentage": 63.30,
+        "loss": 53061921.24,
+        "selfAssessment": {
+            "id": 5301,
+            "name": "Health Services Provisioning",
+            "created": "2020-01-17T12:27:00Z",
+            "modified": "2020-01-20T14:16:04.443Z",
+            "companyProfile": {
+                "id": 4951,
+                "name": "HAcME",
+                "description": "HAcME",
+                "created": "2020-01-17T14:00:00Z",
+                "modified": "2020-01-17T14:00:00Z",
+                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+                "user": {
+                    "id": 4702,
+                    "login": "v_health",
+                    "firstName": "Paolo",
+                    "lastName": "Roccetti",
+                    "companyName": "HAcME",
+                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+                    "companyWebsite": "www.eng.it",
+                    "email": "vayaxa9866@etcone.net",
+                    "activated": true,
+                    "langKey": "en",
+                    "imageUrl": null,
+                    "resetDate": null
+                }
+            },
+            "user": null,
+            "companyGroups": [],
+            "impactMode": "QUANTITATIVE"
+        }
+    },
+    {
+        "id": 7456,
+        "sectorType": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+        "categoryType": "ORG_CAPITAL",
+        "lossPercentage": 22.00,
+        "loss": 18441741.98,
+        "selfAssessment": {
+            "id": 5301,
+            "name": "Health Services Provisioning",
+            "created": "2020-01-17T12:27:00Z",
+            "modified": "2020-01-20T14:16:04.443Z",
+            "companyProfile": {
+                "id": 4951,
+                "name": "HAcME",
+                "description": "HAcME",
+                "created": "2020-01-17T14:00:00Z",
+                "modified": "2020-01-17T14:00:00Z",
+                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+                "user": {
+                    "id": 4702,
+                    "login": "v_health",
+                    "firstName": "Paolo",
+                    "lastName": "Roccetti",
+                    "companyName": "HAcME",
+                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+                    "companyWebsite": "www.eng.it",
+                    "email": "vayaxa9866@etcone.net",
+                    "activated": true,
+                    "langKey": "en",
+                    "imageUrl": null,
+                    "resetDate": null
+                }
+            },
+            "user": null,
+            "companyGroups": [],
+            "impactMode": "QUANTITATIVE"
+        }
+    }
+]
