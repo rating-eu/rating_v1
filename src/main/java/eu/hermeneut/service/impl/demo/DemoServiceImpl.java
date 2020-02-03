@@ -19,10 +19,7 @@ package eu.hermeneut.service.impl.demo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.hermeneut.domain.*;
-import eu.hermeneut.service.DirectAssetService;
-import eu.hermeneut.service.MyAssetService;
-import eu.hermeneut.service.QuestionnaireStatusService;
-import eu.hermeneut.service.SelfAssessmentService;
+import eu.hermeneut.service.*;
 import eu.hermeneut.service.demo.DemoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +28,6 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class DemoServiceImpl implements DemoService {
@@ -51,6 +47,24 @@ public class DemoServiceImpl implements DemoService {
     @Value("classpath:demo/health-care/5) Service.DirectAndIndirectAssets - DirectAsset.json")
     private File directAndIndirectAssetsJSON;
 
+    @Value("classpath:demo/health-care/6) Service Quantitative Impacts - EBIT.json")
+    private File quantitativeImpactsEBITsJSON;
+
+    @Value("classpath:demo/health-care/7) Service Quantitative Impacts - EconomicCoefficients.json")
+    private File quantitativeImpactsEconomicCoefficientsJSON;
+
+    @Value("classpath:demo/health-care/8) Service Quantitative Impacts - EconomicResults.json")
+    private File quantitativeImpactsEconomicResultsJSON;
+
+    @Value("classpath:demo/health-care/9) Service Quantitative Impacts - SplittingValues.json")
+    private File quntitativeImpactsSplittingValuesJSON;
+
+    @Value("classpath:demo/health-care/10) Service Quantitative Impacts - SplittingLosses.json")
+    private File quantitativeImpactsSplittingLossesJSON;
+
+    @Value("classpath:demo/health-care/11) Service Quantitative Impacts - GrowthRates.json")
+    private File quantitativeImpactsGrowthRatesJSON;
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -65,6 +79,24 @@ public class DemoServiceImpl implements DemoService {
 
     @Autowired
     private DirectAssetService directAssetService;
+
+    @Autowired
+    private EBITService ebitService;
+
+    @Autowired
+    private EconomicCoefficientsService economicCoefficientsService;
+
+    @Autowired
+    private EconomicResultsService economicResultsService;
+
+    @Autowired
+    private SplittingValueService splittingValueService;
+
+    @Autowired
+    private SplittingLossService splittingLossService;
+
+    @Autowired
+    private GrowthRateService growthRateService;
 
     @Override
     public boolean loadThreatAgentsQuestionnaireStatus(User user, CompanyProfile companyProfile) {
@@ -86,70 +118,17 @@ public class DemoServiceImpl implements DemoService {
             service.setCompanyGroups(new HashSet<>());
 
             SelfAssessment demoService = this.selfAssessmentService.save(service);
+            boolean assetsLoaded = this.loadAssets(demoService);
+            boolean impactsLoaded = this.loadImpacts(demoService);
 
-            if (demoService != null) {
-                MyAsset[] myAssets = this.objectMapper.readValue(this.myAssetsAndCostsJSON, MyAsset[].class);
-                DirectAsset[] directAssets = this.objectMapper.readValue(this.directAndIndirectAssetsJSON, DirectAsset[].class);
-
-                /*
-                 *  1) Take note of the old MyAsset.ID
-                 *  2) Set the IDs to null
-                 *  3) Set the ref to the Service (SelfAssessment)
-                 *  4) Persist the MyAssets and map the new ID to the old one
-                 */
-
-                Map<Long, Long> oldToNewMyAssetIDsMap = new HashMap<>();
-                List<MyAsset> demoMyAssets = new ArrayList<>();
-
-                for (MyAsset myAsset : myAssets) {
-                    Long oldID = myAsset.getId();
-
-                    myAsset.setId(null);
-                    myAsset.selfAssessment(demoService);
-
-                    final MyAsset persisted = this.myAssetService.save(myAsset);
-                    demoMyAssets.add(persisted);
-
-                    Long newID = persisted.getId();
-
-                    oldToNewMyAssetIDsMap.put(oldID, newID);
-                }
-
-                /*
-                 *  5) Set the IDs of Direct and Indirect assets to null
-                 *  6) Set the ref of Direct and Indirect assets to the new MyAsset.ID
-                 */
-
-                for (DirectAsset directAsset : directAssets) {
-                    directAsset.setId(null);
-
-                    Long oldMyAssetID = directAsset.getMyAsset().getId();
-                    Long newMyAssetID = oldToNewMyAssetIDsMap.get(oldMyAssetID);
-
-                    directAsset.getMyAsset().setId(newMyAssetID);
-
-                    Set<IndirectAsset> indirectAssets = directAsset.getEffects();
-
-                    if (indirectAssets != null && !indirectAssets.isEmpty()) {
-                        for (IndirectAsset indirectAsset : indirectAssets) {
-                            Long oldMAID = indirectAsset.getMyAsset().getId();
-                            Long newMAID = oldToNewMyAssetIDsMap.get(oldMAID);
-
-                            indirectAsset.getMyAsset().setId(newMAID);
-                        }
-                    }
-
-                    this.directAssetService.save(directAsset);
-                }
-            }
-
-            return demoService != null;
+            return demoService != null && assetsLoaded && impactsLoaded;
         } catch (IOException e) {
             e.printStackTrace();
 
             return false;
         }
     }
+
 
     private boolean loadQuestionnaireStatus(File fileJSON, User user, CompanyProfile companyProfile) {
         try {
@@ -170,6 +149,208 @@ public class DemoServiceImpl implements DemoService {
             QuestionnaireStatus demo = this.questionnaireStatusService.save(questionnaireStatus);
 
             return demo != null;
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            return false;
+        }
+    }
+
+    private boolean loadAssets(SelfAssessment service) {
+        if (service != null) {
+            MyAsset[] myAssets = new MyAsset[0];
+            DirectAsset[] directAssets = new DirectAsset[0];
+
+            try {
+                // Load MyAssets
+                myAssets = this.objectMapper.readValue(this.myAssetsAndCostsJSON, MyAsset[].class);
+
+                // Load DirectAssets
+                directAssets = this.objectMapper.readValue(this.directAndIndirectAssetsJSON, DirectAsset[].class);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            /*
+             *  1) Take note of the old MyAsset.ID
+             *  2) Set the IDs to null
+             *  3) Set the ref to the Service (SelfAssessment)
+             *  4) Persist the MyAssets and map the new ID to the old one
+             */
+
+            Map<Long, Long> oldToNewMyAssetIDsMap = new HashMap<>();
+            List<MyAsset> demoMyAssets = new ArrayList<>();
+
+            for (MyAsset myAsset : myAssets) {
+                Long oldID = myAsset.getId();
+
+                myAsset.setId(null);
+                myAsset.selfAssessment(service);
+
+                final MyAsset persisted = this.myAssetService.save(myAsset);
+                demoMyAssets.add(persisted);
+
+                Long newID = persisted.getId();
+
+                oldToNewMyAssetIDsMap.put(oldID, newID);
+            }
+
+            /*
+             *  5) Set the IDs of Direct and Indirect assets to null
+             *  6) Set the ref of Direct and Indirect assets to the new MyAsset.ID
+             */
+
+            for (DirectAsset directAsset : directAssets) {
+                directAsset.setId(null);
+
+                Long oldMyAssetID = directAsset.getMyAsset().getId();
+                Long newMyAssetID = oldToNewMyAssetIDsMap.get(oldMyAssetID);
+
+                directAsset.getMyAsset().setId(newMyAssetID);
+
+                Set<IndirectAsset> indirectAssets = directAsset.getEffects();
+
+                if (indirectAssets != null && !indirectAssets.isEmpty()) {
+                    for (IndirectAsset indirectAsset : indirectAssets) {
+                        Long oldMAID = indirectAsset.getMyAsset().getId();
+                        Long newMAID = oldToNewMyAssetIDsMap.get(oldMAID);
+
+                        indirectAsset.getMyAsset().setId(newMAID);
+                    }
+                }
+
+                this.directAssetService.save(directAsset);
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean loadImpacts(SelfAssessment service) {
+        boolean ebitsLoaded = this.loadEBITs(service);
+        boolean economicCoefficientsLoaded = this.loadEconomicCoefficients(service);
+        boolean economicResultsLoaded = this.loadEconomicResults(service);
+        boolean splittingValuesLoaded = this.loadSplittingValues(service);
+        boolean splittingLossesLoaded = this.loadSplittingLosses(service);
+        boolean growthRatesLoaded = this.loadGrowthRates(service);
+
+        return ebitsLoaded && economicCoefficientsLoaded && economicResultsLoaded
+            && splittingValuesLoaded && splittingLossesLoaded && growthRatesLoaded;
+    }
+
+    private boolean loadEBITs(SelfAssessment service) {
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+
+        try {
+            EBIT[] ebits = this.objectMapper.readValue(this.quantitativeImpactsEBITsJSON, EBIT[].class);
+
+            for (EBIT ebit : ebits) {
+                ebit.setId(null);
+                ebit.setYear(ebit.getYear() + currentYear);
+                ebit.setSelfAssessment(service);
+            }
+
+            List<EBIT> demoEbits = this.ebitService.save(Arrays.asList(ebits));
+
+            return demoEbits != null && !demoEbits.isEmpty();
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            return false;
+        }
+    }
+
+    private boolean loadEconomicCoefficients(SelfAssessment service) {
+        try {
+            EconomicCoefficients economicCoefficients = this.objectMapper
+                .readValue(this.quantitativeImpactsEconomicCoefficientsJSON, EconomicCoefficients.class);
+
+            economicCoefficients.setId(null);
+            economicCoefficients.setSelfAssessment(service);
+
+            EconomicCoefficients demoEconomicCoefficients = this.economicCoefficientsService.save(economicCoefficients);
+
+            return demoEconomicCoefficients != null;
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            return false;
+        }
+    }
+
+    private boolean loadEconomicResults(SelfAssessment service) {
+        try {
+            EconomicResults economicResults = this.objectMapper
+                .readValue(this.quantitativeImpactsEconomicResultsJSON, EconomicResults.class);
+
+            economicResults.setId(null);
+            economicResults.setSelfAssessment(service);
+
+            EconomicResults demoEconomicResults = this.economicResultsService.save(economicResults);
+
+            return demoEconomicResults != null;
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            return false;
+        }
+    }
+
+    private boolean loadSplittingValues(SelfAssessment service) {
+        try {
+            SplittingValue[] splittingValues = this.objectMapper
+                .readValue(this.quntitativeImpactsSplittingValuesJSON, SplittingValue[].class);
+
+            for (SplittingValue splittingValue : splittingValues) {
+                splittingValue.setId(null);
+                splittingValue.setSelfAssessment(service);
+            }
+
+            List<SplittingValue> demoSplittingValues = this.splittingValueService.save(Arrays.asList(splittingValues));
+
+            return demoSplittingValues != null;
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            return false;
+        }
+    }
+
+    private boolean loadSplittingLosses(SelfAssessment service) {
+        try {
+            SplittingLoss[] splittingLosses = this.objectMapper
+                .readValue(this.quntitativeImpactsSplittingValuesJSON, SplittingLoss[].class);
+
+            for (SplittingLoss splittingLoss : splittingLosses) {
+                splittingLoss.setId(null);
+                splittingLoss.setSelfAssessment(service);
+            }
+
+            List<SplittingLoss> demoSplittingLosses = this.splittingLossService.save(Arrays.asList(splittingLosses));
+
+            return demoSplittingLosses != null;
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            return false;
+        }
+    }
+
+    private boolean loadGrowthRates(SelfAssessment service) {
+        try {
+            GrowthRate[] growthRates = this.objectMapper
+                .readValue(this.quantitativeImpactsGrowthRatesJSON, GrowthRate[].class);
+
+            for (GrowthRate growthRate : growthRates) {
+                growthRate.setId(null);
+                growthRate.setSelfAssessment(service);
+            }
+
+            List<GrowthRate> demoGrowthRates = this.growthRateService.saveAll(Arrays.asList(growthRates));
+
+            return demoGrowthRates != null;
         } catch (IOException e) {
             e.printStackTrace();
 
