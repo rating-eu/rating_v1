@@ -17,6 +17,13 @@
             Load Vulnerabilities Demo
         </button>
     </li>
+    <li>
+        <button *ngIf="!assessments || !assessments.length" class="btn btn-primary" type="button"
+                [disabled]="assessments && assessments.length"
+                (click)="loadServiceDemo()">
+            Load Service Demo
+        </button>
+    </li>
 </ul>
 
 

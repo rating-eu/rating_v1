@@ -23,4 +23,5 @@ import eu.hermeneut.domain.User;
 public interface DemoService {
     boolean loadThreatAgentsQuestionnaireStatus(User user, CompanyProfile companyProfile);
     boolean loadVulnerabilitiesQuestionnaireStatus(User user, CompanyProfile companyProfile);
+    boolean loadService(User user, CompanyProfile companyProfile);
 }
