@@ -1,0 +1,54 @@
+{
+    "name": "Provisioning of health services to patients",
+    "processedData": "Patient name, surname, pathologies, treatments",
+    "processingPurpose": "Patient treatment",
+    "dataSubject": "Patients",
+    "processingMeans": "Medical IT system",
+    "dataProcessor": "Hospital IT systems",
+    "recipients": [
+        {
+            "name": "Treating doctors and nurses",
+            "type": "INTERNAL"
+        },
+        {
+            "name": "Administration and accounting IT system",
+            "type": "INTERNAL"
+        },
+        {
+            "name": "Public Health System",
+            "type": "EXTERNAL"
+        }
+    ],
+    "threats": [
+        {
+            "threatArea": "BUSINESS_SECTOR_AND_SCALE_OF_PROCESSING",
+            "likelihood": "HIGH"
+        },
+        {
+            "threatArea": "PROCEDURES_RELATED_TO_THE_PROCESSING_OF_PERSONAL_DATA",
+            "likelihood": "LOW"
+        },
+        {
+            "threatArea": "NETWORK_AND_TECHNICAL_RESOURCES",
+            "likelihood": "MEDIUM"
+        },
+        {
+            "threatArea": "PEOPLE_INVOLVED_IN_THE_PROCESSING_OF_PERSONAL_DATA",
+            "likelihood": "HIGH"
+        }
+    ],
+    "impacts": [
+        {
+            "securityPillar": "CONFIDENTIALITY",
+            "impact": "HIGH"
+        },
+        {
+            "securityPillar": "INTEGRITY",
+            "impact": "HIGH"
+        },
+        {
+            "securityPillar": "AVAILABILITY",
+            "impact": "HIGH"
+        }
+    ]
+}

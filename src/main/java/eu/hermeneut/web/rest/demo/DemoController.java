@@ -116,4 +116,29 @@ public class DemoController {
 
         return loaded;
     }
+
+    @PostMapping("/gdpr")
+    @Timed
+    public boolean loadGDPR(){
+        boolean loaded = false;
+
+        //Get the current user
+        User currentUser = this.userService.getUserWithAuthorities().orElse(null);
+
+        if (currentUser != null) {
+            if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CISO)) {
+                MyCompany myCompany = this.myCompanyService.findOneByUser(currentUser.getId());
+
+                if (myCompany != null) {
+                    CompanyProfile companyProfile = myCompany.getCompanyProfile();
+
+                    if (companyProfile != null) {
+                        loaded = this.demoService.loadGDPR(currentUser, companyProfile);
+                    }
+                }
+            }
+        }
+
+        return loaded;
+    }
 }

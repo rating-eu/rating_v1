@@ -10,6 +10,7 @@ export class DemoService {
     private loadThreatAgentsDemoURL = SERVER_API_URL + '/api/demo/threat-agents';
     private loadVulnerabilitiesDemoURL = SERVER_API_URL + '/api/demo/vulnerabilities';
     private loadServiceDemoURL = SERVER_API_URL + '/api/demo/service';
+    private loadGDPRDemoURL = SERVER_API_URL + '/api/demo/gdpr';
 
     constructor(private http: HttpClient) {
     }
@@ -24,5 +25,9 @@ export class DemoService {
 
     public loadServiceDemo(): Observable<boolean> {
         return this.http.post<boolean>(this.loadServiceDemoURL, {});
+    }
+
+    public loadGDPRDemo(): Observable<boolean> {
+        return this.http.post<boolean>(this.loadGDPRDemoURL, {});
     }
 }

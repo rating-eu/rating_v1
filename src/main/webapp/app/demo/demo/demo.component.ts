@@ -7,7 +7,10 @@ import {Subscription} from "rxjs";
 import {CompanyBoardStatus} from "../../dashboard/models/CompanyBoardStatus";
 import {Status} from "../../entities/enumerations/Status.enum";
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from "../../entities/self-assessment-mgm";
-import {DataOperationMgmService} from "../../entities/data-operation-mgm";
+import {DataOperationMgm} from "../../entities/data-operation-mgm";
+import {DataOperationsService} from "../../privacy-risk-assessment/data-operations/data-operations.service";
+import {MyCompanyMgm} from "../../entities/my-company-mgm";
+import {HttpResponse} from "@angular/common/http";
 
 @Component({
     selector: 'jhi-demo',
@@ -19,19 +22,25 @@ export class DemoComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[];
     public statusEnum = Status;
 
+    private myCompany: MyCompanyMgm;
+
     public companyBoardStatus: CompanyBoardStatus;
     public assessments: SelfAssessmentMgm[];
+    public dataOperations: DataOperationMgm[];
 
     constructor(private demoService: DemoService,
                 private dashboardService: DashboardService,
                 private dataSharingService: DataSharingService,
                 private selfAssessmentService: SelfAssessmentMgmService,
-                private dataOperationService: DataOperationMgmService,
+                private dataOperationService: DataOperationsService,
                 private router: Router) {
     }
 
     ngOnInit() {
         this.subscriptions = [];
+
+        this.myCompany = this.dataSharingService.myCompany;
+        this.checkDataOperations(this.myCompany);
 
         this.companyBoardStatus = this.dataSharingService.companyBoardStatus;
 
@@ -46,6 +55,25 @@ export class DemoComponent implements OnInit, OnDestroy {
                 this.assessments = assessments;
             })
         );
+
+        this.subscriptions.push(this.dataSharingService.myCompany$.subscribe(
+            (myCompany: MyCompanyMgm) => {
+                this.myCompany = myCompany;
+
+                this.checkDataOperations(this.myCompany);
+            })
+        );
+    }
+
+    checkDataOperations(myCompany: MyCompanyMgm) {
+        if (myCompany != null && myCompany.companyProfile != null) {
+            this.subscriptions.push(
+                this.dataOperationService.getOperationsByCompanyProfile(this.myCompany.companyProfile.id)
+                    .subscribe((response: HttpResponse<DataOperationMgm[]>) => {
+                        this.dataOperations = response.body;
+                    })
+            )
+        }
     }
 
     loadThreatAgentsDemo() {
@@ -84,5 +112,15 @@ export class DemoComponent implements OnInit, OnDestroy {
                 subscription.unsubscribe();
             });
         }
+    }
+
+    loadGDPR() {
+        this.demoService.loadGDPRDemo()
+            .toPromise()
+            .then((demoLoaded: boolean) => {
+                if (demoLoaded) {
+                    this.router.navigate(['/privacy-risk-assessment/operations']);
+                }
+            });
     }
 }

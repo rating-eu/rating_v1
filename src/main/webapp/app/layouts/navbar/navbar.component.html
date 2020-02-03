@@ -551,7 +551,7 @@
                             <span jhiTranslate="global.menu.account.settings">Settings</span>
                         </a>
                     </li>
-                    <li *ngSwitchCase="true">
+                    <li *jhiHasAnyAuthority="'ROLE_CISO'">
                         <a class="dropdown-item" routerLink="demo" routerLinkActive="active"
                            (click)="collapseNavbar()">
                             <i class="fas fa-play" aria-hidden="true"></i>

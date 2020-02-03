@@ -65,6 +65,18 @@ public class DemoServiceImpl implements DemoService {
     @Value("classpath:demo/health-care/11) Service Quantitative Impacts - GrowthRates.json")
     private File quantitativeImpactsGrowthRatesJSON;
 
+    @Value("classpath:demo/health-care/12) GDPR - DataOperation.json")
+    private File gdprDataOperationJSON;
+
+    @Value("classpath:demo/health-care/13) GDPR - OverallDataThreat.json")
+    private File gdprOverallDataThreatJSON;
+
+    @Value("classpath:demo/health-care/14) GDPR - OverallSecurityImpact.json")
+    private File gdprOverallSecurityImpactJSON;
+
+    @Value("classpath:demo/health-care/15) GDPR - OverallDataRisk.json")
+    private File gdprOverallDataRiskJSON;
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -98,6 +110,18 @@ public class DemoServiceImpl implements DemoService {
     @Autowired
     private GrowthRateService growthRateService;
 
+    @Autowired
+    private DataOperationService dataOperationService;
+
+    @Autowired
+    private OverallDataThreatService overallDataThreatService;
+
+    @Autowired
+    private OverallSecurityImpactService overallSecurityImpactService;
+
+    @Autowired
+    private OverallDataRiskService overallDataRiskService;
+
     @Override
     public boolean loadThreatAgentsQuestionnaireStatus(User user, CompanyProfile companyProfile) {
         return this.loadQuestionnaireStatus(this.threatAgentsQuestionnaireStatusJSON, user, companyProfile);
@@ -125,6 +149,23 @@ public class DemoServiceImpl implements DemoService {
         } catch (IOException e) {
             e.printStackTrace();
 
+            return false;
+        }
+    }
+
+    @Override
+    public boolean loadGDPR(User currentUser, CompanyProfile companyProfile) {
+        DataOperation demoDataOperation = this.loadGDPRDataOperation(companyProfile);
+
+        if (demoDataOperation != null) {
+            OverallDataThreat overallDataThreat = this.loadOverallDataThreat(demoDataOperation);
+
+            // The next steps are already performed as AOP
+            //OverallSecurityImpact overallSecurityImpact = this.loadOverallSecurityImpact(demoDataOperation);
+            //OverallDataRisk overallDataRisk = this.loadOverallDataRisk(demoDataOperation);
+
+            return overallDataThreat != null;
+        } else {
             return false;
         }
     }
@@ -355,6 +396,58 @@ public class DemoServiceImpl implements DemoService {
             e.printStackTrace();
 
             return false;
+        }
+    }
+
+    private DataOperation loadGDPRDataOperation(CompanyProfile companyProfile) {
+        try {
+            DataOperation dataOperation = this.objectMapper.readValue(this.gdprDataOperationJSON, DataOperation.class);
+
+            dataOperation.setId(null);
+            dataOperation.setCompanyProfile(companyProfile);
+
+            return this.dataOperationService.save(dataOperation);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    private OverallDataThreat loadOverallDataThreat(DataOperation dataOperation) {
+        try {
+            OverallDataThreat overallDataThreat = this.objectMapper.readValue(this.gdprOverallDataThreatJSON, OverallDataThreat.class);
+
+            overallDataThreat.setId(null);
+            overallDataThreat.setOperation(dataOperation);
+
+            return this.overallDataThreatService.save(overallDataThreat);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    private OverallSecurityImpact loadOverallSecurityImpact(DataOperation dataOperation) {
+        try {
+            OverallSecurityImpact overallSecurityImpact = this.objectMapper.readValue(this.gdprOverallSecurityImpactJSON, OverallSecurityImpact.class);
+
+            overallSecurityImpact.setId(null);
+            overallSecurityImpact.setOperation(dataOperation);
+
+            return this.overallSecurityImpactService.save(overallSecurityImpact);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    private OverallDataRisk loadOverallDataRisk(DataOperation dataOperation) {
+        try {
+            OverallDataRisk overallDataRisk = this.objectMapper.readValue(this.gdprOverallDataRiskJSON, OverallDataRisk.class);
+
+            overallDataRisk.setId(null);
+            overallDataRisk.setOperation(dataOperation);
+
+            return this.overallDataRiskService.save(overallDataRisk);
+        } catch (IOException e) {
+            return null;
         }
     }
 }

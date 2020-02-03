@@ -4,24 +4,31 @@
 
 <ul class="list-unstyled">
     <li>
-        <button *ngIf="companyBoardStatus" class="btn btn-primary" type="button"
+        <button class="btn btn-primary" type="button"
                 [disabled]="companyBoardStatus.identifyThreatAgentsStatus !== statusEnum.EMPTY"
                 (click)="loadThreatAgentsDemo()">
             Load Threat Agents Demo
         </button>
     </li>
     <li>
-        <button *ngIf="companyBoardStatus" class="btn btn-primary" type="button"
+        <button class="btn btn-primary" type="button"
                 [disabled]="companyBoardStatus.assessVulnerablitiesStatus !== statusEnum.EMPTY"
                 (click)="loadVulnerabilitiesDemo()">
             Load Vulnerabilities Demo
         </button>
     </li>
     <li>
-        <button *ngIf="!assessments || !assessments.length" class="btn btn-primary" type="button"
+        <button class="btn btn-primary" type="button"
                 [disabled]="assessments && assessments.length"
                 (click)="loadServiceDemo()">
             Load Service Demo
+        </button>
+    </li>
+    <li>
+        <button class="btn btn-primary" type="button"
+                [disabled]="dataOperations && dataOperations.length"
+                (click)="loadGDPR()">
+            Load GDPR Demo
         </button>
     </li>
 </ul>
