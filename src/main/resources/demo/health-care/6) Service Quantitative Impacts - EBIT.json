@@ -2,223 +2,31 @@
     {
         "id": 7216,
         "year": 2021,
-        "value": 46587000.00,
-        "created": "2020-01-29T09:27:15.767Z",
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
-        }
+        "value": 46587000.00
     },
     {
         "id": 7217,
         "year": 2022,
-        "value": 52213000.00,
-        "created": "2020-01-29T09:27:15.767Z",
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
-        }
+        "value": 52213000.00
     },
     {
         "id": 7218,
         "year": 2023,
-        "value": 53300000.00,
-        "created": "2020-01-29T09:27:15.768Z",
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
-        }
+        "value": 53300000.00
     },
     {
         "id": 7213,
         "year": 2018,
-        "value": 22546000.00,
-        "created": "2020-01-29T09:27:15.764Z",
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
-        }
+        "value": 22546000.00
     },
     {
         "id": 7214,
         "year": 2019,
-        "value": 42911000.00,
-        "created": "2020-01-29T09:27:15.766Z",
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
-        }
+        "value": 42911000.00
     },
     {
         "id": 7215,
         "year": 2020,
-        "value": 37693000.00,
-        "created": "2020-01-29T09:27:15.766Z",
-        "selfAssessment": {
-            "id": 5301,
-            "name": "Health Services Provisioning",
-            "created": "2020-01-17T12:27:00Z",
-            "modified": "2020-01-20T14:16:04.443Z",
-            "companyProfile": {
-                "id": 4951,
-                "name": "HAcME",
-                "description": "HAcME",
-                "created": "2020-01-17T14:00:00Z",
-                "modified": "2020-01-17T14:00:00Z",
-                "type": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                "user": {
-                    "id": 4702,
-                    "login": "v_health",
-                    "firstName": "Paolo",
-                    "lastName": "Roccetti",
-                    "companyName": "HAcME",
-                    "companySector": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
-                    "companyWebsite": "www.eng.it",
-                    "email": "vayaxa9866@etcone.net",
-                    "activated": true,
-                    "langKey": "en",
-                    "imageUrl": null,
-                    "resetDate": null
-                }
-            },
-            "user": null,
-            "companyGroups": [],
-            "impactMode": "QUANTITATIVE"
-        }
+        "value": 37693000.00
     }
 ]
