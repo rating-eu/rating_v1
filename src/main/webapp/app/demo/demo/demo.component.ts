@@ -12,6 +12,7 @@ import {DataOperationsService} from "../../privacy-risk-assessment/data-operatio
 import {MyCompanyMgm} from "../../entities/my-company-mgm";
 import {HttpResponse} from "@angular/common/http";
 import {forkJoin} from "rxjs/observable/forkJoin";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
     selector: 'jhi-demo',
@@ -34,6 +35,7 @@ export class DemoComponent implements OnInit, OnDestroy {
                 private dataSharingService: DataSharingService,
                 private selfAssessmentService: SelfAssessmentMgmService,
                 private dataOperationService: DataOperationsService,
+                private modalService: NgbModal,
                 private router: Router) {
     }
 
@@ -131,6 +133,19 @@ export class DemoComponent implements OnInit, OnDestroy {
                     this.router.navigate(['/privacy-risk-assessment/operations']);
                 }
             });
+    }
+
+    open(content) {
+        this.modalService
+            .open(content, {})
+            .result.then((result) => {
+
+            // Load the demo
+            this.loadDemo();
+        }, (reason) => {
+            // Do nothing
+            this.router.navigate(['/dashboard']);
+        });
     }
 
     ngOnDestroy(): void {

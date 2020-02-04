@@ -38,10 +38,39 @@
                 <p class="card-text">In this section it is possible to have a look at the features provided by this Risk
                     Assessment tool.</p>
                 <div class="text-center">
-                    <button class="btn btn-primary" (click)="loadDemo()">Load demo</button>
+                    <button class="btn btn-primary"
+                            (click)="open(alert)"
+                            [disabled]="(companyBoardStatus && companyBoardStatus.identifyThreatAgentsStatus !== statusEnum.EMPTY)
+                                        || (companyBoardStatus && companyBoardStatus.assessVulnerablitiesStatus !== statusEnum.EMPTY)
+                                        || (assessments && assessments.length)
+                                        || (dataOperations && dataOperations.length)"
+                    >Load demo
+                    </button>
                 </div>
             </div>
         </div>
     </div>
     <div class="col-md-3"></div>
 </div>
+
+<ng-template #alert let-d="dismiss" let-c="close">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Edit notification</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <ng-container>
+            <p>By proceeding the demo risk assessmentof of RATING will be loaded</p>
+            <p>If you want to proceed, just click on "OK".
+                You will be able to also edit your preferences starting from this demo assessment,
+                otherwise, you can just proceed in "view" mode without making any changes.</p>
+            <p>Do you want to proceed?</p>
+        </ng-container>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">OK</button>
+    </div>
+</ng-template>
