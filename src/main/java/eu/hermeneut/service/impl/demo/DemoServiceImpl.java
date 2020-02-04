@@ -22,61 +22,48 @@ import eu.hermeneut.domain.*;
 import eu.hermeneut.service.*;
 import eu.hermeneut.service.demo.DemoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
+import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 
 @Service
 public class DemoServiceImpl implements DemoService {
 
-    @Value("classpath:demo/health-care/1) Threat Agents - Questionnaire Status.json")
+    @Autowired
+    private ResourceLoader resourceLoader;
+
     private Resource threatAgentsQuestionnaireStatusJSON;
 
-    @Value("classpath:demo/health-care/2) Vulnerabilities - Questionnaire Status.json")
     private Resource vulnerabilitiesQuestionnaireStatusJSON;
 
-    @Value("classpath:demo/health-care/3) Service - SelfAssessment.json")
     private Resource serviceJSON;
 
-    @Value("classpath:demo/health-care/4) Service.MyAssetsAndCosts - MyAsset.json")
     private Resource myAssetsAndCostsJSON;
 
-    @Value("classpath:demo/health-care/5) Service.DirectAndIndirectAssets - DirectAsset.json")
     private Resource directAndIndirectAssetsJSON;
 
-    @Value("classpath:demo/health-care/6) Service Quantitative Impacts - EBIT.json")
     private Resource quantitativeImpactsEBITsJSON;
 
-    @Value("classpath:demo/health-care/7) Service Quantitative Impacts - EconomicCoefficients.json")
     private Resource quantitativeImpactsEconomicCoefficientsJSON;
 
-    @Value("classpath:demo/health-care/8) Service Quantitative Impacts - EconomicResults.json")
     private Resource quantitativeImpactsEconomicResultsJSON;
 
-    @Value("classpath:demo/health-care/9) Service Quantitative Impacts - SplittingValues.json")
-    private Resource quntitativeImpactsSplittingValuesJSON;
+    private Resource quantitativeImpactsSplittingValuesJSON;
 
-    @Value("classpath:demo/health-care/10) Service Quantitative Impacts - SplittingLosses.json")
     private Resource quantitativeImpactsSplittingLossesJSON;
 
-    @Value("classpath:demo/health-care/11) Service Quantitative Impacts - GrowthRates.json")
     private Resource quantitativeImpactsGrowthRatesJSON;
 
-    @Value("classpath:demo/health-care/12) GDPR - DataOperation.json")
     private Resource gdprDataOperationJSON;
 
-    @Value("classpath:demo/health-care/13) GDPR - OverallDataThreat.json")
     private Resource gdprOverallDataThreatJSON;
 
-    @Value("classpath:demo/health-care/14) GDPR - OverallSecurityImpact.json")
     private Resource gdprOverallSecurityImpactJSON;
 
-    @Value("classpath:demo/health-care/15) GDPR - OverallDataRisk.json")
     private Resource gdprOverallDataRiskJSON;
 
     @Autowired
@@ -124,6 +111,28 @@ public class DemoServiceImpl implements DemoService {
     @Autowired
     private OverallDataRiskService overallDataRiskService;
 
+    @PostConstruct
+    public void init() {
+        this.threatAgentsQuestionnaireStatusJSON = this.resourceLoader.getResource("classpath:demo/health-care/1) Threat Agents - Questionnaire Status.json");
+        this.vulnerabilitiesQuestionnaireStatusJSON = this.resourceLoader.getResource("classpath:demo/health-care/2) Vulnerabilities - Questionnaire Status.json");
+
+        this.serviceJSON = this.resourceLoader.getResource("classpath:demo/health-care/3) Service - SelfAssessment.json");
+        this.myAssetsAndCostsJSON = this.resourceLoader.getResource("classpath:demo/health-care/4) Service.MyAssetsAndCosts - MyAsset.json");
+        this.directAndIndirectAssetsJSON = this.resourceLoader.getResource("classpath:demo/health-care/5) Service.DirectAndIndirectAssets - DirectAsset.json");
+
+        this.quantitativeImpactsEBITsJSON = this.resourceLoader.getResource("classpath:demo/health-care/6) Service Quantitative Impacts - EBIT.json");
+        this.quantitativeImpactsEconomicCoefficientsJSON = this.resourceLoader.getResource("classpath:demo/health-care/7) Service Quantitative Impacts - EconomicCoefficients.json");
+        this.quantitativeImpactsEconomicResultsJSON = this.resourceLoader.getResource("classpath:demo/health-care/8) Service Quantitative Impacts - EconomicResults.json");
+        this.quantitativeImpactsSplittingValuesJSON = this.resourceLoader.getResource("classpath:demo/health-care/9) Service Quantitative Impacts - SplittingValues.json");
+        this.quantitativeImpactsSplittingLossesJSON = this.resourceLoader.getResource("classpath:demo/health-care/10) Service Quantitative Impacts - SplittingLosses.json");
+        this.quantitativeImpactsGrowthRatesJSON = this.resourceLoader.getResource("classpath:demo/health-care/11) Service Quantitative Impacts - GrowthRates.json");
+
+        this.gdprDataOperationJSON = this.resourceLoader.getResource("classpath:demo/health-care/12) GDPR - DataOperation.json");
+        this.gdprOverallDataThreatJSON = this.resourceLoader.getResource("classpath:demo/health-care/13) GDPR - OverallDataThreat.json");
+        this.gdprOverallSecurityImpactJSON = this.resourceLoader.getResource("classpath:demo/health-care/14) GDPR - OverallSecurityImpact.json");
+        this.gdprOverallDataRiskJSON = this.resourceLoader.getResource("classpath:demo/health-care/15) GDPR - OverallDataRisk.json");
+    }
+
     @Override
     public boolean loadThreatAgentsQuestionnaireStatus(User user, CompanyProfile companyProfile) {
         return this.loadQuestionnaireStatus(this.threatAgentsQuestionnaireStatusJSON, user, companyProfile);
@@ -137,7 +146,7 @@ public class DemoServiceImpl implements DemoService {
     @Override
     public boolean loadService(User user, CompanyProfile companyProfile) {
         try {
-            SelfAssessment service = this.objectMapper.readValue(this.serviceJSON.getFile(), SelfAssessment.class);
+            SelfAssessment service = this.objectMapper.readValue(this.serviceJSON.getInputStream(), SelfAssessment.class);
 
             service.setUser(user);
             service.setCompanyProfile(companyProfile);
@@ -175,7 +184,7 @@ public class DemoServiceImpl implements DemoService {
 
     private boolean loadQuestionnaireStatus(Resource inputJSON, User user, CompanyProfile companyProfile) {
         try {
-            QuestionnaireStatus questionnaireStatus = this.objectMapper.readValue(inputJSON.getFile(), QuestionnaireStatus.class);
+            QuestionnaireStatus questionnaireStatus = this.objectMapper.readValue(inputJSON.getInputStream(), QuestionnaireStatus.class);
 
             /*
              * 1) Change Reference to the new User
@@ -206,10 +215,10 @@ public class DemoServiceImpl implements DemoService {
 
             try {
                 // Load MyAssets
-                myAssets = this.objectMapper.readValue(this.myAssetsAndCostsJSON.getFile(), MyAsset[].class);
+                myAssets = this.objectMapper.readValue(this.myAssetsAndCostsJSON.getInputStream(), MyAsset[].class);
 
                 // Load DirectAssets
-                directAssets = this.objectMapper.readValue(this.directAndIndirectAssetsJSON.getFile(), DirectAsset[].class);
+                directAssets = this.objectMapper.readValue(this.directAndIndirectAssetsJSON.getInputStream(), DirectAsset[].class);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -287,7 +296,7 @@ public class DemoServiceImpl implements DemoService {
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 
         try {
-            EBIT[] ebits = this.objectMapper.readValue(this.quantitativeImpactsEBITsJSON.getFile(), EBIT[].class);
+            EBIT[] ebits = this.objectMapper.readValue(this.quantitativeImpactsEBITsJSON.getInputStream(), EBIT[].class);
 
             for (EBIT ebit : ebits) {
                 ebit.setId(null);
@@ -308,7 +317,7 @@ public class DemoServiceImpl implements DemoService {
     private boolean loadEconomicCoefficients(SelfAssessment service) {
         try {
             EconomicCoefficients economicCoefficients = this.objectMapper
-                .readValue(this.quantitativeImpactsEconomicCoefficientsJSON.getFile(), EconomicCoefficients.class);
+                .readValue(this.quantitativeImpactsEconomicCoefficientsJSON.getInputStream(), EconomicCoefficients.class);
 
             economicCoefficients.setId(null);
             economicCoefficients.setSelfAssessment(service);
@@ -326,7 +335,7 @@ public class DemoServiceImpl implements DemoService {
     private boolean loadEconomicResults(SelfAssessment service) {
         try {
             EconomicResults economicResults = this.objectMapper
-                .readValue(this.quantitativeImpactsEconomicResultsJSON.getFile(), EconomicResults.class);
+                .readValue(this.quantitativeImpactsEconomicResultsJSON.getInputStream(), EconomicResults.class);
 
             economicResults.setId(null);
             economicResults.setSelfAssessment(service);
@@ -344,7 +353,7 @@ public class DemoServiceImpl implements DemoService {
     private boolean loadSplittingValues(SelfAssessment service) {
         try {
             SplittingValue[] splittingValues = this.objectMapper
-                .readValue(this.quntitativeImpactsSplittingValuesJSON.getFile(), SplittingValue[].class);
+                .readValue(this.quantitativeImpactsSplittingValuesJSON.getInputStream(), SplittingValue[].class);
 
             for (SplittingValue splittingValue : splittingValues) {
                 splittingValue.setId(null);
@@ -364,7 +373,7 @@ public class DemoServiceImpl implements DemoService {
     private boolean loadSplittingLosses(SelfAssessment service) {
         try {
             SplittingLoss[] splittingLosses = this.objectMapper
-                .readValue(this.quntitativeImpactsSplittingValuesJSON.getFile(), SplittingLoss[].class);
+                .readValue(this.quantitativeImpactsSplittingValuesJSON.getInputStream(), SplittingLoss[].class);
 
             for (SplittingLoss splittingLoss : splittingLosses) {
                 splittingLoss.setId(null);
@@ -384,7 +393,7 @@ public class DemoServiceImpl implements DemoService {
     private boolean loadGrowthRates(SelfAssessment service) {
         try {
             GrowthRate[] growthRates = this.objectMapper
-                .readValue(this.quantitativeImpactsGrowthRatesJSON.getFile(), GrowthRate[].class);
+                .readValue(this.quantitativeImpactsGrowthRatesJSON.getInputStream(), GrowthRate[].class);
 
             for (GrowthRate growthRate : growthRates) {
                 growthRate.setId(null);
@@ -403,7 +412,7 @@ public class DemoServiceImpl implements DemoService {
 
     private DataOperation loadGDPRDataOperation(CompanyProfile companyProfile) {
         try {
-            DataOperation dataOperation = this.objectMapper.readValue(this.gdprDataOperationJSON.getFile(), DataOperation.class);
+            DataOperation dataOperation = this.objectMapper.readValue(this.gdprDataOperationJSON.getInputStream(), DataOperation.class);
 
             dataOperation.setId(null);
             dataOperation.setCompanyProfile(companyProfile);
@@ -416,7 +425,7 @@ public class DemoServiceImpl implements DemoService {
 
     private OverallDataThreat loadOverallDataThreat(DataOperation dataOperation) {
         try {
-            OverallDataThreat overallDataThreat = this.objectMapper.readValue(this.gdprOverallDataThreatJSON.getFile(), OverallDataThreat.class);
+            OverallDataThreat overallDataThreat = this.objectMapper.readValue(this.gdprOverallDataThreatJSON.getInputStream(), OverallDataThreat.class);
 
             overallDataThreat.setId(null);
             overallDataThreat.setOperation(dataOperation);
@@ -429,7 +438,7 @@ public class DemoServiceImpl implements DemoService {
 
     private OverallSecurityImpact loadOverallSecurityImpact(DataOperation dataOperation) {
         try {
-            OverallSecurityImpact overallSecurityImpact = this.objectMapper.readValue(this.gdprOverallSecurityImpactJSON.getFile(), OverallSecurityImpact.class);
+            OverallSecurityImpact overallSecurityImpact = this.objectMapper.readValue(this.gdprOverallSecurityImpactJSON.getInputStream(), OverallSecurityImpact.class);
 
             overallSecurityImpact.setId(null);
             overallSecurityImpact.setOperation(dataOperation);
@@ -442,7 +451,7 @@ public class DemoServiceImpl implements DemoService {
 
     private OverallDataRisk loadOverallDataRisk(DataOperation dataOperation) {
         try {
-            OverallDataRisk overallDataRisk = this.objectMapper.readValue(this.gdprOverallDataRiskJSON.getFile(), OverallDataRisk.class);
+            OverallDataRisk overallDataRisk = this.objectMapper.readValue(this.gdprOverallDataRiskJSON.getInputStream(), OverallDataRisk.class);
 
             overallDataRisk.setId(null);
             overallDataRisk.setOperation(dataOperation);
