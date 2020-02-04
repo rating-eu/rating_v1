@@ -1,0 +1,66 @@
+[
+    {
+        "myAsset": {
+            "id": 5367
+        },
+        "effects": [
+            {
+                "myAsset": {
+                    "id": 5364
+                }
+            },
+            {
+                "myAsset": {
+                    "id": 5363
+                }
+            },
+            {
+                "myAsset": {
+                    "id": 5384
+                }
+            }
+        ]
+    },
+    {
+        "myAsset": {
+            "id": 5366
+        },
+        "effects": [
+            {
+                "myAsset": {
+                    "id": 5363
+                }
+            },
+            {
+                "myAsset": {
+                    "id": 5378
+                }
+            },
+            {
+                "myAsset": {
+                    "id": 5364
+                }
+            },
+            {
+                "myAsset": {
+                    "id": 5383
+                }
+            },
+            {
+                "myAsset": {
+                    "id": 5386
+                }
+            },
+            {
+                "myAsset": {
+                    "id": 5379
+                }
+            },
+            {
+                "myAsset": {
+                    "id": 5387
+                }
+            }
+        ]
+    }
+]

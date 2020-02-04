@@ -4,10 +4,13 @@ import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {DataOperationMgm, EntityResponseType} from "../../entities/data-operation-mgm";
 
+const COMPANY_ID = "{companyProfileID}";
+
 @Injectable()
 export class DataOperationsService {
 
     private resourceUrl = SERVER_API_URL + 'api/data-operations';
+    private resourceByCompanyProfileUrl = SERVER_API_URL + "api/data-operations/company-profile/" + COMPANY_ID;
 
     constructor(private http: HttpClient) {
     }
@@ -15,7 +18,8 @@ export class DataOperationsService {
     getOperationsByCompanyProfile(companyProfileID: number): Observable<HttpResponse<DataOperationMgm[]>> {
         const options = new HttpParams();
 
-        return this.http.get<DataOperationMgm[]>(this.resourceUrl, {params: options, observe: 'response'})
+        return this.http.get<DataOperationMgm[]>(this.resourceByCompanyProfileUrl
+            .replace(COMPANY_ID, String(companyProfileID)), {params: options, observe: 'response'})
             .map((res: HttpResponse<DataOperationMgm[]>) => this.convertArrayResponse(res));
     }
 

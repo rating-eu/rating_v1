@@ -33,6 +33,10 @@ const routes: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
+        path: 'demo',
+        loadChildren: './demo/demo.module#DemoModule',
+    },
+    {
         path: 'riskboard',
         loadChildren: './risk-board/risk-board.module#RiskBoardModule',
         data: {

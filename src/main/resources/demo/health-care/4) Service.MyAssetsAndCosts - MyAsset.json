@@ -1,0 +1,602 @@
+[
+    {
+        "id": 5386,
+        "ranking": 2,
+        "estimated": null,
+        "economicValue": 7881086.32,
+        "impact": 1,
+        "economicImpact": 1818595.54,
+        "lossValue": 1418595.54,
+        "costs": [
+            {
+                "type": "PUBLIC_RELATIONS",
+                "description": null,
+                "costs": 100000.00
+            },
+            {
+                "type": "LOSS_OF_REVENUES",
+                "description": null,
+                "costs": 100000.00
+            },
+            {
+                "type": "INCREASED_SECURITY",
+                "description": null,
+                "costs": 100000.00
+            },
+            {
+                "type": "LOST_CUSTOMERS_RECOVERY",
+                "description": null,
+                "costs": 100000.00
+            }
+        ],
+        "asset": {
+            "id": 28,
+            "name": "Cyber-trustworthy"
+        }
+    },
+    {
+        "id": 5363,
+        "ranking": 4,
+        "estimated": null,
+        "economicValue": 15762172.63,
+        "impact": 2,
+        "economicImpact": 9137191.07,
+        "lossValue": 2837191.07,
+        "costs": [
+            {
+                "type": "LOST_CUSTOMERS_RECOVERY",
+                "description": null,
+                "costs": 100000.00
+            },
+            {
+                "type": "LOST_OR_NON_FULFILLED_CONTRACTS",
+                "description": null,
+                "costs": 1000000.00
+            },
+            {
+                "type": "PUBLIC_RELATIONS",
+                "description": null,
+                "costs": 100000.00
+            },
+            {
+                "type": "LOSS_OF_REVENUES",
+                "description": null,
+                "costs": 100000.00
+            },
+            {
+                "type": "VALUE_OF_LOST_OR_NOT_FULFILLED_CONTRACT_REVENUES",
+                "description": null,
+                "costs": 5000000.00
+            }
+        ],
+        "asset": {
+            "id": 29,
+            "name": "Brand value with customers, stakeholders and firm or organisation's ecosystem"
+        }
+    },
+    {
+        "id": 5368,
+        "ranking": 1,
+        "estimated": null,
+        "economicValue": null,
+        "impact": 2,
+        "economicImpact": 5000000.00,
+        "lossValue": 5000000.00,
+        "costs": [],
+        "asset": {
+            "id": 23,
+            "name": "Data on personnel"
+        }
+    },
+    {
+        "id": 5366,
+        "ranking": 1,
+        "estimated": null,
+        "economicValue": null,
+        "impact": 5,
+        "economicImpact": 73299445.36,
+        "lossValue": 15000000.00,
+        "costs": [
+            {
+                "type": "VALUE_OF_LOST_OR_NOT_FULFILLED_CONTRACT_REVENUES",
+                "description": null,
+                "costs": 5000000.00
+            },
+            {
+                "type": "INCREASED_SECURITY",
+                "description": null,
+                "costs": 100000.00
+            },
+            {
+                "type": "LOST_CUSTOMERS_RECOVERY",
+                "description": null,
+                "costs": 100000.00
+            },
+            {
+                "type": "LOST_OR_NON_FULFILLED_CONTRACTS",
+                "description": null,
+                "costs": 1000000.00
+            },
+            {
+                "type": "BEFORE_THE_ATTACK_STATUS_RESTORATION",
+                "description": null,
+                "costs": 60000.00
+            },
+            {
+                "type": "LEGAL_LITIGATION_COSTS_AND_ATTORNEY_FEES",
+                "description": null,
+                "costs": 5000000.00
+            },
+            {
+                "type": "PUBLIC_RELATIONS",
+                "description": null,
+                "costs": 100000.00
+            }
+        ],
+        "asset": {
+            "id": 22,
+            "name": "Data on clients and partners"
+        }
+    },
+    {
+        "id": 5388,
+        "ranking": 4,
+        "estimated": null,
+        "economicValue": 15762172.63,
+        "impact": 1,
+        "economicImpact": 2837191.07,
+        "lossValue": 2837191.07,
+        "costs": [],
+        "asset": {
+            "id": 27,
+            "name": "Reputation of managers and employees"
+        }
+    },
+    {
+        "id": 5370,
+        "ranking": 1,
+        "estimated": null,
+        "economicValue": 3422899.08,
+        "impact": 1,
+        "economicImpact": 616121.83,
+        "lossValue": 616121.83,
+        "costs": [],
+        "asset": {
+            "id": 18,
+            "name": "Industrial process"
+        }
+    },
+    {
+        "id": 5369,
+        "ranking": 1,
+        "estimated": null,
+        "economicValue": 3422899.08,
+        "impact": 1,
+        "economicImpact": 616121.83,
+        "lossValue": 616121.83,
+        "costs": [],
+        "asset": {
+            "id": 17,
+            "name": "Trade or business secrets"
+        }
+    },
+    {
+        "id": 5387,
+        "ranking": 5,
+        "estimated": null,
+        "economicValue": 19702715.79,
+        "impact": 3,
+        "economicImpact": 14746488.84,
+        "lossValue": 3546488.84,
+        "costs": [
+            {
+                "type": "VALUE_OF_LOST_OR_NOT_FULFILLED_CONTRACT_REVENUES",
+                "description": null,
+                "costs": 5000000.00
+            },
+            {
+                "type": "LOST_OR_NON_FULFILLED_CONTRACTS",
+                "description": null,
+                "costs": 1000000.00
+            },
+            {
+                "type": "LEGAL_LITIGATION_COSTS_AND_ATTORNEY_FEES",
+                "description": null,
+                "costs": 5000000.00
+            },
+            {
+                "type": "PUBLIC_RELATIONS",
+                "description": null,
+                "costs": 100000.00
+            },
+            {
+                "type": "LOSS_OF_REVENUES",
+                "description": null,
+                "costs": 100000.00
+            }
+        ],
+        "asset": {
+            "id": 26,
+            "name": "Organisation Reputation with clients, stakeholders and firm's ecosystems"
+        }
+    },
+    {
+        "id": 5367,
+        "ranking": 1,
+        "estimated": null,
+        "economicValue": null,
+        "impact": 4,
+        "economicImpact": 28777977.68,
+        "lossValue": 10000000.00,
+        "costs": [
+            {
+                "type": "PUBLIC_RELATIONS",
+                "description": null,
+                "costs": 100000.00
+            },
+            {
+                "type": "LOST_CUSTOMERS_RECOVERY",
+                "description": null,
+                "costs": 100000.00
+            },
+            {
+                "type": "CUSTOMER_BREACH_NOTIFICATION_COSTS",
+                "description": null,
+                "costs": 125000.00
+            },
+            {
+                "type": "LOSS_OF_REVENUES",
+                "description": null,
+                "costs": 100000.00
+            },
+            {
+                "type": "LOST_OR_NON_FULFILLED_CONTRACTS",
+                "description": null,
+                "costs": 1000000.00
+            },
+            {
+                "type": "INCREASED_SECURITY",
+                "description": null,
+                "costs": 100000.00
+            },
+            {
+                "type": "LIABILITY_COSTS",
+                "description": null,
+                "costs": 5000000.00
+            },
+            {
+                "type": "BEFORE_THE_ATTACK_STATUS_RESTORATION",
+                "description": null,
+                "costs": 60000.00
+            },
+            {
+                "type": "NOTIFICATION_AND_REGULATORY_COMPLIANCE_COSTS",
+                "description": null,
+                "costs": 100000.00
+            }
+        ],
+        "asset": {
+            "id": 25,
+            "name": "Data on functions (HR, commercial, finance, fiscal, etc.)"
+        }
+    },
+    {
+        "id": 5364,
+        "ranking": 5,
+        "estimated": null,
+        "economicValue": 19702715.79,
+        "impact": 2,
+        "economicImpact": 9746488.84,
+        "lossValue": 3546488.84,
+        "costs": [
+            {
+                "type": "PUBLIC_RELATIONS",
+                "description": null,
+                "costs": 100000.00
+            },
+            {
+                "type": "VALUE_OF_LOST_OR_NOT_FULFILLED_CONTRACT_REVENUES",
+                "description": null,
+                "costs": 5000000.00
+            },
+            {
+                "type": "LOST_CUSTOMERS_RECOVERY",
+                "description": null,
+                "costs": 100000.00
+            },
+            {
+                "type": "LOST_OR_NON_FULFILLED_CONTRACTS",
+                "description": null,
+                "costs": 1000000.00
+            }
+        ],
+        "asset": {
+            "id": 30,
+            "name": "Brand Reputation"
+        }
+    },
+    {
+        "id": 5389,
+        "ranking": 1,
+        "estimated": null,
+        "economicValue": 13748000.00,
+        "impact": 1,
+        "economicImpact": 2474640.00,
+        "lossValue": 2474640.00,
+        "costs": [],
+        "asset": {
+            "id": 10,
+            "name": "Plants and Machinery"
+        }
+    },
+    {
+        "id": 5375,
+        "ranking": 5,
+        "estimated": null,
+        "economicValue": 17114495.40,
+        "impact": 1,
+        "economicImpact": 3080609.17,
+        "lossValue": 3080609.17,
+        "costs": [],
+        "asset": {
+            "id": 16,
+            "name": "Intellectual Property (IP) in progress"
+        }
+    },
+    {
+        "id": 5383,
+        "ranking": 4,
+        "estimated": null,
+        "economicValue": 15762172.63,
+        "impact": 1,
+        "economicImpact": 2937191.07,
+        "lossValue": 2837191.07,
+        "costs": [
+            {
+                "type": "LOST_CUSTOMERS_RECOVERY",
+                "description": null,
+                "costs": 100000.00
+            }
+        ],
+        "asset": {
+            "id": 42,
+            "name": "Commercial and Stakeholders' Network"
+        }
+    },
+    {
+        "id": 5384,
+        "ranking": 1,
+        "estimated": null,
+        "economicValue": 3940543.16,
+        "impact": 1,
+        "economicImpact": 709297.77,
+        "lossValue": 709297.77,
+        "costs": [],
+        "asset": {
+            "id": 37,
+            "name": "Digital supported process"
+        }
+    },
+    {
+        "id": 5358,
+        "ranking": 1,
+        "estimated": null,
+        "economicValue": 8589000.00,
+        "impact": 1,
+        "economicImpact": 1546020.00,
+        "lossValue": 1546020.00,
+        "costs": [],
+        "asset": {
+            "id": 11,
+            "name": "Equipment"
+        }
+    },
+    {
+        "id": 5372,
+        "ranking": 4,
+        "estimated": null,
+        "economicValue": 13691596.32,
+        "impact": 1,
+        "economicImpact": 2464487.34,
+        "lossValue": 2464487.34,
+        "costs": [],
+        "asset": {
+            "id": 19,
+            "name": "On-going R&D innovation projects"
+        }
+    },
+    {
+        "id": 5365,
+        "ranking": 1,
+        "estimated": null,
+        "economicValue": null,
+        "impact": 3,
+        "economicImpact": 10000000.00,
+        "lossValue": 10000000.00,
+        "costs": [],
+        "asset": {
+            "id": 24,
+            "name": "Data on suppliers and ecosystems"
+        }
+    },
+    {
+        "id": 5374,
+        "ranking": 1,
+        "estimated": null,
+        "economicValue": 3422899.08,
+        "impact": 1,
+        "economicImpact": 616121.83,
+        "lossValue": 616121.83,
+        "costs": [],
+        "asset": {
+            "id": 13,
+            "name": "Copyright"
+        }
+    },
+    {
+        "id": 5379,
+        "ranking": 4,
+        "estimated": null,
+        "economicValue": 90704138.88,
+        "impact": 3,
+        "economicImpact": 16426745.00,
+        "lossValue": 16326745.00,
+        "costs": [
+            {
+                "type": "INCREASED_SECURITY",
+                "description": null,
+                "costs": 100000.00
+            }
+        ],
+        "asset": {
+            "id": 34,
+            "name": "Personnel motivation and satisfaction"
+        }
+    },
+    {
+        "id": 5377,
+        "ranking": 1,
+        "estimated": null,
+        "economicValue": 22676034.72,
+        "impact": 1,
+        "economicImpact": 4081686.25,
+        "lossValue": 4081686.25,
+        "costs": [],
+        "asset": {
+            "id": 33,
+            "name": "Organisational knowledge"
+        }
+    },
+    {
+        "id": 7101,
+        "ranking": 1,
+        "estimated": null,
+        "economicValue": 2500.00,
+        "impact": 1,
+        "economicImpact": 450.00,
+        "lossValue": 450.00,
+        "costs": [],
+        "asset": {
+            "id": 1,
+            "name": "Cash"
+        }
+    },
+    {
+        "id": 5376,
+        "ranking": 1,
+        "estimated": null,
+        "economicValue": 3422899.08,
+        "impact": 1,
+        "economicImpact": 616121.83,
+        "lossValue": 616121.83,
+        "costs": [],
+        "asset": {
+            "id": 14,
+            "name": "Patent"
+        }
+    },
+    {
+        "id": 5378,
+        "ranking": 4,
+        "estimated": null,
+        "economicValue": 90704138.88,
+        "impact": 3,
+        "economicImpact": 16426745.00,
+        "lossValue": 16326745.00,
+        "costs": [
+            {
+                "type": "INCREASED_SECURITY",
+                "description": null,
+                "costs": 100000.00
+            }
+        ],
+        "asset": {
+            "id": 35,
+            "name": "Personnel trust in the organisation"
+        }
+    },
+    {
+        "id": 5381,
+        "ranking": 2,
+        "estimated": null,
+        "economicValue": 45352069.44,
+        "impact": 2,
+        "economicImpact": 8163372.50,
+        "lossValue": 8163372.50,
+        "costs": [],
+        "asset": {
+            "id": 36,
+            "name": "Personnel learning capabilities"
+        }
+    },
+    {
+        "id": 5373,
+        "ranking": 4,
+        "estimated": null,
+        "economicValue": 13691596.32,
+        "impact": 1,
+        "economicImpact": 2464487.34,
+        "lossValue": 2464487.34,
+        "costs": [],
+        "asset": {
+            "id": 20,
+            "name": "On-going new product and new services"
+        }
+    },
+    {
+        "id": 5385,
+        "ranking": 1,
+        "estimated": null,
+        "economicValue": 3940543.16,
+        "impact": 1,
+        "economicImpact": 709297.77,
+        "lossValue": 709297.77,
+        "costs": [],
+        "asset": {
+            "id": 40,
+            "name": "Firm or organisation's strategic capabilities"
+        }
+    },
+    {
+        "id": 5382,
+        "ranking": 1,
+        "estimated": null,
+        "economicValue": 22676034.72,
+        "impact": 1,
+        "economicImpact": 4081686.25,
+        "lossValue": 4081686.25,
+        "costs": [],
+        "asset": {
+            "id": 31,
+            "name": "Firm's personnel technical and business key competences"
+        }
+    },
+    {
+        "id": 5371,
+        "ranking": 3,
+        "estimated": null,
+        "economicValue": 10268697.24,
+        "impact": 1,
+        "economicImpact": 1848365.50,
+        "lossValue": 1848365.50,
+        "costs": [],
+        "asset": {
+            "id": 21,
+            "name": "Business models"
+        }
+    },
+    {
+        "id": 5380,
+        "ranking": 1,
+        "estimated": null,
+        "economicValue": 22676034.72,
+        "impact": 1,
+        "economicImpact": 4081686.25,
+        "lossValue": 4081686.25,
+        "costs": [],
+        "asset": {
+            "id": 32,
+            "name": "Firm's personnel soft-skills"
+        }
+    }
+]

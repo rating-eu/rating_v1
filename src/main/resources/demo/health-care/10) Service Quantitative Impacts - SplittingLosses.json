@@ -1,0 +1,20 @@
+[
+    {
+        "sectorType": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+        "categoryType": "IP",
+        "lossPercentage": 14.70,
+        "loss": 12322436.69
+    },
+    {
+        "sectorType": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+        "categoryType": "KEY_COMP",
+        "lossPercentage": 63.30,
+        "loss": 53061921.24
+    },
+    {
+        "sectorType": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+        "categoryType": "ORG_CAPITAL",
+        "lossPercentage": 22.00,
+        "loss": 18441741.98
+    }
+]
