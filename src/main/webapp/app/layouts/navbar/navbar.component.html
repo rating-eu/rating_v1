@@ -442,19 +442,22 @@
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="vulnerability-area-mgm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="vulnerability-area-mgm" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.vulnerabilityAreaMgm">Vulnerability Area Mgm</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="system-config-mgm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="system-config-mgm" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.systemConfigMgm">System Config Mgm</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="question-relevance-mgm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="question-relevance-mgm" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.questionRelevanceMgm">Question Relevance Mgm</span>
                         </a>
@@ -551,6 +554,15 @@
                             <span jhiTranslate="global.menu.account.settings">Settings</span>
                         </a>
                     </li>
+                    <ng-container *ngIf="companyBoardStatus && companyBoardStatus.identifyThreatAgentsStatus === statusEnum.EMPTY">
+                        <li *jhiHasAnyAuthority="'ROLE_CISO'">
+                            <a class="dropdown-item" routerLink="demo" routerLinkActive="active"
+                               (click)="collapseNavbar()">
+                                <i class="fas fa-play" aria-hidden="true"></i>
+                                <span>Demo</span>
+                            </a>
+                        </li>
+                    </ng-container>
                     <li *ngSwitchCase="true">
                         <a class="dropdown-item" routerLink="password" routerLinkActive="active"
                            (click)="collapseNavbar()">

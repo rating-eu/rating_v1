@@ -1,0 +1,17 @@
+[
+    {
+        "sectorType": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+        "categoryType": "IP",
+        "value": 68457981.60
+    },
+    {
+        "sectorType": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+        "categoryType": "KEY_COMP",
+        "value": 294788451.37
+    },
+    {
+        "sectorType": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+        "categoryType": "ORG_CAPITAL",
+        "value": 102454122.12
+    }
+]
