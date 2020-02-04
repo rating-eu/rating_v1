@@ -1,8 +1,4 @@
-<h2>
-    Demo
-</h2>
-
-<ul class="list-unstyled">
+<!--<ul class="list-unstyled">
     <li>
         <button class="btn btn-primary" type="button"
                 [disabled]="companyBoardStatus.identifyThreatAgentsStatus !== statusEnum.EMPTY"
@@ -31,7 +27,21 @@
             Load GDPR Demo
         </button>
     </li>
-</ul>
-
-
-
+</ul>-->
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div class="card">
+            <h5 class="card-header">Demo</h5>
+            <div class="card-body">
+                <h5 class="card-title">RATING demo</h5>
+                <p class="card-text">In this section it is possible to have a look at the features provided by this Risk
+                    Assessment tool.</p>
+                <div class="text-center">
+                    <button class="btn btn-primary" (click)="loadDemo()">Load demo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3"></div>
+</div>

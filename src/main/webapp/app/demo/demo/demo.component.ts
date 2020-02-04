@@ -11,6 +11,7 @@ import {DataOperationMgm} from "../../entities/data-operation-mgm";
 import {DataOperationsService} from "../../privacy-risk-assessment/data-operations/data-operations.service";
 import {MyCompanyMgm} from "../../entities/my-company-mgm";
 import {HttpResponse} from "@angular/common/http";
+import {forkJoin} from "rxjs/observable/forkJoin";
 
 @Component({
     selector: 'jhi-demo',
@@ -76,6 +77,22 @@ export class DemoComponent implements OnInit, OnDestroy {
         }
     }
 
+    loadDemo() {
+        const join = forkJoin(
+            this.demoService.loadThreatAgentsDemo(),
+            this.demoService.loadVulnerabilitiesDemo(),
+            this.demoService.loadServiceDemo(),
+            this.demoService.loadGDPRDemo()
+        );
+
+        join.toPromise()
+            .then((response: [boolean, boolean, boolean, boolean]) => {
+                if (response[0] && response[1] && response[2] && response[3]) {
+                    this.router.navigate(['/dashboard']);
+                }
+            });
+    }
+
     loadThreatAgentsDemo() {
         this.demoService.loadThreatAgentsDemo()
             .toPromise()
@@ -106,14 +123,6 @@ export class DemoComponent implements OnInit, OnDestroy {
             });
     }
 
-    ngOnDestroy(): void {
-        if (this.subscriptions && this.subscriptions.length) {
-            this.subscriptions.forEach((subscription: Subscription) => {
-                subscription.unsubscribe();
-            });
-        }
-    }
-
     loadGDPR() {
         this.demoService.loadGDPRDemo()
             .toPromise()
@@ -122,5 +131,13 @@ export class DemoComponent implements OnInit, OnDestroy {
                     this.router.navigate(['/privacy-risk-assessment/operations']);
                 }
             });
+    }
+
+    ngOnDestroy(): void {
+        if (this.subscriptions && this.subscriptions.length) {
+            this.subscriptions.forEach((subscription: Subscription) => {
+                subscription.unsubscribe();
+            });
+        }
     }
 }
