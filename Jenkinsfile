@@ -40,8 +40,7 @@ node {
 
         stage('publish docker') {
             docker.withRegistry('http://localhost:5000', 'docker-registry-login') {
-                dockerImage.push 'latest'
-                dockerImage.push '2.8.0'
+                dockerImage.push '2.8.1'
             }
         }
     }
