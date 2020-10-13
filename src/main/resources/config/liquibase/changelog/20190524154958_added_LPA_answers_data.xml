@@ -30,14 +30,15 @@
     <property name="floatType" value="float4" dbms="postgresql, h2"/>
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
-    <changeSet id="20190524154958-1" author="developer">
-        <loadData catalogName="answer"
-                  encoding="UTF-8"
-                  file="config/liquibase/LPA_answers.csv"
-                  schemaName="public"
-                  separator=";"
-                  quotchar="'"
-                  tableName="answer">
-        </loadData>
+    <changeSet id="20190524154958-1" author="developer" runOnChange="true">
+        <loadUpdateData catalogName="answer"
+                        encoding="UTF-8"
+                        file="config/liquibase/LPA_answers.csv"
+                        schemaName="public"
+                        separator=";"
+                        quotchar="'"
+                        tableName="answer"
+                        primaryKey="id">
+        </loadUpdateData>
     </changeSet>
 </databaseChangeLog>
