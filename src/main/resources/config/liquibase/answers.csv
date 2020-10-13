@@ -11,9 +11,9 @@ id;name;created;modified;jhi_order;likelihood
 10;On average, with a defined procedure and documentation;now();now();3;MEDIUM
 11;Mostly yes, sustained with a strategic plan and a well-defined procedure and documentation;now();now();4;MEDIUM_HIGH
 12;Yes, the process and the documentation are proactively developed and maintained with constant effort and continuous improvement;now();now();5;HIGH
-13;No;now();now();1;LOW
-14;Yes;now();now();2;MEDIUM
-15;Can''t determine it;now();now();3;HIGH
+13;No;now();now();3;LOW
+14;Yes;now();now();1;HIGH
+15;Can''t determine it;now();now();2;MEDIUM
 16;Can''t determine it;now();now();1;LOW
 17;Yes, also the mitigation processes are not yet defined;now();now();2;LOW_MEDIUM
 18;Yes, but mitigation processes are already defined;now();now();3;MEDIUM
@@ -25,9 +25,9 @@ id;name;created;modified;jhi_order;likelihood
 24;Between 50% and 80%;now();now();3;MEDIUM
 25;Greater than 80%;now();now();4;MEDIUM_HIGH
 26;Greater than 80% and maintained with constant effort and continuous improvement;now();now();5;HIGH
-27;No;now();now();1;LOW
+27;No;now();now();1;HIGH
 28;Yes, only on internal networks;now();now();2;MEDIUM
-29;Yes, accessible via Internet;now();now();3;HIGH
+29;Yes, accessible via Internet;now();now();3;LOW
 30;Yes, and the security posture of supply chain is monitored;now();now();1;LOW
 31;Yes, but security posture of supply chain is not under my control;now();now();2;MEDIUM
 32;No;now();now();3;HIGH
