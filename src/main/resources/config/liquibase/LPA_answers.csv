@@ -25,9 +25,9 @@ id;name;created;modified;jhi_order;likelihood
 10024;Between 50% and 80%;now();now();3;MEDIUM
 10025;Greater than 80%;now();now();4;MEDIUM_HIGH
 10026;Greater than 80% and maintained with constant effort and continuous improvement;now();now();5;HIGH
-10027;No;now();now();1;LOW
+10027;No;now();now();1;HIGH
 10028;Yes, only on internal networks;now();now();2;MEDIUM
-10029;Yes, accessible via Internet;now();now();3;HIGH
+10029;Yes, accessible via Internet;now();now();3;LOW
 10030;Yes, and the security posture of supply chain is monitored;now();now();1;LOW
 10031;Yes, but security posture of supply chain is not under my control;now();now();2;MEDIUM
 10032;No;now();now();3;HIGH
