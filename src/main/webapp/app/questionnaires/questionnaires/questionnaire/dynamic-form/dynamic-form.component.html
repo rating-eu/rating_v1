@@ -138,7 +138,7 @@
                                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
                                     class="card-box">
                                     <div class="row">
-                                        <div class="col-md-10">
+                                        <div class="col-md-12">
                                             <label class="form-control-label" [attr.for]="question?.id">
                                                         <span class="circle little"
                                                               *ngIf="form.value[question.id]"
@@ -154,7 +154,7 @@
                                                 <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                             </label>
                                         </div>
-                                        <div class="col-md-2 text-right p-0">
+                                        <!--<div class="col-md-2 text-right p-0">
                                             <rating
                                                 *ngIf="questionRelevancesMap && questionRelevancesMap.has(question.id)"
                                                 [max]="5"
@@ -165,7 +165,7 @@
                                                 [ngModelOptions]="{standalone: true}"
                                                 [readonly]="!(containerType && areaID && area)"
                                             ></rating>
-                                        </div>
+                                        </div>-->
                                     </div>
 
                                     <div class="row">
@@ -216,7 +216,7 @@
                                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
                                     class="card-box">
                                     <div class="row">
-                                        <div class="col-md-10">
+                                        <div class="col-md-12">
                                             <label class="form-control-label" [attr.for]="question?.id">
                                                 <span
                                                     class="circle little"
@@ -234,7 +234,7 @@
                                                 <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                             </label>
                                         </div>
-                                        <div class="col-md-2 text-right p-0">
+                                        <!--<div class="col-md-2 text-right p-0">
                                             <rating
                                                 *ngIf="questionRelevancesMap && questionRelevancesMap.has(question.id)"
                                                 [max]="5" [titles]="['1','2','3','4','5']"
@@ -244,7 +244,7 @@
                                                 [ngModelOptions]="{standalone: true}"
                                                 [readonly]="!(containerType && areaID && area)"
                                             ></rating>
-                                        </div>
+                                        </div>-->
                                     </div>
 
                                     <div class="row">
@@ -294,7 +294,7 @@
                                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
                                     class="card-box">
                                     <div class="row">
-                                        <div class="col-md-10">
+                                        <div class="col-md-12">
                                             <label class="form-control-label" [attr.for]="question?.id">
                                                 <span class="circle little"
                                                       *ngIf="form.value[question.id]"
@@ -310,7 +310,7 @@
                                                 <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                             </label>
                                         </div>
-                                        <div class="col-md-2 text-right p-0">
+                                        <!--<div class="col-md-2 text-right p-0">
                                             <rating
                                                 *ngIf="questionRelevancesMap && questionRelevancesMap.has(question.id)"
                                                 [max]="5" [titles]="['1','2','3','4','5']"
@@ -320,7 +320,7 @@
                                                 [ngModelOptions]="{standalone: true}"
                                                 [readonly]="!(containerType && areaID && area)"
                                             ></rating>
-                                        </div>
+                                        </div>-->
                                     </div>
                                     <div class="row">
                                         <!--<div *ngIf="containerType && areaID && area" class="col-md-1 text-center"
