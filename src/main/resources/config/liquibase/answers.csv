@@ -28,8 +28,8 @@ id;name;created;modified;jhi_order;likelihood
 27;No;now();now();1;HIGH
 28;Yes, only on internal networks;now();now();2;MEDIUM
 29;Yes, accessible via Internet;now();now();3;LOW
-30;Yes, and the security posture of supply chain is monitored;now();now();1;LOW
-31;Yes, but security posture of supply chain is not under my control;now();now();2;MEDIUM
+30;Yes, and the security posture of supply chain is monitored;now();now();2;MEDIUM
+31;Yes, but security posture of supply chain is not under my control;now();now();1;LOW
 32;No;now();now();3;HIGH
 33;Only on internal network;now();now();1;LOW
 34;Only exposed on the Internet;now();now();2;MEDIUM
