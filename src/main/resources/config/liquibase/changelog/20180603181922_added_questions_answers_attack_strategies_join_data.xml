@@ -20,18 +20,8 @@
         <delete catalogName="cat"
                 schemaName="public"
                 tableName="question_answers">
-            <where>true</where>
+            <where>questions_id&gt;=19 AND questions_id&lt;=80</where>
         </delete>
-
-        <loadUpdateData catalogName="cat"
-                        encoding="UTF-8"
-                        file="config/liquibase/questions_answers_threat_agents_join.csv"
-                        schemaName="public"
-                        separator=";"
-                        quotchar="'"
-                        tableName="question_answers"
-                        primaryKey="questions_id,answers_id">
-        </loadUpdateData>
 
         <loadUpdateData catalogName="cat"
                         encoding="UTF-8"
@@ -54,5 +44,4 @@
                         primaryKey="questions_id,answers_id">
         </loadUpdateData>
     </changeSet>
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
