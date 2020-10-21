@@ -31,9 +31,9 @@ id;name;created;modified;jhi_order;likelihood
 10030;Yes, and the security posture of supply chain is monitored;now();now();2;MEDIUM
 10031;Yes, but security posture of supply chain is not under my control;now();now();1;LOW
 10032;No;now();now();3;HIGH
-10033;Only on internal network;now();now();1;LOW
+10033;Only on internal network;now();now();1;HIGH
 10034;Only exposed on the Internet;now();now();2;MEDIUM
-10035;Both on internal network and exposed on the Internet;now();now();3;HIGH
+10035;Both on internal network and exposed on the Internet;now();now();3;LOW
 10036;No Wi-Fi access-points available;now();now();1;LOW
 10037;Yes, without WPA2;now();now();2;LOW_MEDIUM
 10038;Yes, with WPA2 and Pre-Shared key authentication;now();now();3;MEDIUM
