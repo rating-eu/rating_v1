@@ -30,7 +30,13 @@
     <property name="floatType" value="float4" dbms="postgresql, h2"/>
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
-    <changeSet id="20190524171453-1" author="developer">
+    <changeSet id="20190524171453-1" author="developer" runOnChange="true">
+        <delete catalogName="cat"
+                schemaName="public"
+                tableName="question_answers">
+            <where>questions_id&gt;=10019 AND questions_id&lt;=10080</where>
+        </delete>
+
         <loadData encoding="UTF-8"
                   file="config/liquibase/LPA_questions_answers_attack_strategies_join.csv"
                   schemaName="public"
