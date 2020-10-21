@@ -34,11 +34,11 @@ id;name;created;modified;jhi_order;likelihood
 10033;Only on internal network;now();now();1;HIGH
 10034;Only exposed on the Internet;now();now();2;MEDIUM
 10035;Both on internal network and exposed on the Internet;now();now();3;LOW
-10036;No Wi-Fi access-points available;now();now();1;LOW
-10037;Yes, without WPA2;now();now();2;LOW_MEDIUM
-10038;Yes, with WPA2 and Pre-Shared key authentication;now();now();3;MEDIUM
-10039;Yes, with WPA2 and Certificate authentication;now();now();4;MEDIUM_HIGH
-10040;Yes, with WPA2 and both Pre-Shared key and Certificate authentication;now();now();5;HIGH
+10036;No Wi-Fi access-points available;now();now();1;HIGH
+10037;Yes, without WPA2;now();now();2;LOW
+10038;Yes, with WPA2 and Pre-Shared key authentication;now();now();3;LOW_MEDIUM
+10039;Yes, with WPA2 and Certificate authentication;now();now();4;MEDIUM
+10040;Yes, with WPA2 and both Pre-Shared key and Certificate authentication;now();now();5;MEDIUM_HIGH
 10041;No;now();now();1;LOW
 10042;Policies are available but not applied by anyone;now();now();2;LOW_MEDIUM
 10043;Yes, but the policies are not well defined;now();now();3;MEDIUM
