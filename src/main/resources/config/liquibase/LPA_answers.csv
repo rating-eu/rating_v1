@@ -65,8 +65,8 @@ id;name;created;modified;jhi_order;likelihood
 10064;Yes, sustained with a strategic plan and a well-defined procedure and documentation and with extended coverage;now();now();4;MEDIUM_HIGH
 10065;Yes, the process and the documentation are proactively developed and maintained with constant effort and continuous improvement;now();now();5;HIGH
 10066;Not applicable;now();now();6;NOT_APPLICABLE
-10067;Less than 20%;now();now();1;HIGH
-10068;Between 20% and 40%;now();now();2;MEDIUM_HIGH
+10067;Less than 20%;now();now();5;HIGH
+10068;Between 20% and 40%;now();now();4;MEDIUM_HIGH
 10069;Between 40% and 60%;now();now();3;MEDIUM
-10070;Between 60% and 80%;now();now();4;LOW_MEDIUM
-10071;Greater than 80%;now();now();5;LOW
+10070;Between 60% and 80%;now();now();2;LOW_MEDIUM
+10071;Greater than 80%;now();now();1;LOW
