@@ -11,8 +11,8 @@ id;name;created;modified;jhi_order;likelihood
 10;On average, with a defined procedure and documentation;now();now();3;MEDIUM
 11;Mostly yes, sustained with a strategic plan and a well-defined procedure and documentation;now();now();4;MEDIUM_HIGH
 12;Yes, the process and the documentation are proactively developed and maintained with constant effort and continuous improvement;now();now();5;HIGH
-13;No;now();now();3;LOW
-14;Yes;now();now();1;HIGH
+13;No;now();now();1;LOW
+14;Yes;now();now();3;HIGH
 15;Can''t determine it;now();now();2;MEDIUM
 16;Can''t determine it;now();now();3;MEDIUM
 17;Yes, also the mitigation processes are not yet defined;now();now();1;LOW
