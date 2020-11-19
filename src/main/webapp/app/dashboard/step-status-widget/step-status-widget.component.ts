@@ -16,6 +16,7 @@ import {CompanyBoardStatus} from "../models/CompanyBoardStatus";
 import {of} from "rxjs/observable/of";
 import {QuestionnaireStatusMgm, QuestionnaireStatusMgmService} from "../../entities/questionnaire-status-mgm";
 import {QuestionnairePurpose} from "../../entities/enumerations/QuestionnairePurpose.enum";
+import {Role} from '../../entities/enumerations/Role.enum';
 
 @Component({
     selector: 'jhi-step-status-widget',
@@ -169,7 +170,7 @@ export class StepStatusWidgetComponent implements OnInit, AfterViewChecked, OnDe
     private fetchQuestionnaireStatuses() {
         if (this.myCompany && this.myCompany.companyProfile) {
             this.subscriptions.push(
-                this.questionnaireStatusService.getAllQuestionnaireStatusesByCurrentUserAndQuestionnairePurpose(QuestionnairePurpose.SELFASSESSMENT)
+                this.questionnaireStatusService.getAllQuestionnaireStatusesByCompanyProfileQuestionnairePurposeAndRole(this.myCompany.companyProfile, QuestionnairePurpose.SELFASSESSMENT, Role.ROLE_CISO)
                     .catch((err) => {
                         return of([]);
                     })
@@ -177,7 +178,8 @@ export class StepStatusWidgetComponent implements OnInit, AfterViewChecked, OnDe
                         this.questionnaireStatuses = response;
 
                         if (this.questionnaireStatuses && this.questionnaireStatuses.length) {
-
+                            this.vulnerabilityAssessment = this.questionnaireStatuses[0];
+                            this.dataSharingService.vulnerabilityAssessment = this.vulnerabilityAssessment;
                         } else {
 
                         }
